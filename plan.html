@@ -13,59 +13,96 @@
     </header>
     <main>
         <section id="class-list">
-            <h2>Klasy</h2>
+            <h2>Szkoła Podstawowa</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Klasa</th>
+                        <th>Klasy</th>
                         <th>Zobacz</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Klasa 1</td>
-                        <td><button onclick="showTimetable('class-1')" id="zobacz">Zobacz plan lekcji</button></td>
+                        <td><form action="plan1.php" method="GET">
+                            <input type="hidden" name="klasa_id" value="1">
+                            <button type="submit">Zobacz plan lekcji</button>
+                        </form></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>Klasa 2</td>
+                        <td><form action="plan1.php" method="GET">
+                            <input type="hidden" name="klasa_id" value="2">
+                            <button type="submit">Zobacz plan lekcji</button>
+                        </form></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>Klasa 3</td>
+                        <td><form action="plan1.php" method="GET">
+                            <input type="hidden" name="klasa_id" value="3">
+                            <button type="submit">Zobacz plan lekcji</button>
+                        </form></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>Klasa 4</td>
+                        <td><form action="plan1.php" method="GET">
+                            <input type="hidden" name="klasa_id" value="4">
+                            <button type="submit">Zobacz plan lekcji</button>
+                        </form></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>Klasa 5</td>
+                        <td><form action="plan1.php" method="GET">
+                            <input type="hidden" name="klasa_id" value="5">
+                            <button type="submit">Zobacz plan lekcji</button>
+                        </form></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>Klasa 6</td>
+                        <td><form action="plan1.php" method="GET">
+                            <input type="hidden" name="klasa_id" value="6">
+                            <button type="submit">Zobacz plan lekcji</button>
+                        </form></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>Klasa 7</td>
+                        <td><form action="plan1.php" method="GET">
+                            <input type="hidden" name="klasa_id" value="7">
+                            <button type="submit">Zobacz plan lekcji</button>
+                        </form></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>Klasa 8</td>
+                        <td><form action="plan1.php" method="GET">
+                            <input type="hidden" name="klasa_id" value="8">
+                            <button type="submit">Zobacz plan lekcji</button>
+                        </form></td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
-        <section id="timetable" style="display: none;">
-            <h2>Plan lekcji</h2>
-            <div class="class-timetable" id="class-1" style="display: none;">
-                <h3>klasa1<button onclick="goBack()" id="cofnij">cofnij</button></h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>dzien</th>
-                            <th>przedmiot</th>
-                            <th>godziny</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+       
     </main>
     <footer>
         <p>&copy;szkola</p>
     </footer>
 
-    <script>
-        function showTimetable(classId) {
-            document.getElementById('class-list').style.display = 'none';
-            document.getElementById('timetable').style.display = 'block';
-            document.querySelectorAll('.class-timetable').forEach(function(el) {
-                el.style.display = 'none';
-            });
-            document.getElementById(classId).style.display = 'block';
-        }
-
-        function goBack() {
-            document.getElementById('timetable').style.display = 'none';
-            document.getElementById('class-list').style.display = 'block';
-        }
-    </script>
+ 
 </body>
 </html>
+
