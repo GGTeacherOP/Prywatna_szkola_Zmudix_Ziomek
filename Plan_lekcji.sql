@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 10, 2025 at 11:28 PM
+-- Generation Time: Maj 11, 2025 at 07:33 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -57,18 +57,6 @@ INSERT INTO `klasy` (`id`, `nazwa`, `rocznik`, `typ_szkoly_id`) VALUES
 (16, '7a', 2011, 3),
 (17, '8a', 2010, 3),
 (18, 'Muchomorki', 2018, 4);
-
--- --------------------------------------------------------
-
---
--- Struktura tabeli dla tabeli `nauczyciele`
---
-
-CREATE TABLE `nauczyciele` (
-  `id` int(11) NOT NULL,
-  `login` varchar(50) NOT NULL,
-  `haslo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -266,18 +254,6 @@ INSERT INTO `przedmioty` (`id`, `nazwa`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `rodzice`
---
-
-CREATE TABLE `rodzice` (
-  `id` int(11) NOT NULL,
-  `login` varchar(50) NOT NULL,
-  `haslo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Struktura tabeli dla tabeli `sale`
 --
 
@@ -368,18 +344,6 @@ INSERT INTO `typy_szkol` (`id`, `nazwa`) VALUES
 (3, 'Szkola Podstawowa'),
 (4, 'Przedszkole');
 
--- --------------------------------------------------------
-
---
--- Struktura tabeli dla tabeli `uczniowie`
---
-
-CREATE TABLE `uczniowie` (
-  `id` int(11) NOT NULL,
-  `login` varchar(50) NOT NULL,
-  `haslo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 --
 -- Indeksy dla zrzutów tabel
 --
@@ -390,13 +354,6 @@ CREATE TABLE `uczniowie` (
 ALTER TABLE `klasy`
   ADD PRIMARY KEY (`id`),
   ADD KEY `typ_szkoly_id` (`typ_szkoly_id`);
-
---
--- Indeksy dla tabeli `nauczyciele`
---
-ALTER TABLE `nauczyciele`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `login` (`login`);
 
 --
 -- Indeksy dla tabeli `plan_lekcji`
@@ -414,13 +371,6 @@ ALTER TABLE `przedmioty`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeksy dla tabeli `rodzice`
---
-ALTER TABLE `rodzice`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `login` (`login`);
-
---
 -- Indeksy dla tabeli `sale`
 --
 ALTER TABLE `sale`
@@ -433,13 +383,6 @@ ALTER TABLE `typy_szkol`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeksy dla tabeli `uczniowie`
---
-ALTER TABLE `uczniowie`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `login` (`login`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -448,12 +391,6 @@ ALTER TABLE `uczniowie`
 --
 ALTER TABLE `klasy`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT for table `nauczyciele`
---
-ALTER TABLE `nauczyciele`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `plan_lekcji`
@@ -468,12 +405,6 @@ ALTER TABLE `przedmioty`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT for table `rodzice`
---
-ALTER TABLE `rodzice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `sale`
 --
 ALTER TABLE `sale`
@@ -484,12 +415,6 @@ ALTER TABLE `sale`
 --
 ALTER TABLE `typy_szkol`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `uczniowie`
---
-ALTER TABLE `uczniowie`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

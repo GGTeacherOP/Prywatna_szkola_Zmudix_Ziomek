@@ -62,6 +62,8 @@ $result = $conn->query($sql);
     </table>
 
     <p><a href="plan.html">Wróć do listy klas</a></p>
+    <P><a href onclick="window.print(); return false;">Drukuj stronę</a></p>
+
 </body>
 </html>
 
