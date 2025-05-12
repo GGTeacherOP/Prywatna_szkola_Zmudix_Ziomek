@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Plany lekcji</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='plan.css' href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='plan.css' >
 </head>
 <body>
     <header>
@@ -82,29 +82,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <section id="class-list">
         <div class="form-container">
   <h2>Logowanie</h2>
-  <form>
+  
+  <form method="post">
     <div class="form-group">
-      <label for="username">Nazwa użytkownika</label>
-      <input type="text" id="username" placeholder="Wprowadź nazwę użytkownika">
+        <label for="login">Login:<br>
+            <input type="text" name="login" required>
+        </label>
     </div>
-    
     <div class="form-group">
-      <label for="password">Hasło</label>
-      <input type="password" id="password" placeholder="Wprowadź hasło">
+        <label for="haslo">Hasło:<br>
+            <input type="password" name="haslo" required>
+        </label>
     </div>
-    
-    <input type="submit" id="zaloguj" value="Zaloguj się">
-    
+    <label>Kim jesteś?<br>
+        <input type="radio" name="rola" value="uczen" required> Uczeń
+        <input type="radio" name="rola" value="nauczyciel"> Nauczyciel
+    </label><br>
+    <input type="submit" value="Zaloguj się" id="zaloguj"> 
     <div class="form-footer">
       <a href="#">Zapomniałeś hasła?</a> | <a href="rejestracja.php">Zarejestruj się</a>
     </div>
-  </form>
+</form>
 </div>      
     </main>
     <footer>
         <p>&copy;szkola</p>
     </footer>
-
- 
 </body>
 </html>
