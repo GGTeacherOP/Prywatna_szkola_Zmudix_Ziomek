@@ -1,97 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Szkoła</title>
+    <title>Prywatna Szkoła Akademia Wiedzy</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <div class="header-container">
-            <h1>Prywatna Szkoła</h1>
+            <div class="logo-container">
+                <h1>Akademia Wiedzy</h1>
+                <p>Prywatna Szkoła z Tradycją</p>
+            </div>
+            <div class="header-contact">
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@akademiawiedzy.edu.pl</p>
+            </div>
         </div>
         <nav>
             <ul>
-                <li><a href="plan.html" target="_blank">Plany lekcji</a></li>
-                <li><a href="dziennik.php" target="_blank">Dziennik</a></li>
-                <li><a href="#zapisz">Zapisz sie!</a></li>
+                <li><a href="plan.html" target="_blank"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
+                <li><a href="dziennik.php" target="_blank"><i class="fas fa-book"></i> Dziennik</a></li>
+                <li><a href="#zapisz" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
             </ul>
         </nav>
     </header>
     <div class="container">
         <div class="left-section">
             <ul>
-                <li onclick="showSection(1)"><a href="#aktualnosci" >Aktualności</a></li>
-                <li onclick="showSection(2)"><a href="#liceum"></a>Liceum</a></li>
-                <li onclick="showSection(3)"><a href="#technikum"></a>Technikum</a></li>
-                <li onclick="showSection(4)"><a href="#szkola-podstawowa"></a>Szkoła Podstawowa</a></li>
-                <li onclick="showSection(5)"><a href="#przedszkole"></a>Przedszkole</a></li>
-                <li onclick="showSection(6)"><a href="#Kontakt"></a>Kontakt</a></li>
+                <li onclick="showSection(1)" class="active-nav"><a href="#aktualnosci"><i class="fas fa-newspaper"></i> Aktualności</a></li>
+                <li onclick="showSection(2)"><a href="#liceum"><i class="fas fa-graduation-cap"></i> Liceum</a></li>
+                <li onclick="showSection(3)"><a href="#technikum"><i class="fas fa-laptop-code"></i> Technikum</a></li>
+                <li onclick="showSection(4)"><a href="#szkola-podstawowa"><i class="fas fa-book-open"></i> Szkoła Podstawowa</a></li>
+                <li onclick="showSection(5)"><a href="#przedszkole"><i class="fas fa-child"></i> Przedszkole</a></li>
+                <li onclick="showSection(6)"><a href="#Kontakt"><i class="fas fa-envelope"></i> Kontakt</a></li>
             </ul>
         </div>
         <div class="right-section">
             <section id="aktualnosci" class="section active">
                 <h2 class="section-header">Aktualności</h2>
-                <p>Witajcie w sekcji aktualności! Tutaj znajdziecie najnowsze informacje o wydarzeniach, sukcesach naszych uczniów i szkole. Bądźcie na bieżąco!</p>
+                <div class="news-highlight">
+                    <div class="highlight-content">
+                        <h3>Rekrutacja 2025/2026</h3>
+                        <p>Trwa nabór do wszystkich placówek edukacyjnych Akademii Wiedzy. Zapisy prowadzimy do 30 czerwca 2025.</p>
+                        <a href="#zapisz" class="btn">Zapisz się online</a>
+                    </div>
+                </div>
 
-                    <h3>Konkursy i wydarzenia</h3>
-                    
-                    <article>
-                        <h4>„Mistrz Matematyki” – Wyniki szkolnego konkursu matematycznego</h4>
-                        <p>Gratulujemy wszystkim uczestnikom naszego corocznego konkursu matematycznego „Mistrz Matematyki”! W tym roku uczniowie z Liceum Ogólnokształcącego osiągnęli wyjątkowe wyniki. Pierwsze miejsce zdobył Michał Kowalski z klasy 3B, a drugie Anna Wiśniewska z klasy 2A. Michał otrzymał stypendium naukowe oraz książki związane z matematyką, a Anna wygrała warsztaty z programowania. Dziękujemy wszystkim uczestnikom za wysiłek i gratulujemy zwycięzcom!</p>
-                        <p><strong>Data:</strong> 10 maja 2025</p>
+                <div class="news-grid">
+                    <article class="news-card">
+                        <div class="news-date">
+                            <span class="day">10</span>
+                            <span class="month">Maj</span>
+                            <span class="year">2025</span>
+                        </div>
+                        <div class="news-content">
+                            <h4>„Mistrz Matematyki” – Wyniki konkursu</h4>
+                            <p>Gratulujemy Michałowi Kowalskiemu z klasy 3B, który zdobył pierwsze miejsce w naszym konkursie matematycznym...</p>
+                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
+                        </div>
                     </article>
 
-                    <article>
-                        <h4>Szkolny Konkurs Plastyczny – „Zielona Planeta”</h4>
-                        <p>Uczniowie naszej szkoły podstawowej wzięli udział w ogólnopolskim konkursie plastycznym pt. „Zielona Planeta”, którego celem było promowanie ochrony środowiska poprzez sztukę. Z radością ogłaszamy, że I miejsce w kategorii klas 4-6 zdobyła Julia Nowak z klasy 5B, a II miejsce Kacper Szymański z klasy 4A. Wszystkim laureatom gratulujemy, a ich prace można obejrzeć na wystawie w naszej szkole!</p>
-                        <p><strong>Data:</strong> 5 maja 2025</p>
+                    <article class="news-card">
+                        <div class="news-date">
+                            <span class="day">05</span>
+                            <span class="month">Maj</span>
+                            <span class="year">2025</span>
+                        </div>
+                        <div class="news-content">
+                            <h4>Konkurs Plastyczny „Zielona Planeta”</h4>
+                            <p>Julia Nowak z klasy 5B zdobyła I miejsce w ogólnopolskim konkursie plastycznym promującym ekologię...</p>
+                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
+                        </div>
                     </article>
 
-                    <article>
-                        <h4>Szkoła organizuje zbiórkę charytatywną na rzecz dzieci z domów dziecka</h4>
-                        <p>Nasze przedszkole oraz uczniowie szkoły podstawowej zorganizowali akcję charytatywną na rzecz dzieci z domów dziecka w regionie. Zebraliśmy ponad 200 paczek z zabawkami, książkami i artykułami szkolnymi. Dziękujemy wszystkim rodzicom, uczniom i nauczycielom za pomoc w organizacji tej szlachetnej inicjatywy!</p>
-                        <p><strong>Data:</strong> 30 kwietnia 2025</p>
+                    <article class="news-card">
+                        <div class="news-date">
+                            <span class="day">30</span>
+                            <span class="month">Kwi</span>
+                            <span class="year">2025</span>
+                        </div>
+                        <div class="news-content">
+                            <h4>Zbiórka charytatywna</h4>
+                            <p>Dziękujemy za udział w akcji charytatywnej - zebraliśmy ponad 200 paczek dla dzieci z domów dziecka...</p>
+                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
+                        </div>
                     </article>
 
-                    <h3>Osiągnięcia uczniów</h3>
-                    
-                    <article>
-                        <h4>Reprezentacja Liceum Ogólnokształcącego zwycięzcą zawodów matematycznych</h4>
-                        <p>Serdecznie gratulujemy drużynie z naszego Liceum Ogólnokształcącego, która zdobyła pierwsze miejsce w międzyszkolnym konkursie matematycznym! Uczniowie – Michał Kowalski, Anna Wiśniewska oraz Karol Nowak – wykazali się niesamowitą wiedzą i umiejętnościami rozwiązywania trudnych problemów matematycznych. Zwycięzcy otrzymali puchar, dyplomy oraz nagrody rzeczowe. Jesteśmy bardzo dumni z Waszych osiągnięć!</p>
-                        <p><strong>Data:</strong> 25 kwietnia 2025</p>
+                    <article class="news-card">
+                        <div class="news-date">
+                            <span class="day">25</span>
+                            <span class="month">Kwi</span>
+                            <span class="year">2025</span>
+                        </div>
+                        <div class="news-content">
+                            <h4>Zwycięstwo w zawodach matematycznych</h4>
+                            <p>Nasza drużyna licealna zdobyła I miejsce w międzyszkolnym konkursie matematycznym...</p>
+                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
+                        </div>
                     </article>
 
-                    <article>
-                        <h4>Uczennica przedszkola w finale ogólnopolskiego konkursu recytatorskiego</h4>
-                        <p>Julia Tomaszewska, uczennica naszego przedszkola, dotarła do finału ogólnopolskiego konkursu recytatorskiego „Mali Artyści”! Julia oczarowała jurorów swoją interpretacją wiersza Jana Brzechwy. Cieszymy się z jej sukcesu i życzymy dalszych zwycięstw w przyszłości!</p>
-                        <p><strong>Data:</strong> 20 kwietnia 2025</p>
+                    <article class="news-card">
+                        <div class="news-date">
+                            <span class="day">20</span>
+                            <span class="month">Kwi</span>
+                            <span class="year">2025</span>
+                        </div>
+                        <div class="news-content">
+                            <h4>Sukces w konkursie recytatorskim</h4>
+                            <p>Julia Tomaszewska z przedszkola dotarła do finału ogólnopolskiego konkursu "Mali Artyści"...</p>
+                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
+                        </div>
                     </article>
 
-                    <h3>Wydarzenia w szkole</h3>
-                    
-                    <article>
-                        <h4>Szkolny Festyn Rodzinny – Wspólna zabawa i integracja</h4>
-                        <p>W miniony weekend odbył się coroczny Szkolny Festyn Rodzinny, w którym wzięli udział uczniowie, nauczyciele i ich rodziny. W programie znalazły się liczne atrakcje: występy dzieci, gry i zabawy, a także pokaz talentów. Dziękujemy wszystkim, którzy przyczynili się do organizacji festynu i zapraszamy do kolejnych edycji!</p>
-                        <p><strong>Data:</strong> 15 kwietnia 2025</p>
+                    <article class="news-card">
+                        <div class="news-date">
+                            <span class="day">15</span>
+                            <span class="month">Kwi</span>
+                            <span class="year">2025</span>
+                        </div>
+                        <div class="news-content">
+                            <h4>Festyn Rodzinny</h4>
+                            <p>Relacja z udanego festynu rodzinnego, który zgromadził ponad 300 uczestników...</p>
+                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
+                        </div>
                     </article>
+                </div>
 
-                    <article>
-                        <h4>Wizyta edukacyjna w Muzeum Nauki i Techniki</h4>
-                        <p>Uczniowie klasy 3B z naszego Liceum Ogólnokształcącego wzięli udział w edukacyjnej wycieczce do Muzeum Nauki i Techniki w Warszawie. Wizyta miała na celu zapoznanie uczniów z nowoczesnymi osiągnięciami technologicznymi i naukowymi. W trakcie wycieczki uczniowie mieli okazję uczestniczyć w warsztatach z zakresu fizyki i inżynierii. Było to inspirujące i edukacyjne doświadczenie!</p>
-                        <p><strong>Data:</strong> 12 kwietnia 2025</p>
-                    </article>
-
-                    <h3>Gratulacje dla nauczycieli</h3>
-
-                    <article>
-                        <h4>Nasza nauczycielka matematyki wyróżniona w ogólnopolskim konkursie</h4>
-                        <p>Z dumą informujemy, że nasza nauczycielka matematyki, Pani Joanna Kowalska, zdobyła pierwsze miejsce w ogólnopolskim konkursie na najlepszego nauczyciela matematyki w kraju! Pani Kowalska wyróżniła się innowacyjnym podejściem do nauczania i angażowaniem uczniów w rozwiązywanie problemów matematycznych. Serdecznie gratulujemy!</p>
-                        <p><strong>Data:</strong> 10 kwietnia 2025</p>
-                    </article>
+                <div class="calendar-section">
+                    <h3><i class="far fa-calendar-alt"></i> Nadchodzące wydarzenia</h3>
+                    <div class="events-list">
+                        <div class="event-item">
+                            <div class="event-date">25 Maj</div>
+                            <div class="event-info">
+                                <h5>Dzień Sportu</h5>
+                                <p>Turnieje i zawody sportowe dla wszystkich uczniów</p>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">01 Cze</div>
+                            <div class="event-info">
+                                <h5>Dzień Dziecka</h5>
+                                <p>Specjalne atrakcje dla uczniów przedszkola i szkoły podstawowej</p>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">15 Cze</div>
+                            <div class="event-info">
+                                <h5>Zakończenie roku szkolnego</h5>
+                                <p>Uroczyste zakończenie roku szkolnego 2024/2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
+
+            <!-- Pozostałe sekcje pozostają bez zmian -->
             <section id="liceum" class="section">
                 <h2 class="section-header">Liceum Ogólnokształcące</h2>
                 <h3>Witamy w naszym liceum!</h3>
@@ -218,14 +286,100 @@
                         <li><strong>Program rozwoju:</strong> Oferujemy programy edukacyjne dostosowane do wieku i potrzeb dzieci, które stawiają na wszechstronny rozwój.</li>
                     </ul>
             </section>
+            
             <section id="Kontakt" class="section">
-                <h2>Skontaktuj sie</h2>
-                <p>tel: +48 875890876</p>
-                <p>e-mail:<a href="mailto:zespolszkol@mail.com">zespolszkol@mail.com</a></p>
-                <p>adres: ul. Szkolna 1, 00-000 Miasto</p>
+                <h2 class="section-header">Kontakt</h2>
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h3><i class="fas fa-map-marker-alt"></i> Nasza lokalizacja</h3>
+                        <p>ul. Akademicka 15<br>00-001 Warszawa</p>
+                        
+                        <h3><i class="fas fa-phone"></i> Telefon</h3>
+                        <p>+48 123 456 789</p>
+                        
+                        <h3><i class="fas fa-envelope"></i> E-mail</h3>
+                        <p><a href="mailto:kontakt@akademiawiedzy.edu.pl">kontakt@akademiawiedzy.edu.pl</a></p>
+                        
+                        <h3><i class="fas fa-clock"></i> Godziny otwarcia</h3>
+                        <p>Pon-Pt: 8:00-18:00<br>Sb: 9:00-14:00</p>
+                    </div>
+                    
+                    <div class="contact-form">
+                        <h3>Formularz kontaktowy</h3>
+                        <form>
+                            <div class="form-group">
+                                <input type="text" placeholder="Imię i nazwisko" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" placeholder="E-mail" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Temat">
+                            </div>
+                            <div class="form-group">
+                                <textarea placeholder="Wiadomość" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Wyślij wiadomość</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2443.65064626096!2d21.01221531579689!3d52.22967597976094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ecc669a869f01%3A0x72f0be2a88ead3fc!2sWarszawa!5e0!3m2!1spl!2spl!4v1620000000000!5m2!1spl!2spl" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
             </section>
         </div>
     </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Akademia Wiedzy</h4>
+                <p>Prywatna szkoła z 25-letnią tradycją, oferująca kompleksową edukację od przedszkola po liceum.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Szybkie linki</h4>
+                <div class="left-section">
+                    <ul>
+                        <li onclick="showSection(1)"><a href="#aktualnosci"><i class="fas fa-newspaper"></i> Aktualności</a></li>
+                        <li onclick="showSection(2)"><a href="#liceum"><i class="fas fa-graduation-cap"></i> Liceum</a></li>
+                        <li onclick="showSection(3)"><a href="#technikum"><i class="fas fa-laptop-code"></i> Technikum</a></li>
+                        <li onclick="showSection(4)"><a href="#szkola-podstawowa"><i class="fas fa-book-open"></i> Szkoła Podstawowa</a></li>
+                        <li onclick="showSection(5)"><a href="#przedszkole"><i class="fas fa-child"></i> Przedszkole</a></li>
+                        <li onclick="showSection(6)"><a href="#Kontakt"><i class="fas fa-envelope"></i> Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Dokumenty</h4>
+                <ul>
+                    <li><a href="#">Statut szkoły</a></li>
+                    <li><a href="#">Regulamin</a></li>
+                    <li><a href="#">Rekrutacja</a></li>
+                    <li><a href="#">Ochrona danych</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Kontakt</h4>
+                <p><i class="fas fa-map-marker-alt"></i> ul. Akademicka 15, 00-001 Warszawa</p>
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@akademiawiedzy.edu.pl</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Akademia Wiedzy. Wszelkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
 </body>
 <script src="script.js"></script>
 </html>

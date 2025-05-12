@@ -166,6 +166,7 @@ $result = $conn->query($sql);
             <?php endwhile; ?>
         </tbody>
     </table>
+    
 
     <div class="actions">
         <a href="plan.html">Wróć do listy klas</a>

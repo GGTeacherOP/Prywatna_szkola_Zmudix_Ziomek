@@ -1,223 +1,362 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Plany lekcji</title>
+    <title>Plany lekcji - Akademia Wiedzy</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='plan.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Dodatkowe style specyficzne dla plan.html */
+        .plans-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .plan-section {
+            margin-bottom: 3rem;
+        }
+        
+        .plan-section h2 {
+            color: var(--primary-color);
+            padding: 1rem;
+            background: rgba(0, 86, 179, 0.1);
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .plan-table thead {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .plan-table th, .plan-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .plan-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .plan-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .plan-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        
+        .plan-btn:hover {
+            background: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .plan-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .plans-container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Plany lekcji</h1>
+        <div class="header-container">
+            <div class="logo-container">
+                <h1>Akademia Wiedzy</h1>
+                <p>Plany lekcji</p>
+            </div>
+            <div class="header-contact">
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@akademiawiedzy.edu.pl</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="szkola.html"><i class="fas fa-home"></i> Strona główna</a></li>
+                <li><a href="plan.html" class="active-nav"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
+                <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
+                <li><a href="#zapisz" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
+            </ul>
+        </nav>
     </header>
-    <main>
-        <section id="class-list">
-            <h2>Liceum ogólnokształtonce</h2>
-            <table>
+    
+    <main class="plans-container">
+        <section class="plan-section">
+            <h2><i class="fas fa-graduation-cap"></i> Liceum Ogólnokształcące</h2>
+            <table class="plan-table">
                 <thead>
                     <tr>
                         <th>Klasy</th>
-                        <th>Zobacz</th>
+                        <th>Plan lekcji</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Klasa 1a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="1">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="1">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 2a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="2">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="2">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 3a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="3">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="3">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 4a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="4">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="4">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <h2>Technikum</h2>
-            <table>
+        </section>
+
+        <section class="plan-section">
+            <h2><i class="fas fa-laptop-code"></i> Technikum</h2>
+            <table class="plan-table">
                 <thead>
                     <tr>
                         <th>Klasy</th>
-                        <th>Zobacz</th>
+                        <th>Plan lekcji</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Klasa 1T</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="5">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="5">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 2T</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="6">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="6">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 3T</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="7">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="7">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 4T</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="8">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="8">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
                     <tr>
                         <td>Klasa 5T</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="9">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="9">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <h2>Szkoła Podstawowa</h2>
-            <table>
+        </section>
+
+        <section class="plan-section">
+            <h2><i class="fas fa-book-open"></i> Szkoła Podstawowa</h2>
+            <table class="plan-table">
                 <thead>
                     <tr>
                         <th>Klasy</th>
-                        <th>Zobacz</th>
+                        <th>Plan lekcji</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Klasa 1a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="10">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="10">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 2a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="11">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="11">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 3a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="12">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="12">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 4a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="13">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="13">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 5a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="14">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="14">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 6a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="15">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="15">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 7a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="16">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="16">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr>
                         <td>Klasa 8a</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="17">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="17">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <h2>Przedszkole</h2>
-            <table>
+        </section>
+
+        <section class="plan-section">
+            <h2><i class="fas fa-child"></i> Przedszkole</h2>
+            <table class="plan-table">
                 <thead>
                     <tr>
-                        <th>Klasy</th>
-                        <th>Zobacz</th>
+                        <th>Grupy</th>
+                        <th>Plan zajęć</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Muchomorki</td>
-                        <td><form action="plan1.php" method="GET">
-                            <input type="hidden" name="klasa_id" value="18">
-                            <button type="submit">Zobacz plan lekcji</button>
-                        </form></td>
+                        <td>
+                            <form action="plan1.php" method="GET">
+                                <input type="hidden" name="klasa_id" value="18">
+                                <button type="submit" class="plan-btn">Zobacz plan <i class="fas fa-arrow-right"></i></button>
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-
         </section>
-
-       
     </main>
+    
     <footer>
-        <p>&copy;szkola</p>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Akademia Wiedzy</h4>
+                <p>Kompleksowa edukacja od przedszkola po liceum</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Plany lekcji</h4>
+                <ul>
+                    <li><a href="plan.html">Liceum</a></li>
+                    <li><a href="plan.html">Technikum</a></li>
+                    <li><a href="plan.html">Szkoła Podstawowa</a></li>
+                    <li><a href="plan.html">Przedszkole</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Kontakt</h4>
+                <p><i class="fas fa-map-marker-alt"></i> ul. Akademicka 15, 00-001 Warszawa</p>
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@akademiawiedzy.edu.pl</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Akademia Wiedzy. Wszelkie prawa zastrzeżone.</p>
+        </div>
     </footer>
-<script src="plan.js"></script>
 </body>
 </html>
-
