@@ -11,16 +11,11 @@
     <header>
         <div class="header-container">
             <h1>Prywatna Szkoła</h1>
-            <div class="auth-links">
-                <a href="#login">Zaloguj</a>
-                <a href="#register">Zarejestruj</a>
-            </div>
         </div>
         <nav>
             <ul>
                 <li><a href="plan.html" target="_blank">Plany lekcji</a></li>
                 <li><a href="dziennik.php" target="_blank">Dziennik</a></li>
-                <li><a href="#kontakt">Kontakt</a></li>
                 <li><a href="#zapisz">Zapisz sie!</a></li>
             </ul>
         </nav>
@@ -28,39 +23,202 @@
     <div class="container">
         <div class="left-section">
             <ul>
-                <li><a href="#aktualnosci">Aktualności</a></li>
-                <li><a href="#liceum">Liceum</a></li>
-                <li><a href="#technikum">Technikum</a></li>
-                <li><a href="#szkola-podstawowa">Szkoła Podstawowa</a></li>
-                <li><a href="#przedszkole">Przedszkole</a></li>
-                <li><a href="#Kontakt">Kontakt</a></li>
+                <li onclick="showSection(1)"><a href="#aktualnosci" >Aktualności</a></li>
+                <li onclick="showSection(2)"><a href="#liceum"></a>Liceum</a></li>
+                <li onclick="showSection(3)"><a href="#technikum"></a>Technikum</a></li>
+                <li onclick="showSection(4)"><a href="#szkola-podstawowa"></a>Szkoła Podstawowa</a></li>
+                <li onclick="showSection(5)"><a href="#przedszkole"></a>Przedszkole</a></li>
+                <li onclick="showSection(6)"><a href="#Kontakt"></a>Kontakt</a></li>
             </ul>
         </div>
         <div class="right-section">
-            <section id="aktualnosci">
-                <h2>Aktualności</h2>
-                <p>Aktualnosci z naszych szkół</p>
+            <section id="aktualnosci" class="section active">
+                <h2 class="section-header">Aktualności</h2>
+                <p>Witajcie w sekcji aktualności! Tutaj znajdziecie najnowsze informacje o wydarzeniach, sukcesach naszych uczniów i szkole. Bądźcie na bieżąco!</p>
+
+                    <h3>Konkursy i wydarzenia</h3>
+                    
+                    <article>
+                        <h4>„Mistrz Matematyki” – Wyniki szkolnego konkursu matematycznego</h4>
+                        <p>Gratulujemy wszystkim uczestnikom naszego corocznego konkursu matematycznego „Mistrz Matematyki”! W tym roku uczniowie z Liceum Ogólnokształcącego osiągnęli wyjątkowe wyniki. Pierwsze miejsce zdobył Michał Kowalski z klasy 3B, a drugie Anna Wiśniewska z klasy 2A. Michał otrzymał stypendium naukowe oraz książki związane z matematyką, a Anna wygrała warsztaty z programowania. Dziękujemy wszystkim uczestnikom za wysiłek i gratulujemy zwycięzcom!</p>
+                        <p><strong>Data:</strong> 10 maja 2025</p>
+                    </article>
+
+                    <article>
+                        <h4>Szkolny Konkurs Plastyczny – „Zielona Planeta”</h4>
+                        <p>Uczniowie naszej szkoły podstawowej wzięli udział w ogólnopolskim konkursie plastycznym pt. „Zielona Planeta”, którego celem było promowanie ochrony środowiska poprzez sztukę. Z radością ogłaszamy, że I miejsce w kategorii klas 4-6 zdobyła Julia Nowak z klasy 5B, a II miejsce Kacper Szymański z klasy 4A. Wszystkim laureatom gratulujemy, a ich prace można obejrzeć na wystawie w naszej szkole!</p>
+                        <p><strong>Data:</strong> 5 maja 2025</p>
+                    </article>
+
+                    <article>
+                        <h4>Szkoła organizuje zbiórkę charytatywną na rzecz dzieci z domów dziecka</h4>
+                        <p>Nasze przedszkole oraz uczniowie szkoły podstawowej zorganizowali akcję charytatywną na rzecz dzieci z domów dziecka w regionie. Zebraliśmy ponad 200 paczek z zabawkami, książkami i artykułami szkolnymi. Dziękujemy wszystkim rodzicom, uczniom i nauczycielom za pomoc w organizacji tej szlachetnej inicjatywy!</p>
+                        <p><strong>Data:</strong> 30 kwietnia 2025</p>
+                    </article>
+
+                    <h3>Osiągnięcia uczniów</h3>
+                    
+                    <article>
+                        <h4>Reprezentacja Liceum Ogólnokształcącego zwycięzcą zawodów matematycznych</h4>
+                        <p>Serdecznie gratulujemy drużynie z naszego Liceum Ogólnokształcącego, która zdobyła pierwsze miejsce w międzyszkolnym konkursie matematycznym! Uczniowie – Michał Kowalski, Anna Wiśniewska oraz Karol Nowak – wykazali się niesamowitą wiedzą i umiejętnościami rozwiązywania trudnych problemów matematycznych. Zwycięzcy otrzymali puchar, dyplomy oraz nagrody rzeczowe. Jesteśmy bardzo dumni z Waszych osiągnięć!</p>
+                        <p><strong>Data:</strong> 25 kwietnia 2025</p>
+                    </article>
+
+                    <article>
+                        <h4>Uczennica przedszkola w finale ogólnopolskiego konkursu recytatorskiego</h4>
+                        <p>Julia Tomaszewska, uczennica naszego przedszkola, dotarła do finału ogólnopolskiego konkursu recytatorskiego „Mali Artyści”! Julia oczarowała jurorów swoją interpretacją wiersza Jana Brzechwy. Cieszymy się z jej sukcesu i życzymy dalszych zwycięstw w przyszłości!</p>
+                        <p><strong>Data:</strong> 20 kwietnia 2025</p>
+                    </article>
+
+                    <h3>Wydarzenia w szkole</h3>
+                    
+                    <article>
+                        <h4>Szkolny Festyn Rodzinny – Wspólna zabawa i integracja</h4>
+                        <p>W miniony weekend odbył się coroczny Szkolny Festyn Rodzinny, w którym wzięli udział uczniowie, nauczyciele i ich rodziny. W programie znalazły się liczne atrakcje: występy dzieci, gry i zabawy, a także pokaz talentów. Dziękujemy wszystkim, którzy przyczynili się do organizacji festynu i zapraszamy do kolejnych edycji!</p>
+                        <p><strong>Data:</strong> 15 kwietnia 2025</p>
+                    </article>
+
+                    <article>
+                        <h4>Wizyta edukacyjna w Muzeum Nauki i Techniki</h4>
+                        <p>Uczniowie klasy 3B z naszego Liceum Ogólnokształcącego wzięli udział w edukacyjnej wycieczce do Muzeum Nauki i Techniki w Warszawie. Wizyta miała na celu zapoznanie uczniów z nowoczesnymi osiągnięciami technologicznymi i naukowymi. W trakcie wycieczki uczniowie mieli okazję uczestniczyć w warsztatach z zakresu fizyki i inżynierii. Było to inspirujące i edukacyjne doświadczenie!</p>
+                        <p><strong>Data:</strong> 12 kwietnia 2025</p>
+                    </article>
+
+                    <h3>Gratulacje dla nauczycieli</h3>
+
+                    <article>
+                        <h4>Nasza nauczycielka matematyki wyróżniona w ogólnopolskim konkursie</h4>
+                        <p>Z dumą informujemy, że nasza nauczycielka matematyki, Pani Joanna Kowalska, zdobyła pierwsze miejsce w ogólnopolskim konkursie na najlepszego nauczyciela matematyki w kraju! Pani Kowalska wyróżniła się innowacyjnym podejściem do nauczania i angażowaniem uczniów w rozwiązywanie problemów matematycznych. Serdecznie gratulujemy!</p>
+                        <p><strong>Data:</strong> 10 kwietnia 2025</p>
+                    </article>
             </section>
-            <section id="liceum" >
-                <h2>Liceum</h2>
-                <p>Informacje o liceum...</p>
+            <section id="liceum" class="section">
+                <h2 class="section-header">Liceum Ogólnokształcące</h2>
+                <h3>Witamy w naszym liceum!</h3>
+            <p>Nasze liceum oferuje wysokiej jakości edukację, przygotowującą uczniów do dalszych etapów nauki, a także do życia zawodowego. 
+                Zajmujemy się kształtowaniem młodych ludzi, oferując im wszechstronną wiedzę teoretyczną oraz praktyczną.</p>
+                <h3>Oferta Edukacyjna</h3>
+                <p>W naszym liceum oferujemy różne profile kształcenia, które dostosowane są do zainteresowań oraz predyspozycji uczniów. Każdy profil przygotowuje do matury i dalszego kształcenia na uczelniach wyższych.</p>
+            
+                <ul>
+                    <li>
+                        <h4>Profil humanistyczny</h4>
+                        <p>Zajęcia z języka polskiego, historii, filozofii oraz języków obcych. Idealny wybór dla osób, które chcą rozwijać swoje umiejętności w zakresie literatury, nauk społecznych i kultury.</p>
+                    </li>
+                    <li>
+                        <h4>Profil matematyczno-fizyczny</h4>
+                        <p>Główne przedmioty to matematyka, fizyka, informatyka oraz chemia. Doskonały wybór dla uczniów, którzy planują kariery w naukach ścisłych i technicznych.</p>
+                    </li>
+                    <li>
+                        <h4>Profil biologiczno-chemiczny</h4>
+                        <p>Program skupiający się na biologii, chemii oraz matematyce, przeznaczony dla osób zainteresowanych medycyną, farmacją lub biotechnologią.</p>
+                    </li>
+                </ul>
+                <h3>Dlaczego warto wybrać nasze liceum?</h3>
+                <ul>
+                    <li><strong>Doświadczona kadra pedagogiczna:</strong> Nasi nauczyciele to specjaliści w swoich dziedzinach, z wieloletnim doświadczeniem w pracy z młodzieżą. Dbają o rozwój intelektualny oraz osobisty każdego ucznia.</li>
+                    <li><strong>Indywidualne podejście do ucznia:</strong> Stawiamy na małe klasy, co pozwala na lepsze dostosowanie programu nauczania do potrzeb i możliwości uczniów.</li>
+                    <li><strong>Nowoczesne zaplecze dydaktyczne:</strong> Posiadamy świetnie wyposażone sale lekcyjne, laboratoria, pracownie komputerowe oraz bibliotekę z bogatym księgozbiorem.</li>
+                    <li><strong>Projekty i programy dodatkowe:</strong> Uczniowie mogą brać udział w różnych projektach edukacyjnych, wyjazdach naukowych oraz warsztatach, które poszerzają ich horyzonty. Organizujemy również koła zainteresowań, takie jak koło literackie, matematyczne czy ekologiczne.</li>
+                    <li><strong>Wysokie wyniki matur:</strong> Nasze liceum regularnie osiąga wysokie wyniki matury, a nasi absolwenci dostają się na najlepsze uczelnie w kraju i za granicą.</li>
+                </ul>
             </section>
         
-            <section id="technikum" >
-                <h2>Technikum</h2>
-                <p>Informacje o technikum...</p>
+            <section id="technikum" class="section">
+                <h2 class="section-header">Technikum</h2>
+                    <p>Technikum to idealny wybór dla uczniów, którzy chcą połączyć naukę z praktyką. Oferujemy różnorodne kierunki kształcenia, które przygotowują młodzież do zawodu i umożliwiają zdobycie dyplomu technika w wybranej dziedzinie.</p>
+                
+                    <h3>Oferta Edukacyjna</h3>
+                    <p>W naszym technikum oferujemy różne specjalności, które łączą wiedzę teoretyczną z praktycznymi umiejętnościami w zawodach technicznych i zawodach związanych z nowoczesnymi technologiami.</p>
+                
+                    <ul>
+                        <li>
+                            <h4>Technik informatyki</h4>
+                            <p>Przygotowuje uczniów do pracy w branży IT. Nauka obejmuje programowanie, tworzenie aplikacji webowych, administrację sieciami komputerowymi oraz obsługę systemów operacyjnych.</p>
+                        </li>
+                        <li>
+                            <h4>Technik elektronik</h4>
+                            <p>Specjalność przygotowująca do pracy w sektorze elektroniki i automatyki. Uczniowie uczą się m.in. projektowania i naprawy urządzeń elektronicznych oraz obsługi nowoczesnych systemów automatyki.</p>
+                        </li>
+                        <li>
+                            <h4>Technik logistyk</h4>
+                            <p>Program nauczania obejmuje organizację transportu, zarządzanie łańcuchem dostaw oraz zarządzanie magazynami i dystrybucją. Idealna ścieżka dla osób zainteresowanych branżą logistyczną.</p>
+                        </li>
+                        <li>
+                            <h4>Technik mechanik</h4>
+                            <p>Przygotowanie do pracy w przemyśle maszynowym i motoryzacyjnym. Uczniowie uczą się m.in. naprawy maszyn, technologii produkcji oraz projektowania konstrukcji mechanicznych.</p>
+                        </li>
+                    </ul>
+                
+                    <h3>Dlaczego warto wybrać nasze technikum?</h3>
+                    <ul>
+                        <li><strong>Praktyczne kształcenie:</strong> Program nauczania łączy teorię z praktyką, a nasi uczniowie odbywają praktyki zawodowe w renomowanych firmach.</li>
+                        <li><strong>Wysokiej jakości wyposażenie:</strong> Technikum dysponuje nowoczesnymi laboratoriami i warsztatami, które umożliwiają uczniom zdobywanie praktycznych umiejętności.</li>
+                        <li><strong>Wsparcie zawodowe:</strong> Nasi uczniowie mają dostęp do doradztwa zawodowego, które pomaga w znalezieniu pracy po ukończeniu szkoły.</li>
+                        <li><strong>Certyfikaty i uprawnienia:</strong> Uczniowie mogą zdobyć dodatkowe certyfikaty zawodowe, które zwiększają ich atrakcyjność na rynku pracy.</li>
+                    </ul>
             </section>
         
-            <section id="szkola-podstawowa" >
-                <h2>Szkoła Podstawowa</h2>
-                <p>Informacje o szkole podstawowej...</p>
+            <section id="szkola-podstawowa" class="section">
+                <h2 class="section-header">Szkoła Podstawowa</h2>
+                    <p>Nasza szkoła podstawowa to miejsce, w którym dzieci rozwijają swoje talenty, uczą się podstawowych umiejętności i zdobywają wiedzę niezbędną do dalszej edukacji. Stawiamy na indywidualne podejście do każdego ucznia, tworząc przyjazne i inspirujące środowisko.</p>
+                
+                    <h3>Oferta Edukacyjna</h3>
+                    <p>Oferujemy pełen program nauczania dla uczniów klas 1-8, który obejmuje wszystkie przedmioty obowiązkowe, a także dodatkowe zajęcia rozwijające talenty i pasje dzieci.</p>
+                
+                    <ul>
+                        <li>
+                            <h4>Klasy 1-3</h4>
+                            <p>Wczesna edukacja, której celem jest rozwój podstawowych umiejętności ucznia, takich jak czytanie, pisanie, liczenie oraz kształtowanie postaw społecznych i emocjonalnych.</p>
+                        </li>
+                        <li>
+                            <h4>Klasy 4-6</h4>
+                            <p>W tym etapie uczniowie pogłębiają swoją wiedzę z przedmiotów ogólnych, takich jak matematyka, język polski, historia, przyroda, a także uczą się języków obcych.</p>
+                        </li>
+                        <li>
+                            <h4>Klasy 7-8</h4>
+                            <p>Ostatni etap nauki w szkole podstawowej, który przygotowuje uczniów do egzaminu ósmoklasisty oraz do wyboru dalszej drogi edukacyjnej.</p>
+                        </li>
+                    </ul>
+                
+                    <h3>Dlaczego warto wybrać naszą szkołę podstawową?</h3>
+                    <ul>
+                        <li><strong>Indywidualne podejście:</strong> Nasi nauczyciele dbają o rozwój każdego dziecka, dostosowując metody nauczania do potrzeb uczniów.</li>
+                        <li><strong>Przyjazna atmosfera:</strong> Tworzymy atmosferę sprzyjającą nauce i rozwojowi, w której każde dziecko czuje się bezpiecznie i komfortowo.</li>
+                        <li><strong>Różnorodne zajęcia dodatkowe:</strong> Oferujemy koła zainteresowań, zajęcia sportowe, artystyczne oraz edukacyjne, które wspierają wszechstronny rozwój dzieci.</li>
+                    </ul>
             </section>
         
-            <section id="przedszkole" >
-                <h2>Przedszkole</h2>
-                <p>Informacje o przedszkolu...</p>
+            <section id="przedszkole" class="section">
+                <h2 class="section-header">Przedszkole</h2>
+                    <p>Nasze przedszkole to miejsce, w którym dzieci w wieku przedszkolnym uczą się poprzez zabawę, rozwijają swoje talenty oraz umiejętności społeczne. Stawiamy na indywidualne podejście, aby każde dziecko mogło rozwijać się w swoim tempie i w zgodzie z własnymi zainteresowaniami.</p>
+                
+                    <h3>Oferta Edukacyjna</h3>
+                    <p>Oferujemy edukację przedszkolną dla dzieci w wieku 3-6 lat. Program nauczania obejmuje szeroki zakres zajęć rozwijających zdolności poznawcze, motoryczne i społeczne dzieci.</p>
+                
+                    <ul>
+                        <li>
+                            <h4>Program adaptacyjny</h4>
+                            <p>Program adaptacyjny pomaga dzieciom w łatwiejszym przystosowaniu się do życia przedszkolnego. Uczy współpracy z rówieśnikami, rozwiązywania konfliktów i budowania poczucia bezpieczeństwa.</p>
+                        </li>
+                        <li>
+                            <h4>Zajęcia edukacyjne</h4>
+                            <p>Przedszkole oferuje zajęcia rozwijające kreatywność i zdolności manualne, takie jak rysowanie, malowanie, lepienie z gliny, czy zabawy muzyczne.</p>
+                        </li>
+                        <li>
+                            <h4>Zajęcia ruchowe</h4>
+                            <p>Dbamy o rozwój fizyczny dzieci, organizując zajęcia ruchowe i gimnastykę, które pomagają w poprawie motoryki małej i dużej.</p>
+                        </li>
+                    </ul>
+                
+                    <h3>Dlaczego warto wybrać nasze przedszkole?</h3>
+                    <ul>
+                        <li><strong>Przyjazna atmosfera:</strong> Tworzymy ciepłą, przyjazną atmosferę, w której dzieci czują się bezpiecznie i komfortowo.</li>
+                        <li><strong>Wykwalifikowana kadra:</strong> Nasi nauczyciele są profesjonalistami w pracy z dziećmi, posiadają doświadczenie i pasję do pracy pedagogicznej.</li>
+                        <li><strong>Program rozwoju:</strong> Oferujemy programy edukacyjne dostosowane do wieku i potrzeb dzieci, które stawiają na wszechstronny rozwój.</li>
+                    </ul>
             </section>
-            <section id="Kontakt" >
+            <section id="Kontakt" class="section">
                 <h2>Skontaktuj sie</h2>
                 <p>tel: +48 875890876</p>
                 <p>e-mail:<a href="mailto:zespolszkol@mail.com">zespolszkol@mail.com</a></p>
@@ -69,4 +227,5 @@
         </div>
     </div>
 </body>
+<script src="script.js"></script>
 </html>

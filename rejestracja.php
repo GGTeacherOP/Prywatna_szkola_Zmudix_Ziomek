@@ -56,33 +56,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </header>
     <main>
         <section id="class-list">
-            <h3>Formularz rejestracji</h3>
-            <form method="post">
-                <label>Imię:<br>
+            <form method="post" class="form-container">
+                <h2>Rejestracja</h2>
+                <label class="form-group">Imię:<br>
                     <input type="text" name="imie" required>
-                </label><br><br>
+                </label><br>
 
-                <label>Nazwisko:<br>
+                <label class="form-group">Nazwisko:<br>
                     <input type="text" name="nazwisko" required>
-                </label><br><br>
+                </label><br>
 
-                <label>Numer telefonu:<br>
+                <label class="form-group">Numer telefonu:<br>
                     <input type="text" name="telefon" required>
-                </label><br><br>
+                </label><br>
 
-                <label>Email:<br>
+                <label class="form-group">Email:<br>
                     <input type="email" name="email" required>
-                </label><br><br>
+                </label><br>
 
-                <label>Stanowisko:<br>
-                    <select name="stanowisko" required>
+                <div class="form-group">
+                    <label for="position">Stanowisko:</label>
+                    <select name="stanowisko" id="position" required>
                         <option value="">-- wybierz --</option>
                         <option value="uczen">Uczeń</option>
                         <option value="nauczyciel">Nauczyciel</option>
                     </select>
-                </label><br><br>
+                    </div>
 
-                <input type="submit" value="Wyślij">
+                <input type="submit" value="Wyślij" id="zarejestruj">
+                <div class="form-footer">
+                    <a href="dziennik.php">Wróć do logowania</a>
+                </div>
             </form>
 
             <?php if ($komunikat): ?>
@@ -90,8 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <?= htmlspecialchars($komunikat) ?>
                 </p>
             <?php endif; ?>
-
-            <p><a href="dziennik.php">Wróć do logowania</a></p>
         </section>
     </main>
     <footer>
