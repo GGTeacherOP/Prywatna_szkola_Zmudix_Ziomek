@@ -1,0 +1,14 @@
+Poprawienie styli, wyrównanie niektórych części
+Zmiana wyglądu sekcji opisujących szkoły
+Zdjęcia
+Dodanie javascripta (minimalnie 10 zastosowań js'a)
+Sekcja logowania
+Dodanie logowanie dla nauczycieli
+Na podstronie planów lekcji uzupełnić brakujące miejsca
+Poprawienie struktury bazy danych i zniena ich w jedną bazę
+Dodać uprawnienia dla nauczycieli do dodania ocen
+Dodać konto które będzie miało uprawnienia usuwania osób z bazy danych
+Dodanie informacji o zarobionych pieniądzach, pracownikach innych niż nauczyciele, pensjach, godzinach pracy itp.
+Rejestracja robi coś więcej niż tylko dodanie do tabeli nowe_konta
+SQL minimum 10 tabel
+Dodać oceny dla uczniów i dodać informacje dla zalogowanego ucznia
