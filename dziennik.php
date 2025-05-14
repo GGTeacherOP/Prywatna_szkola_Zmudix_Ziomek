@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         .form-group input[type="text"],
         .form-group input[type="password"] {
             width: 100%;
-            padding: 0.8rem 1rem;
+            padding: 0.8rem 0.5rem;
             border: 1px solid #ddd;
             border-radius: var(--border-radius);
             font-family: 'Open Sans', sans-serif;

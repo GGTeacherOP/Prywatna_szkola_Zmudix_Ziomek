@@ -44,30 +44,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Rejestracja - Prywatna Szkoła</title>
+    <title>Rejestracja - Akademia Wiedzy</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --text: #333;
-            --text-light: #7f8c8d;
-            --success: #27ae60;
-            --error: #e74c3c;
-        }
-        
+        /* Dodatkowe style specyficzne dla rejestracja.php */
         .registration-container {
             max-width: 600px;
-            margin: 2rem auto;
+            margin: 3rem auto;
             padding: 2rem;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
         }
         
         .registration-header {
@@ -76,17 +66,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
         
         .registration-header h1 {
-            color: var(--primary);
-            font-size: 2rem;
+            color: var(--primary-color);
             margin-bottom: 0.5rem;
         }
         
         .registration-header p {
             color: var(--text-light);
-        }
-        
-        .registration-form {
-            margin-top: 2rem;
+            font-size: 1.1rem;
         }
         
         .form-group {
@@ -97,66 +83,66 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: var(--dark);
+            color: var(--dark-color);
         }
         
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 0.8rem 1rem;
+            padding: 0.8rem 0.5rem;
             border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            border-radius: var(--border-radius);
+            font-family: 'Open Sans', sans-serif;
+            transition: var(--transition);
         }
         
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.2);
         }
         
         .submit-btn {
             width: 100%;
             padding: 1rem;
-            background: var(--secondary);
+            background: var(--secondary-color);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: var(--border-radius);
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
+            transition: var(--transition);
+            margin: 1.5rem 0;
         }
         
         .submit-btn:hover {
-            background: #2980b9;
+            background: #138496;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
         }
         
         .form-footer {
             text-align: center;
-            margin-top: 1.5rem;
             font-size: 0.9rem;
+            color: var(--text-light);
         }
         
         .form-footer a {
-            color: var(--secondary);
+            color: var(--secondary-color);
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
         
         .form-footer a:hover {
-            color: var(--accent);
+            color: var(--accent-color);
             text-decoration: underline;
         }
         
         .alert {
             padding: 1rem;
-            border-radius: 6px;
+            border-radius: var(--border-radius);
             margin: 1rem 0;
             text-align: center;
             font-weight: 500;
@@ -164,14 +150,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         
         .alert-success {
             background-color: rgba(39, 174, 96, 0.1);
-            color: var(--success);
-            border: 1px solid var(--success);
+            color: #27ae60;
+            border: 1px solid #27ae60;
         }
         
         .alert-error {
             background-color: rgba(231, 76, 60, 0.1);
-            color: var(--error);
-            border: 1px solid var(--error);
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
         }
     </style>
 </head>
@@ -179,15 +165,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <h1>Prywatna Szkoła</h1>
+                <h1>Akademia Wiedzy</h1>
                 <p>System rejestracji</p>
+            </div>
+            <div class="header-contact">
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@akademiawiedzy.edu.pl</p>
             </div>
         </div>
         <nav>
             <ul>
                 <li><a href="szkola.html"><i class="fas fa-home"></i> Strona główna</a></li>
+                <li><a href="plan.html"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
-                <li><a href="rejestracja.php" class="active-nav"><i class="fas fa-user-plus"></i> Rejestracja</a></li>
+                <li><a href="#zapisz" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
             </ul>
         </nav>
     </header>
@@ -196,7 +187,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="registration-container">
             <div class="registration-header">
                 <h1><i class="fas fa-user-plus"></i> Rejestracja konta</h1>
-                <p>Wypełnij formularz, aby założyć nowe konto</p>
+                <p>Wypełnij formularz, aby założyć nowe konto w systemie</p>
             </div>
             
             <?php if ($komunikat): ?>
@@ -218,7 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 
                 <div class="form-group">
                     <label for="telefon"><i class="fas fa-phone"></i> Numer telefonu:</label>
-                    <input type="text" name="telefon" id="telefon" required placeholder="123456789">
+                    <input type="text" name="telefon" id="telefon" required>
                 </div>
                 
                 <div class="form-group">
@@ -245,8 +236,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </main>
     
     <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Akademia Wiedzy</h4>
+                <p>Kompleksowa edukacja od przedszkola po liceum</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Dziennik</h4>
+                <ul>
+                    <li><a href="dziennik.php">Logowanie</a></li>
+                    <li><a href="rejestracja.php">Rejestracja</a></li>
+                    <li><a href="#">Pomoc</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Kontakt</h4>
+                <p><i class="fas fa-map-marker-alt"></i> ul. Akademicka 15, 00-001 Warszawa</p>
+                <p><i class="fas fa-phone"></i> +48 123 456 789</p>
+                <p><i class="fas fa-envelope"></i> kontakt@akademiawiedzy.edu.pl</p>
+            </div>
+        </div>
+        
         <div class="footer-bottom">
-            <p>&copy; 2025 Prywatna Szkoła. Wszelkie prawa zastrzeżone.</p>
+            <p>&copy; 2025 Akademia Wiedzy. Wszelkie prawa zastrzeżone.</p>
         </div>
     </footer>
 </body>
