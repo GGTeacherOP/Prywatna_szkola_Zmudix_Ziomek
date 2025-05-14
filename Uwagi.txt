@@ -1,10 +1,10 @@
 Poprawienie styli, wyrównanie niektórych części
-Zmiana wyglądu sekcji opisujących szkoły
+Zmiana wyglądu sekcji opisujących szkoły - poprawione. do sprawdzenia
 Zdjęcia
 Dodanie javascripta (minimalnie 10 zastosowań js'a)
 Sekcja logowania
 Dodanie logowanie dla nauczycieli
-Na podstronie planów lekcji uzupełnić brakujące miejsca
+Na podstronie planów lekcji uzupełnić brakujące miejsca - poprawiono rozmieszczenie ( wydaje mi sie ze lepiej jest ) oraz poprawiony wygląd na telefonie
 Poprawienie struktury bazy danych i zniena ich w jedną bazę
 Dodać uprawnienia dla nauczycieli do dodania ocen
 Dodać konto które będzie miało uprawnienia usuwania osób z bazy danych
