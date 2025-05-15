@@ -50,52 +50,56 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   showSection(1);
 });
-const calculatorBtn = document.getElementById('calculatorBtn');
-        const calculatorModal = document.getElementById('calculatorModal');
+        const calculatorBtn = document.getElementById('calculatorBtn');
+        const calculatorPopup = document.getElementById('calculatorPopup');
         const closeCalculator = document.getElementById('closeCalculator');
         const calculatorForm = document.getElementById('calculatorForm');
         const calculatorResult = document.getElementById('calculatorResult');
         
-        calculatorBtn.addEventListener('click', () => {
+        // Toggle popup visibility
+        calculatorBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            calculatorPopup.classList.toggle('active');
             calculatorForm.reset();
             calculatorResult.style.display = 'none';
-            calculatorModal.style.display = 'flex';
-        });
-        closeCalculator.addEventListener('click', () => {
-            calculatorModal.style.display = 'none';
         });
         
-        window.addEventListener('click', (e) => {
-            if (e.target === calculatorModal) {
-                calculatorModal.style.display = 'none';
+        // Close popup
+        closeCalculator.addEventListener('click', () => {
+            calculatorPopup.classList.remove('active');
+        });
+        
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!calculatorPopup.contains(e.target)) {
+                calculatorPopup.classList.remove('active');
             }
         });
         
+        // Calculate points
         calculatorForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const math = parseInt(document.getElementById('math').value);
-            const polish = parseInt(document.getElementById('polish').value);
-            const english = parseInt(document.getElementById('english').value);
-            const subject = parseInt(document.getElementById('subject').value);
+            const math = parseInt(document.getElementById('math').value) || 0;
+            const polish = parseInt(document.getElementById('polish').value) || 0;
+            const english = parseInt(document.getElementById('english').value) || 0;
             
             const totalPoints = Math.round(
-                (math * 0.35) + (polish * 0.35) + (english * 0.15) + (subject * 0.15)
+                (math * 0.35) + (polish * 0.35) + (english * 0.3)
             );
             
             document.getElementById('totalPoints').textContent = totalPoints;
             
+            // Determine admission chance
             let chance;
             if (totalPoints >= 90) {
-                chance = "Bardzo wysoka (elitarne licea)";
-            } else if (totalPoints >= 75) {
-                chance = "Wysoka (dobre licea/technika)";
-            } else if (totalPoints >= 60) {
-                chance = "Średnia (technika/mało oblegane licea)";
-            } else if (totalPoints >= 40) {
-                chance = "Niska (zawodówki/technika z miejscami)";
+                chance = "Bardzo wysoka";
+            } else if (totalPoints >= 70) {
+                chance = "Wysoka";
+            } else if (totalPoints >= 50) {
+                chance = "Średnia";
             } else {
-                chance = "Bardzo niska";
+                chance = "Niska";
             }
             
             document.getElementById('admissionChance').textContent = chance;
