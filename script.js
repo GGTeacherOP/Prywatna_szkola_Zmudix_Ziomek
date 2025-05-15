@@ -50,3 +50,54 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   showSection(1);
 });
+const calculatorBtn = document.getElementById('calculatorBtn');
+        const calculatorModal = document.getElementById('calculatorModal');
+        const closeCalculator = document.getElementById('closeCalculator');
+        const calculatorForm = document.getElementById('calculatorForm');
+        const calculatorResult = document.getElementById('calculatorResult');
+        
+        calculatorBtn.addEventListener('click', () => {
+            calculatorForm.reset();
+            calculatorResult.style.display = 'none';
+            calculatorModal.style.display = 'flex';
+        });
+        closeCalculator.addEventListener('click', () => {
+            calculatorModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === calculatorModal) {
+                calculatorModal.style.display = 'none';
+            }
+        });
+        
+        calculatorForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const math = parseInt(document.getElementById('math').value);
+            const polish = parseInt(document.getElementById('polish').value);
+            const english = parseInt(document.getElementById('english').value);
+            const subject = parseInt(document.getElementById('subject').value);
+            
+            const totalPoints = Math.round(
+                (math * 0.35) + (polish * 0.35) + (english * 0.15) + (subject * 0.15)
+            );
+            
+            document.getElementById('totalPoints').textContent = totalPoints;
+            
+            let chance;
+            if (totalPoints >= 90) {
+                chance = "Bardzo wysoka (elitarne licea)";
+            } else if (totalPoints >= 75) {
+                chance = "Wysoka (dobre licea/technika)";
+            } else if (totalPoints >= 60) {
+                chance = "Średnia (technika/mało oblegane licea)";
+            } else if (totalPoints >= 40) {
+                chance = "Niska (zawodówki/technika z miejscami)";
+            } else {
+                chance = "Bardzo niska";
+            }
+            
+            document.getElementById('admissionChance').textContent = chance;
+            calculatorResult.style.display = 'block';
+        });
