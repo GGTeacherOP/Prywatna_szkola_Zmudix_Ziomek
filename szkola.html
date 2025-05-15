@@ -11,7 +11,7 @@
 </head>
 <!-- Style CSS dla kalkulatora  -->	
 <style>
-    .calculator-btn {
+        .calculator-btn {
             position: fixed;
             bottom: 30px;
             right: 30px;
@@ -36,33 +36,32 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
         
-        .calculator-modal {
-            display: none;
+        .calculator-popup {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .calculator-content {
+            bottom: 100px;
+            right: 30px;
+            width: 300px;
             background: white;
-            padding: 2rem;
             border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 500px;
             box-shadow: var(--shadow);
-            animation: fadeIn 0.3s ease;
-            position: relative;
+            z-index: 1000;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 1.5rem;
         }
         
-        .calculator-content h3 {
+        .calculator-popup.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .calculator-popup h3 {
             color: var(--primary-color);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
             text-align: center;
         }
         
@@ -72,37 +71,56 @@
         
         .calculator-form label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             font-weight: 600;
+            font-size: 0.9rem;
         }
         
         .calculator-form input {
             width: 100%;
-            padding: 0.8rem 0.2rem;
+            padding: 0.6rem 0.1rem;
             border: 1px solid #ddd;
-            border-radius: var(--border-radius);
+            border-radius: 4px;
+            font-size: 0.9rem;
         }
         
         .calculator-result {
-            margin-top: 1.5rem;
-            padding: 1rem;
+            margin-top: 1rem;
+            padding: 0.8rem;
             background: var(--light-color);
-            border-radius: var(--border-radius);
+            border-radius: 4px;
             display: none;
+            font-size: 0.9rem;
         }
         
         .calculator-result h4 {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             color: var(--primary-color);
+            font-size: 1rem;
         }
         
         .close-calculator {
             position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 1.5rem;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2rem;
             cursor: pointer;
             color: var(--text-light);
+            background: none;
+            border: none;
+        }
+        
+        .calculator-popup .btn {
+            padding: 0.6rem;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        
+        @media (max-width: 400px) {
+            .calculator-popup {
+                width: 280px;
+                right: 15px;
+            }
         }
 </style>
 <body>
@@ -700,41 +718,35 @@
         </div>
     </div>
     <div class="calculator-btn" id="calculatorBtn">
-                <i class="fas fa-calculator"></i>
+        <i class="fas fa-calculator"></i>
+    </div>
+    
+    <!-- Calculator Popup -->
+    <div class="calculator-popup" id="calculatorPopup">
+        <button class="close-calculator" id="closeCalculator">&times;</button>
+        <h3>Kalkulator punktów</h3>
+        <form class="calculator-form" id="calculatorForm">
+            <div class="form-group">
+                <label for="math">Matematyka:</label>
+                <input type="number" id="math" min="0" max="100" placeholder="0-100" required>
             </div>
-            
-            <!-- Calculator Modal -->
-            <div class="calculator-modal" id="calculatorModal">
-                <div class="calculator-content">
-                    <span class="close-calculator" id="closeCalculator">&times;</span>
-                    <h3>Kalkulator punktów rekrutacyjnych</h3>
-                    <form class="calculator-form" id="calculatorForm">
-                        <div class="form-group">
-                            <label for="math">Matematyka (0-100):</label>
-                            <input type="number" id="math" min="0" max="100" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="polish">Język polski (0-100):</label>
-                            <input type="number" id="polish" min="0" max="100" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="english">Język angielski (0-100):</label>
-                            <input type="number" id="english" min="0" max="100" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Przedmiot dodatkowy (0-100):</label>
-                            <input type="number" id="subject" min="0" max="100" required>
-                        </div>
-                        <button type="submit" class="btn">Oblicz punkty</button>
-                    </form>
-                    
-                    <div class="calculator-result" id="calculatorResult">
-                        <h4>Wynik:</h4>
-                        <p>Łączna liczba punktów: <span id="totalPoints">0</span></p>
-                        <p>Szansa dostania się: <span id="admissionChance">-</span></p>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="polish">Język polski:</label>
+                <input type="number" id="polish" min="0" max="100" placeholder="0-100" required>
             </div>
+            <div class="form-group">
+                <label for="english">Język angielski:</label>
+                <input type="number" id="english" min="0" max="100" placeholder="0-100" required>
+            </div>
+            <button type="submit" class="btn">Oblicz</button>
+        </form>
+        
+        <div class="calculator-result" id="calculatorResult">
+            <h4>Wynik:</h4>
+            <p>Punkty: <span id="totalPoints">0</span></p>
+            <p>Szansa na dostanie: <span id="admissionChance">-</span></p>
+        </div>
+    </div>
     <footer>
         <div class="footer-content">
             <div class="footer-column">
