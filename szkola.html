@@ -140,10 +140,52 @@
                 <li><a href="szkola.html"><i class="fas fa-home"></i> Strona główna</a></li>
                 <li><a href="plan.html"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
-                <li><a href="#zapisz" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
+                <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
             </ul>
         </nav>
     </header>
+    <div class="school-logo">
+        <img src="zdjecia/logo-removebg-preview.png" alt="Logo Akademii Wiedzy">
+    </div>
+    <section class="image-gallery">
+        <div class="gallery-container">
+            <div class="gallery-slider">
+                <div class="gallery-slide active">
+                    <img src="zdjecia/szkola.jpg" alt="Budynek szkoły">
+                    <div class="slide-caption">Główny budynek Akademii Wiedzy</div>
+                </div>
+                <div class="gallery-slide">
+                    <img src="zdjecia/sala.png" alt="Sala lekcyjna">
+                    <div class="slide-caption">Nowoczesna sala lekcyjna</div>
+                </div>
+                <div class="gallery-slide">
+                    <img src="zdjecia/ludzie.png" alt="Biblioteka">
+                    <div class="slide-caption">Nasi Uczniowie</div>
+                </div>
+                <div class="gallery-slide">
+                    <img src="zdjecia/boisko.jpg" alt="Sala lekcyjna">
+                    <div class="slide-caption">Nasze Boisko</div>
+                </div>
+                <div class="gallery-slide">
+                    <img src="zdjecia/hala_sportowa.jpg" alt="Sala lekcyjna">
+                    <div class="slide-caption">Nasza Hala Sportowa</div>
+                </div>
+                
+                <div class="gallery-nav">
+                    <button onclick="prevSlide()">❮</button>
+                    <button onclick="nextSlide()">❯</button>
+                </div>
+            </div>
+            
+            <div class="gallery-dots">
+                <span class="dot active" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
+                <span class="dot" onclick="goToSlide(3)"></span>
+                <span class="dot" onclick="goToSlide(4)"></span>
+            </div>
+        </div>
+    </section>
     <div class="container">
         <div class="left-section">
             <ul>
@@ -175,7 +217,9 @@
                         </div>
                         <div class="news-content">
                             <h4>„Mistrz Matematyki” – Wyniki konkursu</h4>
-                            <p>Gratulujemy Michałowi Kowalskiemu z klasy 3B, który zdobył pierwsze miejsce w naszym konkursie matematycznym...</p>
+                            <p>Michał Kowalski z klasy 3B zdobył I miejsce w szkolnym konkursie matematycznym (98% punktów). II miejsce - Anna Nowak (2A, 94%), III - Jan Wiśniewski (3C, 91%). 
+                                Laureaci otrzymali nagrody książkowe. Gratulacje dla nauczycieli przygotowujących!<span class="hidden-text"> 
+                                    Michał zakwalifikował się do etapu ogólnopolskiego w Warszawie. Szkoła zapewnia mu dodatkowe konsultacje.</span></p>
                             <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
@@ -188,7 +232,9 @@
                         </div>
                         <div class="news-content">
                             <h4>Konkurs Plastyczny „Zielona Planeta”</h4>
-                            <p>Julia Nowak z klasy 5B zdobyła I miejsce w ogólnopolskim konkursie plastycznym promującym ekologię...</p>
+                            <p>Julia Nowak z 5B wygrała ogólnopolski konkurs ekologiczny Ministerstwa Środowiska. Jeja praca "Ocalmy nasz świat" zachwyciła jury. 
+                                Nagroda: tablet graficzny i warsztaty artystyczne.<span class="hidden-text"> 
+                                    Wyróżnienia dla Michała Zawadzkiego (4A) i Oliwiery Piotrowskiej (6C). Ich prace w szkolnej galerii.</span></p>
                             <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
@@ -296,7 +342,8 @@
                         </div>
                         <div class="news-content">
                             <h4>Profil humanistyczny</h4>
-                            <p>Zajęcia z języka polskiego, historii, filozofii oraz języków obcych. Idealny wybór dla osób, które chcą rozwijać swoje umiejętności w zakresie literatury, nauk społecznych i kultury.</p>
+                            <p>Rozszerzony program z języka polskiego i historii. Dodatkowo: retoryka, debaty oksfordzkie i przygotowanie do olimpiad.
+                                <span class="hidden-text"> Współpraca z Uniwersytetem Warszawskim - comiesięczne wykłady profesorów.</span></p>
                             <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -404,7 +451,8 @@
                         </div>
                         <div class="news-content">
                             <h4>Technik informatyki</h4>
-                            <p>Przygotowuje uczniów do pracy w branży IT. Nauka obejmuje programowanie, tworzenie aplikacji webowych, administrację sieciami komputerowymi oraz obsługę systemów operacyjnych.</p>
+                            <p>Nauka programowania, tworzenia aplikacji i administracji sieciami. Praktyki w firmach IT. 90% absolwentów znajduje pracę w zawodzie.
+                                <span class="hidden-text"> Nowoczesne pracownie z profesjonalnym oprogramowaniem.</span></p>
                             <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -516,7 +564,8 @@
                         </div>
                         <div class="news-content">
                             <h4>Klasy 1-3</h4>
-                            <p>Wczesna edukacja, której celem jest rozwój podstawowych umiejętności ucznia, takich jak czytanie, pisanie, liczenie oraz kształtowanie postaw społecznych i emocjonalnych.</p>
+                            <p>Nauka przez zabawę z wykorzystaniem tablic interaktywnych i tabletów. Rozwijamy czytanie, pisanie i liczenie.
+                                <span class="hidden-text"> Zajęcia dodatkowe: robotyka, programowanie i warsztaty przyrodnicze.</span></p>
                             <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -632,7 +681,8 @@
                         </div>
                         <div class="news-content">
                             <h4>Zajęcia ruchowe</h4>
-                            <p>Dbamy o rozwój fizyczny dzieci, organizując zajęcia ruchowe i gimnastykę, które pomagają w poprawie motoryki małej i dużej.</p>
+                            <p>Gimnastyka korekcyjna i zabawy ruchowe w specjalnej sali z miękkim podłożem. Rozwój motoryki dużej i małej.
+                                <span class="hidden-text"> Miesięczne "Dni sportu" z rodzicami i konsultacje z fizjoterapeutą.</span></p>
                             <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
