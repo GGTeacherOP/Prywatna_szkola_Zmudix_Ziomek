@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   showSection(1);
 });
+        // dzialanie kalkulatora
         const calculatorBtn = document.getElementById('calculatorBtn');
         const calculatorPopup = document.getElementById('calculatorPopup');
         const closeCalculator = document.getElementById('closeCalculator');
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
             calculatorResult.style.display = 'block';
         });
 
-        // Slideshow functionality
+        // zmiana zdjec na stornie glownej
         let currentSlide = 0;
         const slides = document.querySelectorAll('.gallery-slide');
         const dots = document.querySelectorAll('.dot');
