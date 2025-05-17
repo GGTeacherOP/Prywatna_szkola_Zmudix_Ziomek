@@ -18,7 +18,7 @@ body {
   padding: 0;
   line-height: 1.6;
   color: var(--text-color);
-  background-color: #f5f7fa;
+  background-color: #b7deeb;
 }
 
 /* Typography */
@@ -877,4 +877,23 @@ footer {
 
     .read-more:hover i {
         transform: translateX(3px);
+    }
+    .events-highlight {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .hidden-event {
+        display: none !important;
+    }
+    @media (max-width: 900px) {
+        .events-highlight {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 600px) {
+        .events-highlight {
+            grid-template-columns: 1fr;
+        }
     }

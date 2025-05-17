@@ -18,6 +18,10 @@
         
         .plan-section {
             margin-bottom: 3rem;
+            background: white; /* Dodane białe tło dla sekcji planów */
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
         }
         
         .plan-section h2 {
@@ -33,6 +37,7 @@
             border-collapse: collapse;
             margin-bottom: 2rem;
             box-shadow: var(--shadow);
+            background: white; /* Dodane białe tło dla tabeli */
         }
         
         .plan-table thead {
@@ -71,44 +76,212 @@
             text-align: right;
             padding-right: 2.5rem;
         }
-        @media (max-width: 768px) {
-            .plan-table, .plan-table thead, .plan-table tbody, .plan-table tr, .plan-table th, .plan-table td {
-                display: block;
+        
+        /* Styl dla kalendarza wydarzeń */
+        .events-section {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .events-highlight {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .event-card {
+            display: flex;
+            align-items: center;
+            background: #f9f9f9;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .event-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .event-date {
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-right: 1.5rem;
+            min-width: 50px;
+        }
+        
+        .event-day {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+            line-height: 1;
+        }
+        
+        .event-month {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            display: block;
+        }
+        
+        .event-info h4 {
+            margin: 0 0 0.3rem 0;
+            color: var(--dark-color);
+        }
+        
+        .event-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .view-all-btn {
+            display: block;
+            margin: 2rem auto 0;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        
+        .view-all-btn:hover {
+            background: #003d7a;
+            transform: translateY(-2px);
+        }
+        
+        /* Styl dla ogłoszeń */
+        .announcements-section {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .announcements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .announcement-card {
+            display: flex;
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .announcement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .announcement-icon {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-right: 1.5rem;
+            align-self: center;
+        }
+        
+        .announcement-content h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .announcement-content p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6em;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: #fff !important;
+            border: none;
+            border-radius: 25px;
+            padding: 0.7em 1.6em;
+            font-size: 1.05em;
+            font-weight: 600;
+            box-shadow: 0 2px 12px rgba(0,86,179,0.10);
+            margin: 1.5rem auto 1.5rem auto;
+            transition: background 0.2s, transform 0.2s;
+            text-decoration: none;
+            cursor: pointer;
+            letter-spacing: 0.03em;
+        }
+        .nav-btn i {
+            font-size: 1.15em;
+        }
+        .nav-btn:hover {
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            transform: translateY(-2px) scale(1.04);
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav-btn.top {
+            display: block;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .nav-btn.bottom {
+            display: block;
+            text-align: center;
+            margin: 2.5rem auto 0 auto;
+        }
+        @media (max-width: 500px) {
+            .announcements-grid {
+                grid-template-columns: 1fr;
+            }
+            .announcement-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.7rem;
+            }
+            .announcement-icon {
+                margin-right: 0;
+                margin-bottom: 0.7rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .nav-btn, .top-link {
                 width: 100%;
+                font-size: 1em;
+                padding: 0.9em 0.5em;
+                margin-left: 0;
+                margin-right: 0;
+                border-radius: 18px;
+                text-align: center;
             }
-            .plan-table thead {
-                display: none;
+            .events-highlight {
+                grid-template-columns: 1fr;
             }
-            .plan-table tr {
-                margin-bottom: 1.5rem;
-                border-bottom: 2px solid #eee;
-                background: #fff;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            .event-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.7rem;
             }
-            .plan-table td {
-                text-align: left !important;
-                padding: 0.7rem 1rem;
-                position: relative;
+            .event-date {
+                margin-right: 0;
+                margin-bottom: 0.7rem;
             }
-            .plan-table td:first-child {
-                font-weight: bold;
-                background: #f9f9f9;
-                border-bottom: none;
-            }
-            .plan-table td:before {
-                content: attr(data-label);
-                font-weight: 600;
-                color: #0056b3;
-                display: block;
-                margin-bottom: 0.3rem;
-                font-size: 0.95em;
-            }
-            .plan-table th:nth-child(2){
-                text-align: left;
-                padding-right: 1rem;
-            }
-            .plan-btn{
-                float: none;
+        }
+        @media (max-width: 900px) {
+            .events-highlight {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -133,13 +306,59 @@
                 <li><a href="szkola.html"><i class="fas fa-home"></i> Strona główna</a></li>
                 <li><a href="plan.html" class="active-nav"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
-                <li><a href="#zapisz" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
+                <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
             </ul>
         </nav>
     </header>
-    
     <main class="plans-container">
-        <section class="plan-section">
+        <a href="#announcements" class="top-link nav-btn top"><i class="fas fa-newspaper"></i> Przejdź do wiadomości</a>
+        <section class="events-section">
+            <h2><i class="fas fa-calendar-alt"></i> Kalendarz wydarzeń</h2>
+            <div class="events-highlight">
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">03</span>
+                        <span class="event-month">WRZ</span>
+                    </div>
+                    <div class="event-info">
+                        <h4>Rozpoczęcie roku szkolnego</h4>
+                        <p>Godzina 9:00, aula główna</p>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">14</span>
+                        <span class="event-month">PAŹ</span>
+                    </div>
+                    <div class="event-info">
+                        <h4>Dzień Edukacji Narodowej</h4>
+                        <p>Uroczysta akademia</p>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">11</span>
+                        <span class="event-month">LIS</span>
+                    </div>
+                    <div class="event-info">
+                        <h4>Dzień Niepodległości</h4>
+                        <p>Apel szkolny</p>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <div class="event-date">
+                        <span class="event-day">22</span>
+                        <span class="event-month">GRU</span>
+                    </div>
+                    <div class="event-info">
+                        <h4>Jasełka szkolne</h4>
+                        <p>Godzina 17:00, sala gimnastyczna</p>
+                    </div>
+                </div>
+            </div>
+            <button class="view-all-btn">Zobacz wszystkie wydarzenia</button>
+        </section>
+        <section class="plan-section" id="timetables">
             <h2><i class="fas fa-graduation-cap"></i> Liceum Ogólnokształcące</h2>
             <table class="plan-table">
                 <thead>
@@ -356,26 +575,74 @@
                 </tbody>
             </table>
         </section>
+        <section class="announcements-section" id="announcements">
+            <h2><i class="fas fa-bullhorn"></i> Ogłoszenia</h2>
+            <div class="announcements-grid">
+                <div class="announcement-card">
+                    <div class="announcement-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="announcement-content">
+                        <h4>Dni wolne od zajęć</h4>
+                        <p>14-16 października 2025 - dni wolne od zajęć dydaktycznych z okazji konferencji nauczycieli.</p>
+                    </div>
+                </div>
+                <div class="announcement-card">
+                    <div class="announcement-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="announcement-content">
+                        <h4>Zmiany w podręcznikach</h4>
+                        <p>Klasy 1-3 szkoły podstawowej - nowa lista podręczników dostępna w sekretariacie.</p>
+                    </div>
+                </div>
+                <div class="announcement-card">
+                    <div class="announcement-icon">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <div class="announcement-content">
+                        <h4>Zmiany w rozkładzie autobusów</h4>
+                        <p>Od 1 września nowy rozkład jazdy autobusów szkolnych. Sprawdź godziny odjazdów.</p>
+                    </div>
+                </div>
+            </div>
+            <a href="#timetables" class="top-link nav-btn bottom"><i class="fas fa-newspaper"></i>Wróć do planów lekcji</a>
+    </section>
     </main>
     
     <footer>
         <div class="footer-content">
             <div class="footer-column">
                 <h4>Akademia Wiedzy</h4>
-                <p>Kompleksowa edukacja od przedszkola po liceum</p>
+                <p>Prywatna szkoła z 25-letnią tradycją, oferująca kompleksową edukację od przedszkola po liceum.</p>
                 <div class="social-icons">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
             
             <div class="footer-column">
-                <h4>Plany lekcji</h4>
+                <h4>Szybkie linki</h4>
+                <div class="left-section">
+                    <ul>
+                        <li onclick="showSection(1)"><a href="#aktualnosci"><i class="fas fa-newspaper"></i> Aktualności</a></li>
+                        <li onclick="showSection(2)"><a href="#liceum"><i class="fas fa-graduation-cap"></i> Liceum</a></li>
+                        <li onclick="showSection(3)"><a href="#technikum"><i class="fas fa-laptop-code"></i> Technikum</a></li>
+                        <li onclick="showSection(4)"><a href="#szkola-podstawowa"><i class="fas fa-book-open"></i> Szkoła Podstawowa</a></li>
+                        <li onclick="showSection(5)"><a href="#przedszkole"><i class="fas fa-child"></i> Przedszkole</a></li>
+                        <li onclick="showSection(6)"><a href="#Kontakt"><i class="fas fa-envelope"></i> Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Dokumenty</h4>
                 <ul>
-                    <li><a href="plan.html">Liceum</a></li>
-                    <li><a href="plan.html">Technikum</a></li>
-                    <li><a href="plan.html">Szkoła Podstawowa</a></li>
-                    <li><a href="plan.html">Przedszkole</a></li>
+                    <li><a href="#">Statut szkoły</a></li>
+                    <li><a href="#">Regulamin</a></li>
+                    <li><a href="#">Rekrutacja</a></li>
+                    <li><a href="#">Ochrona danych</a></li>
                 </ul>
             </div>
             
@@ -391,5 +658,31 @@
             <p>&copy; 2025 Akademia Wiedzy. Wszelkie prawa zastrzeżone.</p>
         </div>
     </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const events = document.querySelectorAll('.event-card');
+        const viewAllBtn = document.querySelector('.view-all-btn');
+        let expanded = false;
+
+        function updateEventsDisplay() {
+            events.forEach((event, idx) => {
+                if (!expanded && idx > 2) {
+                    event.classList.add('hidden-event');
+                } else {
+                    event.classList.remove('hidden-event');
+                }
+            });
+            viewAllBtn.textContent = expanded ? 'Pokaż mniej wydarzeń' : 'Zobacz wszystkie wydarzenia';
+        }
+
+        updateEventsDisplay();
+
+        viewAllBtn.addEventListener('click', function() {
+            expanded = !expanded;
+            updateEventsDisplay();
+        });
+    });
+    </script>
 </body>
 </html>
