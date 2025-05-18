@@ -1,6 +1,5 @@
 <?php
 $klasa_id = isset($_GET['klasa_id']) ? (int)$_GET['klasa_id'] : 0;
-
 // Funkcja zwracająca pełną nazwę klasy na podstawie ID
 function getNazwaKlasy($id) {
     $klasy = [
