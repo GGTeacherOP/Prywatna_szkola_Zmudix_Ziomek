@@ -11,7 +11,7 @@ $id_klasy = $_SESSION['id_klasy'];
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "dziennik";
+$db = "szkola";
 
 $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {

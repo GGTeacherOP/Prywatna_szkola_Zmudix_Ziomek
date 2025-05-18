@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 12, 2025 at 08:52 PM
+-- Generation Time: Maj 18, 2025 at 12:40 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -31,7 +31,7 @@ CREATE TABLE `klasy` (
   `id` int(11) NOT NULL,
   `nazwa` varchar(10) NOT NULL,
   `rocznik` int(11) NOT NULL,
-  `typ_szkoly_id` int(11) DEFAULT NULL
+  `typ_szkoly_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -61,15 +61,350 @@ INSERT INTO `klasy` (`id`, `nazwa`, `rocznik`, `typ_szkoly_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `nauczyciele`
+--
+
+CREATE TABLE `nauczyciele` (
+  `id` int(11) NOT NULL,
+  `imie` varchar(50) NOT NULL,
+  `nazwisko` varchar(50) NOT NULL,
+  `id_przedmiotu` int(11) DEFAULT NULL,
+  `id_klasy_wychowawca` int(11) DEFAULT NULL,
+  `login` varchar(50) NOT NULL,
+  `haslo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `nauczyciele`
+--
+
+INSERT INTO `nauczyciele` (`id`, `imie`, `nazwisko`, `id_przedmiotu`, `id_klasy_wychowawca`, `login`, `haslo`) VALUES
+(1, 'Paweł', 'Woźniak', 1, 1, 'paweł_woźsdfssdsddniak', 'pawełwoźniak123'),
+(2, 'Anna', 'Mazur', 1, 15, 'anna_mazufdsfr', 'annamazur123'),
+(3, 'Marek', 'Dąbrowski', 1, 2, 'marek_dąbrowsfffki', 'marekdąbrowski123'),
+(4, 'Joanna', 'Jankowski', 2, 14, 'joanna_janfffkowski', 'joannajankowski123'),
+(5, 'Zofia', 'Krawczyk', 2, 3, 'zofia_krawcffzyk', 'zofiakrawczyk123'),
+(6, 'Paweł', 'Zieliński', 2, 13, 'paweł_zifffeliński', 'pawełzieliński123'),
+(7, 'Paweł', 'Woźniak', 3, 5, 'pawełffffff_woźniak', 'pawełwoźniak123'),
+(8, 'Joanna', 'Jankowski', 3, NULL, 'joanna_jankfffkowski', 'joannajankowski123'),
+(9, 'Krzysztof', 'Nowak', 3, 4, 'krzysztofffff_nowak', 'krzysztofnowak123'),
+(10, 'Magdalena', 'Woźniak', 4, 12, 'magdalena_wfffoźniak', 'magdalenawoźniak123'),
+(11, 'Ewa', 'Wiśniewski', 4, 11, 'ewa_wiśniewsfffki', 'ewawiśniewski123'),
+(12, 'Jan', 'Kozłowski', 4, NULL, 'jan_kozłowffffffski', 'jankozłowski123'),
+(13, 'Maria', 'Kowalski', 5, NULL, 'maria_fffkowalski', 'mariakowalski123'),
+(14, 'Tomasz', 'Jankowski', 5, 6, 'tfffomasz_jankowski', 'tomaszjankowski123'),
+(15, 'Paweł', 'Zieliński', 5, NULL, 'pfaweł_zieliński', 'pawełzieliński123'),
+(16, 'Ewa', 'Mazur', 6, 10, 'efffwa_mazur', 'ewamazur123'),
+(17, 'Tomasz', 'Szymański', 6, 17, 'tomasz_ssdfzymański', 'tomaszszymański123'),
+(18, 'Magdalena', 'Wiśniewski', 6, 16, 'magdalena_wsdfsfsdiśniewski', 'magdalenawiśniewski123'),
+(19, 'Anna', 'Szymański', 7, 7, 'anna_szymańsdfdfsdski', 'annaszymański123'),
+(20, 'Michał', 'Lewandowski', 7, 9, 'michał_sfdsdflewandowski', 'michałlewandowski123'),
+(21, 'Piotr', 'Wójcik', 7, NULL, 'piotr_wósdfsdfjcik', 'piotrwójcik123'),
+(22, 'Zofia', 'Kowalczyk', 8, NULL, 'zofia_ksdfsdfsdfowalczyk', 'zofiakowalczyk123'),
+(23, 'Maria', 'Kowalski', 8, 8, 'mariasdf_kowalsski', 'mariakowalski123'),
+(24, 'Jan', 'Wójcik', 8, NULL, 'jan_wójcisk', 'janwójcik123'),
+(25, 'Katarzyna', 'Wójcik', 9, NULL, 'katarzynas_wójcik', 'katarzynawójcik123'),
+(26, 'Krzysztof', 'Kowalczyk', 9, NULL, 'krzyssssssssztof_kowalczyk', 'krzysztofkowalczyk123'),
+(27, 'Katarzyna', 'Krawczyk', 9, NULL, 'katarszyna_krawczyk', 'katarzynakrawczyk123'),
+(28, 'Ewa', 'Kozłowski', 10, NULL, 'ewa_kozłsowski', 'ewakozłowski123'),
+(29, 'Magdalena', 'Mazur', 10, NULL, 'magdalena_mazur', 'magdalenamazur123'),
+(30, 'Michał', 'Szymański', 10, NULL, 'michał_szymańsski', 'michałszymański123'),
+(31, 'Anna', 'Mazur', 11, NULL, 'anna_maszur', 'annasmazur123'),
+(32, 'Paweł', 'Kowalski', 11, NULL, 'pawesł_kowalsksi', 'pawełkowalski123'),
+(33, 'Magdalena', 'Mazur', 11, NULL, 'magdsalena_msazur', 'magdalenamazur123'),
+(34, 'Ewa', 'Lewandowski', 12, NULL, 'ewa_lsewandsowski', 'ewalewandowski123'),
+(35, 'Piotr', 'Lewandowski', 12, NULL, 'piotsr_sslewandowski', 'piotrlewandowski123'),
+(36, 'Michał', 'Nowak', 12, NULL, 'michał_nowsak', 'michałnowak123'),
+(37, 'Jan', 'Krawczyk', 13, NULL, 'jan_krawcszyk', 'jankrawczyk123'),
+(38, 'Anna', 'Kozłowski', 13, NULL, 'anna_ksozłowski', 'annakozłowski123'),
+(39, 'Ewa', 'Wójcik', 13, NULL, 'ewa_wójcisk', 'ewawójcik123'),
+(40, 'Zofia', 'Wójcik', 14, NULL, 'zofia_swójcik', 'zofiawójcik123'),
+(41, 'Maria', 'Kowalski', 14, NULL, 'marsia_kowalski', 'mariakowalski123'),
+(42, 'Maria', 'Mazur', 14, NULL, 'marias_mazur', 'mariamazur123'),
+(43, 'Paweł', 'Dąbrowski', 15, NULL, 'paweł_dąbrowasdski', 'pawełdąbrowski123'),
+(44, 'Anna', 'Krawczyk', 15, NULL, 'anna_krawczsdayk', 'annakrawczyk123'),
+(45, 'Joanna', 'Kowalski', 15, NULL, 'joannasad_kowalski', 'joannakowalski123');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `oceny`
+--
+
+CREATE TABLE `oceny` (
+  `id` int(11) NOT NULL,
+  `id_ucznia` int(11) NOT NULL,
+  `id_przedmiotu` int(11) NOT NULL,
+  `id_nauczyciela` int(11) NOT NULL,
+  `ocena` varchar(5) NOT NULL,
+  `opis` varchar(255) DEFAULT NULL,
+  `data_dodania` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `oceny`
+--
+
+INSERT INTO `oceny` (`id`, `id_ucznia`, `id_przedmiotu`, `id_nauczyciela`, `ocena`, `opis`, `data_dodania`) VALUES
+(2, 1, 1, 1, '4', 'Aktywność na lekcji', '2025-01-10 08:15:00'),
+(3, 1, 4, 10, '3', 'Kartkówka', '2025-01-12 09:30:00'),
+(4, 1, 2, 4, '5', 'Odpowiedź ustna', '2025-01-15 10:45:00'),
+(5, 2, 1, 1, '5', 'Praca domowa', '2025-01-11 08:20:00'),
+(6, 2, 4, 10, '4', 'Sprawdzian', '2025-01-13 09:35:00'),
+(7, 3, 2, 4, '3', 'Odpowiedź ustna', '2025-01-14 10:50:00'),
+(8, 3, 9, 25, '4', 'Projekt', '2025-01-16 11:55:00'),
+(9, 4, 4, 10, '5', 'Kartkówka', '2025-01-17 12:10:00'),
+(10, 4, 12, 34, '4', 'Aktywność na WF', '2025-01-18 13:25:00'),
+(11, 5, 5, 13, '3', 'Sprawdzian', '2025-01-19 08:15:00'),
+(12, 5, 6, 16, '4', 'Doświadczenie', '2025-01-20 09:30:00'),
+(13, 6, 7, 19, '5', 'Prezentacja', '2025-01-21 10:45:00'),
+(14, 6, 8, 22, '3', 'Praca w grupach', '2025-01-22 11:00:00'),
+(15, 7, 9, 25, '4', 'Referat', '2025-01-23 12:15:00'),
+(16, 7, 10, 28, '5', 'Dyskusja', '2025-01-24 13:30:00'),
+(17, 8, 11, 31, '3', 'Projekt', '2025-01-25 08:45:00'),
+(18, 8, 12, 34, '4', 'Zawody sportowe', '2025-01-26 09:00:00'),
+(19, 9, 13, 37, '5', 'Test', '2025-01-27 10:15:00'),
+(20, 9, 14, 40, '3', 'Praca domowa', '2025-01-28 11:30:00'),
+(21, 10, 15, 43, '4', 'Aktywność', '2025-01-29 12:45:00'),
+(22, 10, 1, 1, '5', 'Wypracowanie', '2025-01-30 13:00:00'),
+(23, 11, 2, 4, '3', 'Dyktando', '2025-01-31 08:15:00'),
+(24, 11, 3, 7, '4', 'Konwersacja', '2025-02-01 09:30:00'),
+(25, 12, 4, 10, '5', 'Zadanie dodatkowe', '2025-02-02 10:45:00'),
+(26, 12, 5, 13, '3', 'Kartkówka', '2025-02-03 11:00:00'),
+(27, 13, 6, 16, '4', 'Doświadczenie', '2025-02-04 12:15:00'),
+(28, 13, 7, 19, '5', 'Prezentacja', '2025-02-05 13:30:00'),
+(29, 14, 8, 22, '3', 'Praca domowa', '2025-02-06 08:45:00'),
+(30, 14, 9, 25, '4', 'Quiz', '2025-02-07 09:00:00'),
+(31, 15, 10, 28, '5', 'Debata', '2025-02-08 10:15:00'),
+(32, 15, 11, 31, '3', 'Zadanie praktyczne', '2025-02-09 11:30:00'),
+(33, 16, 1, 3, '4', 'Aktywność na lekcji', '2025-02-10 12:45:00'),
+(34, 16, 4, 12, '5', 'Sprawdzian', '2025-02-11 13:00:00'),
+(35, 16, 2, 6, '3', 'Odpowiedź ustna', '2025-02-12 08:15:00'),
+(36, 17, 9, 27, '4', 'Projekt', '2025-02-13 09:30:00'),
+(37, 17, 12, 36, '5', 'Zawody sportowe', '2025-02-14 10:45:00'),
+(38, 18, 5, 15, '3', 'Kartkówka', '2025-02-15 11:00:00'),
+(39, 18, 6, 18, '4', 'Doświadczenie', '2025-02-16 12:15:00'),
+(40, 19, 7, 21, '5', 'Prezentacja', '2025-02-17 13:30:00'),
+(41, 19, 8, 24, '3', 'Praca w grupach', '2025-02-18 08:45:00'),
+(42, 20, 9, 27, '4', 'Referat', '2025-02-19 09:00:00'),
+(43, 20, 10, 30, '5', 'Dyskusja', '2025-02-20 10:15:00'),
+(44, 21, 11, 33, '3', 'Projekt', '2025-02-21 11:30:00'),
+(45, 21, 12, 36, '4', 'Aktywność na WF', '2025-02-22 12:45:00'),
+(46, 22, 13, 39, '5', 'Test', '2025-02-23 13:00:00'),
+(47, 22, 14, 42, '3', 'Praca domowa', '2025-02-24 08:15:00'),
+(48, 23, 15, 45, '4', 'Aktywność', '2025-02-25 09:30:00'),
+(49, 23, 1, 3, '5', 'Wypracowanie', '2025-02-26 10:45:00'),
+(50, 24, 2, 6, '3', 'Dyktando', '2025-02-27 11:00:00'),
+(51, 24, 3, 9, '4', 'Konwersacja', '2025-02-28 12:15:00'),
+(52, 25, 4, 12, '5', 'Zadanie dodatkowe', '2025-03-01 13:30:00'),
+(53, 25, 5, 15, '3', 'Kartkówka', '2025-03-02 08:45:00'),
+(54, 26, 6, 18, '4', 'Doświadczenie', '2025-03-03 09:00:00'),
+(55, 26, 7, 21, '5', 'Prezentacja', '2025-03-04 10:15:00'),
+(56, 27, 8, 24, '3', 'Praca domowa', '2025-03-05 11:30:00'),
+(57, 27, 9, 27, '4', 'Quiz', '2025-03-06 12:45:00'),
+(58, 28, 10, 30, '5', 'Debata', '2025-03-07 13:00:00'),
+(59, 28, 11, 33, '3', 'Zadanie praktyczne', '2025-03-08 08:15:00'),
+(60, 29, 12, 36, '4', 'Zawody sportowe', '2025-03-09 09:30:00'),
+(61, 29, 13, 39, '5', 'Test', '2025-03-10 10:45:00'),
+(62, 30, 14, 42, '3', 'Praca domowa', '2025-03-11 11:00:00'),
+(63, 30, 15, 45, '4', 'Aktywność', '2025-03-12 12:15:00'),
+(64, 31, 1, 2, '5', 'Wypracowanie', '2025-03-13 13:30:00'),
+(65, 31, 4, 11, '3', 'Kartkówka', '2025-03-14 08:45:00'),
+(66, 31, 2, 5, '4', 'Odpowiedź ustna', '2025-03-15 09:00:00'),
+(67, 32, 9, 26, '5', 'Projekt', '2025-03-16 10:15:00'),
+(68, 32, 12, 35, '3', 'Aktywność na WF', '2025-03-17 11:30:00'),
+(69, 33, 5, 14, '4', 'Sprawdzian', '2025-03-18 12:45:00'),
+(70, 33, 6, 17, '5', 'Doświadczenie', '2025-03-19 13:00:00'),
+(71, 34, 7, 20, '3', 'Prezentacja', '2025-03-20 08:15:00'),
+(72, 34, 8, 23, '4', 'Praca w grupach', '2025-03-21 09:30:00'),
+(73, 35, 9, 26, '5', 'Referat', '2025-03-22 10:45:00'),
+(74, 35, 10, 29, '3', 'Dyskusja', '2025-03-23 11:00:00'),
+(75, 36, 11, 32, '4', 'Projekt', '2025-03-24 12:15:00'),
+(76, 36, 12, 35, '5', 'Zawody sportowe', '2025-03-25 13:30:00'),
+(77, 37, 13, 38, '3', 'Test', '2025-03-26 08:45:00'),
+(78, 37, 14, 41, '4', 'Praca domowa', '2025-03-27 09:00:00'),
+(79, 38, 15, 44, '5', 'Aktywność', '2025-03-28 10:15:00'),
+(80, 38, 1, 2, '3', 'Wypracowanie', '2025-03-29 11:30:00'),
+(81, 39, 2, 5, '4', 'Dyktando', '2025-03-30 12:45:00'),
+(82, 39, 3, 8, '5', 'Konwersacja', '2025-03-31 13:00:00'),
+(83, 40, 4, 11, '3', 'Zadanie dodatkowe', '2025-04-01 08:15:00'),
+(84, 40, 5, 14, '4', 'Kartkówka', '2025-04-02 09:30:00'),
+(85, 41, 6, 17, '5', 'Doświadczenie', '2025-04-03 10:45:00'),
+(86, 41, 7, 20, '3', 'Prezentacja', '2025-04-04 11:00:00'),
+(87, 42, 8, 23, '4', 'Praca domowa', '2025-04-05 12:15:00'),
+(88, 42, 9, 26, '5', 'Quiz', '2025-04-06 13:30:00'),
+(89, 43, 10, 29, '3', 'Debata', '2025-04-07 08:45:00'),
+(90, 43, 11, 32, '4', 'Zadanie praktyczne', '2025-04-08 09:00:00'),
+(91, 44, 12, 35, '5', 'Aktywność na WF', '2025-04-09 10:15:00'),
+(92, 44, 13, 38, '3', 'Test', '2025-04-10 11:30:00'),
+(93, 45, 14, 41, '4', 'Praca domowa', '2025-04-11 12:45:00'),
+(94, 45, 15, 44, '5', 'Aktywność', '2025-04-12 13:00:00'),
+(95, 46, 1, 1, '3', 'Wypracowanie', '2025-04-13 08:15:00'),
+(96, 46, 4, 10, '4', 'Kartkówka', '2025-04-14 09:30:00'),
+(97, 46, 2, 4, '5', 'Odpowiedź ustna', '2025-04-15 10:45:00'),
+(98, 47, 9, 25, '3', 'Projekt', '2025-04-16 11:00:00'),
+(99, 47, 12, 34, '4', 'Aktywność na WF', '2025-04-17 12:15:00'),
+(100, 48, 5, 13, '5', 'Sprawdzian', '2025-04-18 13:30:00'),
+(101, 48, 6, 16, '3', 'Doświadczenie', '2025-04-19 08:45:00'),
+(102, 49, 7, 19, '4', 'Prezentacja', '2025-04-20 09:00:00'),
+(103, 49, 8, 22, '5', 'Praca w grupach', '2025-04-21 10:15:00'),
+(104, 50, 9, 25, '3', 'Referat', '2025-04-22 11:30:00'),
+(105, 50, 10, 28, '4', 'Dyskusja', '2025-04-23 12:45:00'),
+(106, 51, 11, 31, '5', 'Projekt', '2025-04-24 13:00:00'),
+(107, 51, 12, 34, '3', 'Zawody sportowe', '2025-04-25 08:15:00'),
+(108, 52, 13, 37, '4', 'Test', '2025-04-26 09:30:00'),
+(109, 52, 14, 40, '5', 'Praca domowa', '2025-04-27 10:45:00'),
+(110, 53, 15, 43, '3', 'Aktywność', '2025-04-28 11:00:00'),
+(111, 53, 1, 1, '4', 'Wypracowanie', '2025-04-29 12:15:00'),
+(112, 54, 2, 4, '5', 'Dyktando', '2025-04-30 13:30:00'),
+(113, 54, 3, 7, '3', 'Konwersacja', '2025-05-01 08:45:00'),
+(114, 55, 4, 10, '4', 'Zadanie dodatkowe', '2025-05-02 09:00:00'),
+(115, 55, 5, 13, '5', 'Kartkówka', '2025-05-03 10:15:00'),
+(116, 56, 6, 16, '3', 'Doświadczenie', '2025-05-04 11:30:00'),
+(117, 56, 7, 19, '4', 'Prezentacja', '2025-05-05 12:45:00'),
+(118, 57, 8, 22, '5', 'Praca domowa', '2025-05-06 13:00:00'),
+(119, 57, 9, 25, '3', 'Quiz', '2025-05-07 08:15:00'),
+(120, 58, 10, 28, '4', 'Debata', '2025-05-08 09:30:00'),
+(121, 58, 11, 31, '5', 'Zadanie praktyczne', '2025-05-09 10:45:00'),
+(122, 59, 12, 34, '3', 'Aktywność na WF', '2025-05-10 11:00:00'),
+(123, 59, 13, 37, '4', 'Test', '2025-05-11 12:15:00'),
+(124, 60, 14, 40, '5', 'Praca domowa', '2025-05-12 13:30:00'),
+(125, 60, 15, 43, '3', 'Aktywność', '2025-05-13 08:45:00'),
+(126, 61, 16, 1, '4', 'Projekt zawodowy', '2025-05-14 09:00:00'),
+(127, 61, 4, 10, '5', 'Kartkówka', '2025-05-15 10:15:00'),
+(128, 61, 2, 4, '3', 'Odpowiedź ustna', '2025-05-16 11:30:00'),
+(129, 62, 16, 1, '4', 'Zadanie praktyczne', '2025-05-17 12:45:00'),
+(130, 62, 12, 34, '5', 'Aktywność na WF', '2025-05-18 13:00:00'),
+(131, 63, 5, 13, '3', 'Sprawdzian', '2025-05-19 08:15:00'),
+(132, 63, 6, 16, '4', 'Doświadczenie', '2025-05-20 09:30:00'),
+(133, 64, 17, 2, '5', 'Praktyka zawodowa', '2025-05-21 10:45:00'),
+(134, 64, 8, 22, '3', 'Praca w grupach', '2025-05-22 11:00:00'),
+(135, 65, 16, 1, '4', 'Projekt', '2025-05-23 12:15:00'),
+(136, 65, 10, 28, '5', 'Dyskusja', '2025-05-24 13:30:00'),
+(137, 66, 11, 31, '3', 'Zadanie praktyczne', '2025-05-25 08:45:00'),
+(138, 66, 12, 34, '4', 'Zawody sportowe', '2025-05-26 09:00:00'),
+(139, 67, 13, 37, '5', 'Test', '2025-05-27 10:15:00'),
+(140, 67, 14, 40, '3', 'Praca domowa', '2025-05-28 11:30:00'),
+(141, 68, 15, 43, '4', 'Aktywność', '2025-05-29 12:45:00'),
+(142, 68, 16, 1, '5', 'Projekt zawodowy', '2025-05-30 13:00:00'),
+(143, 69, 2, 4, '3', 'Dyktando', '2025-05-31 08:15:00'),
+(144, 69, 3, 7, '4', 'Konwersacja', '2025-06-01 09:30:00'),
+(145, 70, 4, 10, '5', 'Zadanie dodatkowe', '2025-06-02 10:45:00'),
+(146, 70, 5, 13, '3', 'Kartkówka', '2025-06-03 11:00:00'),
+(147, 71, 6, 16, '4', 'Doświadczenie', '2025-06-04 12:15:00'),
+(148, 71, 7, 19, '5', 'Prezentacja', '2025-06-05 13:30:00'),
+(149, 72, 8, 22, '3', 'Praca domowa', '2025-06-06 08:45:00'),
+(150, 72, 9, 25, '4', 'Quiz', '2025-06-07 09:00:00'),
+(151, 73, 10, 28, '5', 'Debata', '2025-06-08 10:15:00'),
+(152, 73, 11, 31, '3', 'Zadanie praktyczne', '2025-06-09 11:30:00'),
+(153, 74, 12, 34, '4', 'Aktywność na WF', '2025-06-10 12:45:00'),
+(154, 74, 13, 37, '5', 'Test', '2025-06-11 13:00:00'),
+(155, 75, 14, 40, '3', 'Praca domowa', '2025-06-12 08:15:00'),
+(156, 75, 15, 43, '4', 'Aktywność', '2025-06-13 09:30:00'),
+(157, 76, 16, 3, '5', 'Projekt zawodowy', '2025-06-14 10:45:00'),
+(158, 76, 4, 12, '3', 'Kartkówka', '2025-06-15 11:00:00'),
+(159, 76, 2, 6, '4', 'Odpowiedź ustna', '2025-06-16 12:15:00'),
+(160, 77, 16, 3, '5', 'Zadanie praktyczne', '2025-06-17 13:30:00'),
+(161, 77, 12, 36, '3', 'Aktywność na WF', '2025-06-18 08:45:00'),
+(162, 78, 5, 15, '4', 'Sprawdzian', '2025-06-19 09:00:00'),
+(163, 78, 6, 18, '5', 'Doświadczenie', '2025-06-20 10:15:00'),
+(164, 79, 17, 5, '3', 'Praktyka zawodowa', '2025-06-21 11:30:00'),
+(165, 79, 8, 24, '4', 'Praca w grupach', '2025-06-22 12:45:00'),
+(166, 80, 16, 3, '5', 'Projekt', '2025-06-23 13:00:00'),
+(167, 80, 10, 30, '3', 'Dyskusja', '2025-06-24 08:15:00'),
+(168, 81, 11, 33, '4', 'Zadanie praktyczne', '2025-06-25 09:30:00'),
+(169, 81, 12, 36, '5', 'Zawody sportowe', '2025-06-26 10:45:00'),
+(170, 82, 13, 39, '3', 'Test', '2025-06-27 11:00:00'),
+(171, 82, 14, 42, '4', 'Praca domowa', '2025-06-28 12:15:00'),
+(172, 83, 15, 45, '5', 'Aktywność', '2025-06-29 13:30:00'),
+(173, 83, 16, 3, '3', 'Projekt zawodowy', '2025-06-30 08:45:00'),
+(174, 84, 2, 6, '4', 'Dyktando', '2025-07-01 09:00:00'),
+(175, 84, 3, 9, '5', 'Konwersacja', '2025-07-02 10:15:00'),
+(176, 85, 4, 12, '3', 'Zadanie dodatkowe', '2025-07-03 11:30:00'),
+(177, 85, 5, 15, '4', 'Kartkówka', '2025-07-04 12:45:00'),
+(178, 86, 6, 18, '5', 'Doświadczenie', '2025-07-05 13:00:00'),
+(179, 86, 7, 21, '3', 'Prezentacja', '2025-07-06 08:15:00'),
+(180, 87, 8, 24, '4', 'Praca domowa', '2025-07-07 09:30:00'),
+(181, 87, 9, 27, '5', 'Quiz', '2025-07-08 10:45:00'),
+(182, 88, 10, 30, '3', 'Debata', '2025-07-09 11:00:00'),
+(183, 88, 11, 33, '4', 'Zadanie praktyczne', '2025-07-10 12:15:00'),
+(184, 89, 12, 36, '5', 'Aktywność na WF', '2025-07-11 13:30:00'),
+(185, 89, 13, 39, '3', 'Test', '2025-07-12 08:45:00'),
+(186, 90, 14, 42, '4', 'Praca domowa', '2025-07-13 09:00:00'),
+(187, 90, 15, 45, '5', 'Aktywność', '2025-07-14 10:15:00'),
+(188, 91, 16, 2, '3', 'Projekt zawodowy', '2025-07-15 11:30:00'),
+(189, 91, 4, 11, '4', 'Kartkówka', '2025-07-16 12:45:00'),
+(190, 91, 2, 5, '5', 'Odpowiedź ustna', '2025-07-17 13:00:00'),
+(191, 92, 16, 2, '3', 'Zadanie praktyczne', '2025-07-18 08:15:00'),
+(192, 92, 12, 35, '4', 'Aktywność na WF', '2025-07-19 09:30:00'),
+(193, 93, 5, 14, '5', 'Sprawdzian', '2025-07-20 10:45:00'),
+(194, 93, 6, 17, '3', 'Doświadczenie', '2025-07-21 11:00:00'),
+(195, 94, 17, 4, '4', 'Praktyka zawodowa', '2025-07-22 12:15:00'),
+(196, 94, 8, 23, '5', 'Praca w grupach', '2025-07-23 13:30:00'),
+(197, 95, 16, 2, '3', 'Projekt', '2025-07-24 08:45:00'),
+(198, 95, 10, 29, '4', 'Dyskusja', '2025-07-25 09:00:00'),
+(199, 96, 11, 32, '5', 'Zadanie praktyczne', '2025-07-26 10:15:00'),
+(200, 96, 12, 35, '3', 'Zawody sportowe', '2025-07-27 11:30:00'),
+(201, 97, 13, 38, '4', 'Test', '2025-07-28 12:45:00'),
+(202, 97, 14, 41, '5', 'Praca domowa', '2025-07-29 13:00:00'),
+(203, 98, 15, 44, '3', 'Aktywność', '2025-07-30 08:15:00'),
+(204, 98, 16, 2, '4', 'Projekt zawodowy', '2025-07-31 09:30:00'),
+(205, 99, 2, 5, '5', 'Dyktando', '2025-08-01 10:45:00'),
+(206, 99, 3, 8, '3', 'Konwersacja', '2025-08-02 11:00:00'),
+(207, 100, 4, 11, '4', 'Zadanie dodatkowe', '2025-08-03 12:15:00'),
+(208, 100, 5, 14, '5', 'Kartkówka', '2025-08-04 13:30:00'),
+(209, 101, 6, 17, '3', 'Doświadczenie', '2025-08-05 08:45:00'),
+(210, 101, 7, 20, '4', 'Prezentacja', '2025-08-06 09:00:00'),
+(211, 102, 8, 23, '5', 'Praca domowa', '2025-08-07 10:15:00'),
+(212, 102, 9, 26, '3', 'Quiz', '2025-08-08 11:30:00'),
+(213, 103, 10, 29, '4', 'Debata', '2025-08-09 12:45:00'),
+(214, 103, 11, 32, '5', 'Zadanie praktyczne', '2025-08-10 13:00:00'),
+(215, 104, 12, 35, '3', 'Aktywność na WF', '2025-08-11 08:15:00'),
+(216, 104, 13, 38, '4', 'Test', '2025-08-12 09:30:00'),
+(217, 105, 14, 41, '5', 'Praca domowa', '2025-08-13 10:45:00'),
+(218, 105, 15, 44, '3', 'Aktywność', '2025-08-14 11:00:00'),
+(219, 106, 16, 1, '4', 'Projekt zawodowy', '2025-08-15 12:15:00'),
+(220, 106, 4, 10, '5', 'Kartkówka', '2025-08-16 13:30:00'),
+(221, 106, 2, 4, '3', 'Odpowiedź ustna', '2025-08-17 08:45:00'),
+(222, 107, 16, 1, '4', 'Zadanie praktyczne', '2025-08-18 09:00:00'),
+(223, 107, 12, 34, '5', 'Aktywność na WF', '2025-08-19 10:15:00'),
+(224, 108, 5, 13, '3', 'Sprawdzian', '2025-08-20 11:30:00'),
+(225, 108, 6, 16, '4', 'Doświadczenie', '2025-08-21 12:45:00'),
+(226, 109, 17, 2, '5', 'Praktyka zawodowa', '2025-08-22 13:00:00'),
+(227, 109, 8, 22, '3', 'Praca w grupach', '2025-08-23 08:15:00'),
+(228, 110, 16, 1, '4', 'Projekt', '2025-08-24 09:30:00'),
+(229, 110, 10, 28, '5', 'Dyskusja', '2025-08-25 10:45:00'),
+(230, 111, 11, 31, '3', 'Zadanie praktyczne', '2025-08-26 11:00:00'),
+(231, 111, 12, 34, '4', 'Zawody sportowe', '2025-08-27 12:15:00'),
+(232, 112, 13, 37, '5', 'Test', '2025-08-28 13:30:00'),
+(233, 112, 14, 40, '3', 'Praca domowa', '2025-08-29 08:45:00'),
+(234, 113, 15, 43, '4', 'Aktywność', '2025-08-30 09:00:00'),
+(235, 113, 16, 1, '5', 'Projekt zawodowy', '2025-08-31 10:15:00'),
+(236, 114, 2, 4, '3', 'Dyktando', '2025-09-01 11:30:00'),
+(237, 114, 3, 7, '4', 'Konwersacja', '2025-09-02 12:45:00'),
+(238, 115, 4, 10, '5', 'Zadanie dodatkowe', '2025-09-03 13:00:00'),
+(239, 115, 5, 13, '3', 'Kartkówka', '2025-09-04 08:15:00'),
+(240, 116, 6, 16, '4', 'Doświadczenie', '2025-09-05 09:30:00'),
+(241, 116, 7, 19, '5', 'Prezentacja', '2025-09-06 10:45:00'),
+(242, 117, 8, 22, '3', 'Praca domowa', '2025-09-07 11:00:00'),
+(243, 117, 9, 25, '4', 'Quiz', '2025-09-08 12:15:00'),
+(244, 118, 10, 28, '5', 'Debata', '2025-09-09 13:30:00'),
+(245, 118, 11, 31, '3', 'Zadanie praktyczne', '2025-09-10 08:45:00'),
+(246, 119, 12, 34, '4', 'Aktywność na WF', '2025-09-11 09:00:00'),
+(247, 119, 13, 37, '5', 'Test', '2025-09-12 10:15:00');
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `plan_lekcji`
 --
 
 CREATE TABLE `plan_lekcji` (
   `id` int(11) NOT NULL,
-  `klasa_id` int(11) DEFAULT NULL,
-  `przedmiot_id` int(11) DEFAULT NULL,
+  `klasa_id` int(11) NOT NULL,
+  `przedmiot_id` int(11) NOT NULL,
   `sala_id` int(11) DEFAULT NULL,
-  `dzien_tygodnia` enum('Poniedzialek','Wtorek','Sroda','Czwartek','Piatek') NOT NULL,
+  `dzien_tygodnia` varchar(20) NOT NULL,
   `godzina_start` time NOT NULL,
   `godzina_koniec` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -849,6 +1184,284 @@ INSERT INTO `typy_szkol` (`id`, `nazwa`) VALUES
 (3, 'Szkola Podstawowa'),
 (4, 'Przedszkole');
 
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `uczniowie`
+--
+
+CREATE TABLE `uczniowie` (
+  `id` int(11) NOT NULL,
+  `imie` varchar(50) NOT NULL,
+  `nazwisko` varchar(50) NOT NULL,
+  `id_klasy` int(11) NOT NULL,
+  `login` varchar(50) NOT NULL,
+  `haslo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `uczniowie`
+--
+
+INSERT INTO `uczniowie` (`id`, `imie`, `nazwisko`, `id_klasy`, `login`, `haslo`) VALUES
+(1, 'Tomasz', 'Nowak', 1, 'tomasz_nosdfwak3123', 'tomasznowak123'),
+(2, 'Joanna', 'Kowalczyk', 1, 'joannasfd_kowalczyk1233', 'joannakowalczyk123'),
+(3, 'Zofia', 'Dąbrowski', 1, 'zofia_dąbrowski1323', 'zofiadąbrowski123'),
+(4, 'Jan', 'Dąbrowski', 1, 'jan_dąbrowski13231', 'jandąbrowski123'),
+(5, 'Jan', 'Mazur', 1, 'jan_mazufsdfsdr4433', 'jsdfanmazur123'),
+(6, 'Tomasz', 'Lewandowski', 1, 'tomassdfsz_lewandowski23', 'tomaszlewandowski123'),
+(7, 'Zofia', 'Woźniak', 1, 'zofia_wdfoźdrfsdniak432', 'zofiawoźniak123'),
+(8, 'Joanna', 'Krawczyk', 1, 'joanna_krawczyk1234', 'joannakrawczyk123'),
+(9, 'Jan', 'Jankowski', 1, 'jan_janksdfowsqwerki111', 'janjankowski123'),
+(10, 'Maria', 'Wiśniewski', 1, 'maria_wiśniewski222', 'mariawiśniewski123'),
+(11, 'Maria', 'Jankowski', 1, 'maria_janwqerkowski555', 'mariajankowski123'),
+(12, 'Maria', 'Mazur', 1, 'maria_mazur55werq55', 'mariamazur123'),
+(13, 'Krzysztof', 'Kozłowski', 1, 'krzysztof_kowrqezłowskiq3', 'krzysztofkozłowski123'),
+(14, 'Michał', 'Jankowski', 1, 'michał_jankowsrqwekiddd', 'michałjankowski123'),
+(15, 'Jan', 'Krawczyk', 1, 'jan_krawczykffff', 'jankrawczyk123'),
+(16, 'Marek', 'Jankowski', 2, 'marek_jankowski', 'marekjankowski123'),
+(17, 'Krzysztof', 'Dąbrowski', 2, 'krzysztof_dąqwerweqbrowski', 'krzysztofdąbrowski123'),
+(18, 'Katarzyna', 'Kozłowski', 2, 'katarzqwerqeryna_kozłowski', 'katarzynakozłowski123'),
+(19, 'Tomasz', 'Nowak', 2, 'tomaszqwerqwer_nowak1', 'tomasznowak123'),
+(20, 'Magdalena', 'Lewandowski', 2, 'magdaqwerqwerlena_lewandowski', 'magdalenalewandowski123'),
+(21, 'Anna', 'Dąbrowski', 2, 'anna_dweqrwqerqwąbrowski', 'annadąbrowski123'),
+(22, 'Tomasz', 'Wiśniewski', 2, 'tomasz_wrqwerqrwiśniewski', 'tomaszwiśniewski123'),
+(23, 'Michał', 'Nowak', 2, 'michałfasdfasd_nowak', 'michałnowak123'),
+(24, 'Magdalena', 'Wójcik', 2, 'magdaleasdfasna_wójcik', 'magdalenawójcik123'),
+(25, 'Ewa', 'Dąbrowski', 2, 'ewa_dąbrowsqwefwfqeqwefki', 'ewadąbrowski123'),
+(26, 'Magdalena', 'Nowak', 2, 'magdalfweena_nowak', 'magdalenanowak123'),
+(27, 'Agnieszka', 'Szymański', 2, 'agniewefwfeszka_szymański', 'agnieszkaszymański123'),
+(28, 'Paweł', 'Szymański', 2, 'pawweffqweeł_szymański', 'pawełszymański123'),
+(29, 'Anna', 'Woźniak', 2, 'anna_woźnefwqefiak', 'annawoźniak123'),
+(30, 'Maria', 'Lewandowski', 2, 'maria_lefqwefwewandowski', 'marialewandowski123'),
+(31, 'Magdalena', 'Nowak', 3, 'mfewwefefqwagdalena_nowak1', 'magdalenanowak123'),
+(32, 'Piotr', 'Lewandowski', 3, 'pioqwefqwefeftr_lewandowski', 'piotrlewandowski123'),
+(33, 'Michał', 'Kamiński', 3, 'michał_fqwefqwfwqekamiński', 'michałkamiński123'),
+(34, 'Tomasz', 'Dąbrowski', 3, 'tomasz_asdfasfasdfadąbrowski', 'tomaszdąbrowski123'),
+(35, 'Katarzyna', 'Krawczyk', 3, 'katarzynaasdfsadf_krawczyk', 'katarzynakrawczyk123'),
+(36, 'Maria', 'Krawczyk', 3, 'maria_kraasdfswczyk', 'mariakrawczyk123'),
+(37, 'Joanna', 'Wójcik', 3, 'joanasdfasdna_wójcik', 'joannawójcik123'),
+(38, 'Krzysztof', 'Zieliński', 3, 'krzysasdfaztof_zieliński', 'krzysztofzieliński123'),
+(39, 'Krzysztof', 'Jankowski', 3, 'krzysasdfztof_jankowski', 'krzysztofjankowski123'),
+(40, 'Tomasz', 'Kozłowski', 3, 'tomasz_kozsdfasdłowski', 'tomaszkozłowski123'),
+(41, 'Zofia', 'Szymański', 3, 'zofisadfasdfa_szymański', 'zofiaszymański123'),
+(42, 'Joanna', 'Kowalczyk', 3, 'joanna_kowasdffasdfalczyk1', 'joannakowalczyk123'),
+(43, 'Paweł', 'Kamiński', 3, 'paweł_kfasdfaamiński', 'pawełkamiński123'),
+(44, 'Michał', 'Kozłowski', 3, 'michał_qwefqwefkozłowski', 'michałkozłowski123'),
+(45, 'Magdalena', 'Dąbrowski', 3, 'magdqwefqwfefalena_dąbrowski', 'magdalenadąbrowski123'),
+(46, 'Maria', 'Mazur', 4, 'maria_mafqwefzur1', 'mariamazur123'),
+(47, 'Anna', 'Wójcik', 4, 'annafewfq_wójcik', 'annawójcik123'),
+(48, 'Katarzyna', 'Nowak', 4, 'katawefqrzyna_nowak', 'katarzynanowak123'),
+(49, 'Magdalena', 'Jankowski', 4, 'magdalwefena_jankowski', 'magdalenajankowski123'),
+(50, 'Joanna', 'Nowak', 4, 'jofqwefqwefqweanna_nowak', 'joannanowak123'),
+(51, 'Piotr', 'Kamiński', 4, 'piotr_kamfqwefwefiński', 'piotrkamiński123'),
+(52, 'Tomasz', 'Kozłowski', 4, 'tomasz_kozłowfqwfqwski1', 'tomaszkozłowski123'),
+(53, 'Tomasz', 'Kowalski', 4, 'tomasz_kqwefeqwowalski', 'tomaszkowalski123'),
+(54, 'Katarzyna', 'Wójcik', 4, 'katarfqwefwqfzyna_wójcik', 'katarzynawójcik123'),
+(55, 'Jan', 'Zieliński', 4, 'jan_ziefqwefqwefliński', 'janzieliński123'),
+(56, 'Agnieszka', 'Dąbrowski', 4, 'agnieszkaqwefwef_dąbrowski', 'agnieszkadąbrowski123'),
+(57, 'Katarzyna', 'Zieliński', 4, 'katarzyna_qwefwqefzieliński', 'katarzynazieliński123'),
+(58, 'Zofia', 'Woźniak', 4, 'zofia_wqwfefqwefewfoźniak1', 'zofiawoźniak123'),
+(59, 'Jan', 'Kowalczyk', 4, 'jan_kcasdfwefqweowalczyk', 'jankowalczyk123'),
+(60, 'Jan', 'Zieliński', 4, 'jan_zielińrqweski1', 'janzieliński123'),
+(61, 'Ewa', 'Woźniak', 5, 'ewa_wqwerwerqoźniak', 'ewawoźniak123'),
+(62, 'Katarzyna', 'Woźniak', 5, 'katarzqwerrqweyna_woźniak', 'katarzynawoźniak123'),
+(63, 'Maria', 'Kowalczyk', 5, 'mariqwerwerqwerqwa_kowalczyk', 'mariakowalczyk123'),
+(64, 'Agnieszka', 'Nowak', 5, 'agniesfasdfasdasdfsaszka_nowak', 'agnieszkanowak123'),
+(65, 'Marek', 'Zieliński', 5, 'marek_zasdffdieliński', 'marekzieliński123'),
+(66, 'Joanna', 'Zieliński', 5, 'joannaasdfasfafasd_zieliński', 'joannazieliński123'),
+(67, 'Tomasz', 'Mazur', 5, 'tomaasdfadsz_mazur', 'tomaszmazur123'),
+(68, 'Magdalena', 'Kowalski', 5, 'maasdfgdalena_kowalski', 'magdalenakowalski123'),
+(69, 'Piotr', 'Nowak', 5, 'piotr_asdfnowak', 'piotrnowak123'),
+(70, 'Michał', 'Dąbrowski', 5, 'michał_asdfdąbrowski', 'michałdąbrowski123'),
+(71, 'Agnieszka', 'Zieliński', 5, 'agnieszasdfka_zieliński', 'agnieszkazieliński123'),
+(72, 'Anna', 'Wiśniewski', 5, 'anna_wiśfasdniewski', 'annawiśniewski123'),
+(73, 'Anna', 'Kowalczyk', 5, 'anna_kasdfowalczyk', 'annakowalczyk123'),
+(74, 'Krzysztof', 'Mazur', 5, 'krzysztof_mazasdfur', 'krzysztofmazur123'),
+(75, 'Krzysztof', 'Kamiński', 5, 'krzyszasdftof_kamiński', 'krzysztofkamiński123'),
+(76, 'Maria', 'Zieliński', 6, 'mariaasdf_zieliński', 'mariazieliński123'),
+(77, 'Maria', 'Krawczyk', 6, 'maria_krafasdfasdwczyk1', 'mariakrawczyk123'),
+(78, 'Jan', 'Jankowski', 6, 'jan_janasdfkowski1', 'janjankowski123'),
+(79, 'Anna', 'Zieliński', 6, 'anna_zielidfvsński', 'annazieliński123'),
+(80, 'Zofia', 'Dąbrowski', 6, 'zofia_dąbrosxcvwski1', 'zofiadąbrowski123'),
+(81, 'Tomasz', 'Szymański', 6, 'tomasz_vwerszymański', 'tomaszszymański123'),
+(82, 'Krzysztof', 'Wójcik', 6, 'krzysztofvewwrvvr_wójcik', 'krzysztofwójcik123'),
+(83, 'Piotr', 'Kowalczyk', 6, 'piotfvevefwevevr_kowalczyk', 'piotrkowalczyk123'),
+(84, 'Jan', 'Dąbrowski', 6, 'jan_dąbroczxczczxcwski1', 'jandąbrowski123'),
+(85, 'Anna', 'Mazur', 6, 'annzxczcxxczca_mazur', 'annamazur123'),
+(86, 'Katarzyna', 'Zieliński', 6, 'katarzccccccyna_zieliński1', 'katarzynazieliński123'),
+(87, 'Krzysztof', 'Nowak', 6, 'krzysztof_nccccccccowak', 'krzysztofnowak123'),
+(88, 'Piotr', 'Woźniak', 6, 'piotcccccccccr_woźniak', 'piotrwoźniak123'),
+(89, 'Agnieszka', 'Kamiński', 6, 'agnieszkacccccc_kamiński', 'agnieszkakamiński123'),
+(90, 'Tomasz', 'Krawczyk', 6, 'tomaszccccccc_krawczyk', 'tomaszkrawczyk123'),
+(91, 'Michał', 'Szymański', 7, 'michał_szcccccymański', 'michałszymański123'),
+(92, 'Piotr', 'Woźniak', 7, 'piotr_woźncccciak1', 'piotrwoźniak123'),
+(93, 'Krzysztof', 'Mazur', 7, 'krzyccccsztof_mazur1', 'krzysztofmazur123'),
+(94, 'Zofia', 'Kozłowski', 7, 'zofia_kozccccłowski', 'zofiakozłowski123'),
+(95, 'Anna', 'Zieliński', 7, 'anna_ccccczieliński1', 'annazieliński123'),
+(96, 'Zofia', 'Wójcik', 7, 'zofia_wójccccik', 'zofiawójcik123'),
+(97, 'Ewa', 'Krawczyk', 7, 'ewa_krawcccczyk', 'ewakrawczyk123'),
+(98, 'Paweł', 'Krawczyk', 7, 'paweł_krccawczyk', 'pawełkrawczyk123'),
+(99, 'Joanna', 'Mazur', 7, 'joannacccc_mazur', 'joannamazur123'),
+(100, 'Agnieszka', 'Kamiński', 7, 'agniesczka_kamiński1', 'agnieszkakamiński123'),
+(101, 'Krzysztof', 'Kowalski', 7, 'krzyscztof_kowalski', 'krzysztofkowalski123'),
+(102, 'Tomasz', 'Wiśniewski', 7, 'tomascz_wiśniewski1', 'tomaszwiśniewski123'),
+(103, 'Joanna', 'Lewandowski', 7, 'joccanna_lewandowski', 'joannalewandowski123'),
+(104, 'Anna', 'Zieliński', 7, 'annccca_zieliński2', 'annazieliński123'),
+(105, 'Maria', 'Kowalski', 7, 'mariacccccccccc_kowalski', 'mariakowalski123'),
+(106, 'Joanna', 'Szymański', 8, 'joanna_szycccmański', 'joannaszymański123'),
+(107, 'Anna', 'Jankowski', 8, 'anna_jankcccowski', 'annajankowski123'),
+(108, 'Tomasz', 'Szymański', 8, 'tomasccz_szymańskicccc1', 'tomaszszymański123'),
+(109, 'Anna', 'Jankowski', 8, 'anna_jankowski1ccc', 'annajankowski123'),
+(110, 'Michał', 'Kowalski', 8, 'michał_kowaccclski', 'michałkowalski123'),
+(111, 'Joanna', 'Nowak', 8, 'joanna_nocccccwak1', 'joannanowak123'),
+(112, 'Agnieszka', 'Woźniak', 8, 'acccgnieszka_woźniak', 'agnieszkawoźniak123'),
+(113, 'Joanna', 'Wiśniewski', 8, 'cjoanna_wiśniewski', 'joannawiśniewski123'),
+(114, 'Tomasz', 'Nowak', 8, 'tocccmasz_nowak2', 'tomasznowak123'),
+(115, 'Agnieszka', 'Lewandowski', 8, 'agnieszdfsdfsdka_lewandowski', 'agnieszkalewandowski123'),
+(116, 'Jan', 'Zieliński', 8, 'jan_zielińssdfski2', 'janzieliński123'),
+(117, 'Piotr', 'Szymański', 8, 'piofsdfsdtr_szymański', 'piotrszymański123'),
+(118, 'Joanna', 'Jankowski', 8, 'joannsdfsdfa_jankowski', 'joannajankowski123'),
+(119, 'Agnieszka', 'Szymański', 8, 'agnieszksdfsfdfa_szymański1', 'agnieszkaszymański123'),
+(120, 'Zofia', 'Kowalczyk', 8, 'zofia_sdffsdfkowalczyk', 'zofiakowalczyk123'),
+(121, 'Anna', 'Kozłowski', 9, 'anna_kozłofsdfsfwski', 'annakozłowski123'),
+(122, 'Maria', 'Kowalczyk', 9, 'mariasdfsdf_kowalczyk1', 'mariakowalczyk123'),
+(123, 'Krzysztof', 'Kowalczyk', 9, 'krzysztof_ksdfsdfowalczyk', 'krzysztofkowalczyk123'),
+(124, 'Katarzyna', 'Jankowski', 9, 'katarfsdfsdfzyna_jankowski', 'katarzynajankowski123'),
+(125, 'Ewa', 'Zieliński', 9, 'ewa_zisdfsdeliński', 'ewazieliński123'),
+(126, 'Magdalena', 'Lewandowski', 9, 'magdfsdfsalena_lewandowski1', 'magdalenalewandowski123'),
+(127, 'Maria', 'Zieliński', 9, 'maria_zieliński1sfd', 'mariazieliński123'),
+(128, 'Joanna', 'Wiśniewski', 9, 'joanna_wiśnsdfiewski1', 'joannawiśniewski123'),
+(129, 'Magdalena', 'Wójcik', 9, 'magdalena_wsójcddik1', 'magdalenawójcik123'),
+(130, 'Anna', 'Kowalski', 9, 'anna_kodfsdfsdwalski', 'annakowalski123'),
+(131, 'Paweł', 'Wiśniewski', 9, 'paweł_wiśnieddwski', 'pawełwiśniewski123'),
+(132, 'Tomasz', 'Wójcik', 9, 'tomasz_wóddddddjcik', 'tomaszwójcik123'),
+(133, 'Tomasz', 'Woźniak', 9, 'tomasz_woźniak', 'tomaszwoźniak123'),
+(134, 'Agnieszka', 'Kowalczyk', 9, 'agdnieszdddddka_kowalczyk', 'agnieszkakowalczyk123'),
+(135, 'Joanna', 'Kowalczyk', 9, 'joanna_ddddkowalczyk2', 'joannakowalczyk123'),
+(136, 'Piotr', 'Wójcik', 10, 'piotddddddddddr_wójcik', 'pdiotrwójcik123'),
+(137, 'Anna', 'Szymański', 10, 'anna_szymańsdddkid', 'annaszymański123'),
+(138, 'Marek', 'Krawczyk', 10, 'marek_krawczydk', 'marekkrawczyk123'),
+(139, 'Paweł', 'Jankowski', 10, 'paweł_jankodwski', 'pawełjankowski123'),
+(140, 'Krzysztof', 'Dąbrowski', 10, 'krzyszdtof_dąbrowski1', 'krzysztofdąbrowski123'),
+(141, 'Paweł', 'Szymański', 10, 'paweł_szymański1', 'pawełszymański123'),
+(142, 'Marek', 'Wójcik', 10, 'marek_wdddddddójcik', 'marekwójcik123'),
+(143, 'Katarzyna', 'Dąbrowski', 10, 'katddddddarzyna_dąbrowski', 'katarzynadąbrowski123'),
+(144, 'Marek', 'Dąbrowski', 10, 'maredddk_dąbrowski', 'marekdąbrowski123'),
+(145, 'Michał', 'Kowalski', 10, 'michał_ddkowaldski1', 'michałkowalski123'),
+(146, 'Jan', 'Mazur', 10, 'jan_mazuddddr1', 'jandmazur123'),
+(147, 'Piotr', 'Krawczyk', 10, 'piotr_kddddrawcdzyk', 'piotrkrawczyk123'),
+(148, 'Agnieszka', 'Szymański', 10, 'agniedddszka_szymański2', 'agnieszkaszymański123'),
+(149, 'Jan', 'Kowalczyk', 10, 'jan_kowalcdzyk1', 'jankowalczyk123'),
+(150, 'Maria', 'Wiśniewski', 10, 'maria_wddiśniewski1', 'mariawiśniewski123'),
+(151, 'Piotr', 'Wiśniewski', 11, 'piotr_wiśdniewski', 'piotrwiśniewski123'),
+(152, 'Ewa', 'Krawczyk', 11, 'ewa_krawczddyk1', 'ewakrawczyk123'),
+(153, 'Zofia', 'Kowalczyk', 11, 'zofia_kowalczykd1', 'zofiakowalczyk123'),
+(154, 'Katarzyna', 'Dąbrowski', 11, 'katarzyna_ddąbrowski1', 'katarzynadąbrowski123'),
+(155, 'Krzysztof', 'Lewandowski', 11, 'krzysztdof_lewandowski', 'krzysztoflewandowski123'),
+(156, 'Michał', 'Woźniak', 11, 'michał_woźniadk', 'michałwoźniak123'),
+(157, 'Paweł', 'Kowalczyk', 11, 'paweł_kowaldczyk', 'pawełkowalczyk123'),
+(158, 'Katarzyna', 'Kowalski', 11, 'katarzydna_kowalski', 'katarzynakowalski123'),
+(159, 'Michał', 'Krawczyk', 11, 'michał_krdawczyk', 'michałkrawczyk123'),
+(160, 'Jan', 'Jankowski', 11, 'jan_jankowski2', 'janjankowski123'),
+(161, 'Michał', 'Lewandowski', 11, 'michadł_lewandowski', 'michałlewandowski123'),
+(162, 'Piotr', 'Dąbrowski', 11, 'piotr_asdfdąbrowski', 'piotrdąbrowski123'),
+(163, 'Anna', 'Kowalczyk', 11, 'anna_kowasdfalczyk1', 'annakowalczyk123'),
+(164, 'Agnieszka', 'Lewandowski', 11, 'agnasdfasieszka_lewandowski1', 'agnieszkalewandowski123'),
+(165, 'Tomasz', 'Kozłowski', 11, 'tomasz_kfdsafdozłowski2', 'tomaszkozłowski123'),
+(166, 'Michał', 'Wiśniewski', 12, 'michfdsfał_wiśniewski', 'michałwiśniewski123'),
+(167, 'Krzysztof', 'Dąbrowski', 12, 'krzasdfqweysztof_dąbrowski2', 'krzysztofdąbrowski123'),
+(168, 'Zofia', 'Jankowski', 12, 'zofia_jasdfankowski', 'zofiajankowski123'),
+(169, 'Ewa', 'Mazur', 12, 'ewa_asfdmazur', 'ewamazur123'),
+(170, 'Krzysztof', 'Jankowski', 12, 'krzysasdfztof_jankowski1', 'krzysztofjankowski123'),
+(171, 'Agnieszka', 'Nowak', 12, 'agniessfadzka_nowak1', 'agnieszkanowak123'),
+(172, 'Piotr', 'Kamiński', 12, 'piotrasdf_kamiński1', 'piotrkamiński123'),
+(173, 'Tomasz', 'Lewandowski', 12, 'tomaasdfsz_lewandowski1', 'tomaszlewandowski123'),
+(174, 'Tomasz', 'Mazur', 12, 'tomaszasdf_mazur1', 'tomaszmazur123'),
+(175, 'Ewa', 'Wiśniewski', 12, 'ewa_asdfwiśniewski', 'ewawiśniewski123'),
+(176, 'Jan', 'Woźniak', 12, 'jan_woasdfźniak', 'janwoźniak123'),
+(177, 'Anna', 'Dąbrowski', 12, 'annasdfa_dąbrowski1', 'annadąbrowski123'),
+(178, 'Ewa', 'Mazur', 12, 'ewa_masdfazur1', 'ewamazur123'),
+(179, 'Piotr', 'Zieliński', 12, 'piotfasdfr_zieliński', 'piotrzieliński123'),
+(180, 'Marek', 'Kowalczyk', 12, 'marekfasdf_kowalczyk', 'marekkowalczyk123'),
+(181, 'Magdalena', 'Krawczyk', 13, 'magdfasdfalena_krawczyk', 'magdalenakrawczyk123'),
+(182, 'Marek', 'Mazur', 13, 'marek_masdfazur', 'marekmazur123'),
+(183, 'Agnieszka', 'Krawczyk', 13, 'agniasdfaedszka_krawczyk', 'agnieszkakrawczyk123'),
+(184, 'Ewa', 'Krawczyk', 13, 'ewa_krawcasdfasdazdyk2', 'ewakrawczyk123'),
+(185, 'Agnieszka', 'Kozłowski', 13, 'agndieszkadd_kozłowski', 'agnieszkakozłowski123'),
+(186, 'Ewa', 'Mazur', 13, 'ewa_mazuasdaasdadsdar2', 'ewamazur123'),
+(187, 'Paweł', 'Kowalski', 13, 'paweł_kowalskid', 'pawełkowalski123'),
+(188, 'Piotr', 'Woźniak', 13, 'piotr_woźniak2d', 'piotrwoźniak123'),
+(189, 'Maria', 'Kozłowski', 13, 'maria_kozłodwski', 'mariakozłowski123'),
+(190, 'Maria', 'Wiśniewski', 13, 'maria_wiśdniewski2', 'mariawiśniewski123'),
+(191, 'Marek', 'Krawczyk', 13, 'marek_krawdczyk1', 'marekkrawczyk123'),
+(192, 'Tomasz', 'Kozłowski', 13, 'tomasz_dkozłowski3', 'tomaszkozłowski123'),
+(193, 'Paweł', 'Dąbrowski', 13, 'paweł_dddąbrowski', 'pawełdąbrowski123'),
+(194, 'Maria', 'Lewandowski', 13, 'maddria_lewandowski1', 'marialewandowski123'),
+(195, 'Ewa', 'Wiśniewski', 13, 'edwa_wiśniewski1', 'ewawiśniewski123'),
+(196, 'Ewa', 'Szymański', 14, 'ewa_szydddmański', 'ewaszymański123'),
+(197, 'Michał', 'Nowak', 14, 'michał_nddowak1', 'dmichałnowak123'),
+(198, 'Maria', 'Zieliński', 14, 'maria_zielińsdki2', 'mariazieliński123'),
+(199, 'Krzysztof', 'Kozłowski', 14, 'krzysztodf_kozłowski1', 'krzysztofkozłowski123'),
+(200, 'Paweł', 'Lewandowski', 14, 'paweł_lewdandowski', 'pawełlewandowski123'),
+(201, 'Piotr', 'Kamiński', 14, 'piotr_kamińdski2', 'piotrkamiński123'),
+(202, 'Katarzyna', 'Kowalski', 14, 'katarzdyna_kowalski1', 'katarzynakowalski123'),
+(203, 'Zofia', 'Kowalczyk', 14, 'zofia_kowalczyk2', 'zofiakowalczyk123'),
+(204, 'Jan', 'Woźniak', 14, 'jan_woźnidddddak1', 'janwoźniak123'),
+(205, 'Magdalena', 'Wójcik', 14, 'maddgdalena_wójcik2', 'magdalenawójcik123'),
+(206, 'Piotr', 'Woźniak', 14, 'piotdr_woźnidak3', 'piotrwoźniak123'),
+(207, 'Piotr', 'Kowalski', 14, 'pidotr_kowalski', 'piotrkowalski123'),
+(208, 'Agnieszka', 'Mazur', 14, 'agnieszka_mazudr', 'agnieszkamazur123'),
+(209, 'Katarzyna', 'Kamiński', 14, 'katarzyna_kamiński', 'katarzynakamiński123'),
+(210, 'Maria', 'Kowalski', 14, 'masria_kowalski1', 'mariakowalski123'),
+(211, 'Anna', 'Mazur', 15, 'anna_mazur1', 'annamazur123'),
+(212, 'Anna', 'Kowalski', 15, 'anna_kowalskssssi1', 'annakowalski123'),
+(213, 'Zofia', 'Wójcik', 15, 'zofia_wsójcik1', 'zofiawójcik123'),
+(214, 'Agnieszka', 'Jankowski', 15, 'agnieszka_jankowski', 'agnieszkajankowski123'),
+(215, 'Paweł', 'Dąbrowski', 15, 'paweł_dąbrowski1', 'pawełdąbrowski123'),
+(216, 'Joanna', 'Mazur', 15, 'joanna_asdfasfmazur1', 'joandasfnamazur123'),
+(217, 'Krzysztof', 'Kamiński', 15, 'krzysztodff_kafasmiński1', 'krzysztofkamiński123'),
+(218, 'Maria', 'Kozłowski', 15, 'maria_kozłofaasdfsdwski1', 'mariakozłowski123'),
+(219, 'Zofia', 'Lewandowski', 15, 'zoasdfasdfia_leafwandowski', 'zofialewandowski123'),
+(220, 'Michał', 'Mazur', 15, 'michsdfał_mazur', 'michałmazur123'),
+(221, 'Zofia', 'Krawczyk', 15, 'dfzofia_krawczyk', 'zofiakrawczyk123'),
+(222, 'Ewa', 'Nowak', 15, 'ewaas_nowak', 'ewanowak123'),
+(223, 'Paweł', 'Kowalski', 15, 'pawełfasdsfa_kowalski1', 'pawełkowalski123'),
+(224, 'Piotr', 'Jankowski', 15, 'piotr_jsanksowskai', 'piotrjankowski123'),
+(225, 'Maria', 'Lewandowski', 15, 'maria_lewsandowski2', 'marialewandowski123'),
+(226, 'Anna', 'Wójcik', 16, 'anna_wójcik1', 'sasaannawójcik123'),
+(227, 'Agnieszka', 'Lewandowski', 16, 'agnieassszka_lewandowski2', 'agnieszkalewandowski123'),
+(228, 'Krzysztof', 'Krawczyk', 16, 'krzysztofs_krawczyk', 'krzysztofkrawczyk123'),
+(229, 'Agnieszka', 'Kozłowski', 16, 'agniesazka_kozłowski1', 'agnieszkakozłowski123'),
+(230, 'Paweł', 'Lewandowski', 16, 'paweł_laewandowski1', 'pawełlewandowski123'),
+(231, 'Michał', 'Szymański', 16, 'michał_aszymański1', 'michałszymański123'),
+(232, 'Marek', 'Kowalski', 16, 'marek_koawalski', 'marekkowalski123'),
+(233, 'Paweł', 'Nowak', 16, 'paweł_nowaaak', 'pawełnowak123'),
+(234, 'Katarzyna', 'Woźniak', 16, 'kaatarzyna_woźniak1', 'katarzynawoźniak123'),
+(235, 'Anna', 'Kowalski', 16, 'anna_akowalski2', 'annakowalski123'),
+(236, 'Anna', 'Lewandowski', 16, 'aanna_lewandowski', 'annalewandowski123'),
+(237, 'Joanna', 'Woźniak', 16, 'joaanna_woźniak', 'joannawoźniak123'),
+(238, 'Anna', 'Krawczyk', 16, 'anana_krawczyk', 'annakrawczyk123'),
+(239, 'Piotr', 'Wiśniewski', 16, 'piotr_wiśniewski1', 'piotrwiśniewski123'),
+(240, 'Marek', 'Woźniak', 16, 'marek_woźniaaak', 'marekwoźniak123'),
+(241, 'Tomasz', 'Szymański', 17, 'tomasz_szymaaaański2', 'tomaszszymański123'),
+(242, 'Magdalena', 'Lewandowski', 17, 'maaaqaagdalena_lewandowski2', 'magdalenalewandowski123'),
+(243, 'Ewa', 'Zieliński', 17, 'ewa_zielaiński1', 'ewazieliński123'),
+(244, 'Paweł', 'Kamiński', 17, 'paweł_kaamińsaaki1', 'pawełkamiński123'),
+(245, 'Michał', 'Mazur', 17, 'michał_mazuar1a', 'michałmazur123'),
+(246, 'Magdalena', 'Mazur', 17, 'magdalenaa_mazur', 'magdalenamazur123'),
+(247, 'Katarzyna', 'Lewandowski', 17, 'kaaaatarzyna_lewandowski', 'katarzynalewandowski123'),
+(248, 'Marek', 'Kowalczyk', 17, 'marek_kowalaczyk1', 'marekkowalczyk123'),
+(249, 'Maria', 'Kowalski', 17, 'maria_koawalski2', 'mariakowalski123'),
+(250, 'Ewa', 'Kozłowski', 17, 'ewa_kozaałowski', 'ewakozłowski123'),
+(251, 'Maria', 'Lewandowski', 17, 'maaria_lewandowski3', 'marialewandowski123'),
+(252, 'Marek', 'Zieliński', 17, 'maraek_zieliński1', 'marekzieliński123'),
+(253, 'Jan', 'Kamiński', 17, 'jan_kaamiński', 'jankamiński123'),
+(254, 'Zofia', 'Kamiński', 17, 'zoafia_kamiński', 'zofiakamiński123'),
+(255, 'Tomasz', 'Kamiński', 17, 'tomasz_kamiński', 'tomaszkamiński123'),
+(256, 'Szymon', 'Żmuda', 1, 'szymon_Żmuda506', 'szymonŻmuda747'),
+(257, 'Szymon', 'Żmuda', 1, 'szymon_Żmuda654', 'szymonŻmuda851');
+
 --
 -- Indeksy dla zrzutów tabel
 --
@@ -859,6 +1472,24 @@ INSERT INTO `typy_szkol` (`id`, `nazwa`) VALUES
 ALTER TABLE `klasy`
   ADD PRIMARY KEY (`id`),
   ADD KEY `typ_szkoly_id` (`typ_szkoly_id`);
+
+--
+-- Indeksy dla tabeli `nauczyciele`
+--
+ALTER TABLE `nauczyciele`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`),
+  ADD KEY `id_przedmiotu` (`id_przedmiotu`),
+  ADD KEY `id_klasy_wychowawca` (`id_klasy_wychowawca`);
+
+--
+-- Indeksy dla tabeli `oceny`
+--
+ALTER TABLE `oceny`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_ucznia` (`id_ucznia`),
+  ADD KEY `id_przedmiotu` (`id_przedmiotu`),
+  ADD KEY `id_nauczyciela` (`id_nauczyciela`);
 
 --
 -- Indeksy dla tabeli `plan_lekcji`
@@ -888,6 +1519,14 @@ ALTER TABLE `typy_szkol`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeksy dla tabeli `uczniowie`
+--
+ALTER TABLE `uczniowie`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`),
+  ADD KEY `id_klasy` (`id_klasy`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -896,6 +1535,18 @@ ALTER TABLE `typy_szkol`
 --
 ALTER TABLE `klasy`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `nauczyciele`
+--
+ALTER TABLE `nauczyciele`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT for table `oceny`
+--
+ALTER TABLE `oceny`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
 
 --
 -- AUTO_INCREMENT for table `plan_lekcji`
@@ -919,7 +1570,13 @@ ALTER TABLE `sale`
 -- AUTO_INCREMENT for table `typy_szkol`
 --
 ALTER TABLE `typy_szkol`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `uczniowie`
+--
+ALTER TABLE `uczniowie`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
 
 --
 -- Constraints for dumped tables
@@ -932,12 +1589,33 @@ ALTER TABLE `klasy`
   ADD CONSTRAINT `klasy_ibfk_1` FOREIGN KEY (`typ_szkoly_id`) REFERENCES `typy_szkol` (`id`);
 
 --
+-- Constraints for table `nauczyciele`
+--
+ALTER TABLE `nauczyciele`
+  ADD CONSTRAINT `nauczyciele_ibfk_1` FOREIGN KEY (`id_przedmiotu`) REFERENCES `przedmioty` (`id`),
+  ADD CONSTRAINT `nauczyciele_ibfk_2` FOREIGN KEY (`id_klasy_wychowawca`) REFERENCES `klasy` (`id`);
+
+--
+-- Constraints for table `oceny`
+--
+ALTER TABLE `oceny`
+  ADD CONSTRAINT `oceny_ibfk_1` FOREIGN KEY (`id_ucznia`) REFERENCES `uczniowie` (`id`),
+  ADD CONSTRAINT `oceny_ibfk_2` FOREIGN KEY (`id_przedmiotu`) REFERENCES `przedmioty` (`id`),
+  ADD CONSTRAINT `oceny_ibfk_3` FOREIGN KEY (`id_nauczyciela`) REFERENCES `nauczyciele` (`id`);
+
+--
 -- Constraints for table `plan_lekcji`
 --
 ALTER TABLE `plan_lekcji`
   ADD CONSTRAINT `plan_lekcji_ibfk_1` FOREIGN KEY (`klasa_id`) REFERENCES `klasy` (`id`),
   ADD CONSTRAINT `plan_lekcji_ibfk_2` FOREIGN KEY (`przedmiot_id`) REFERENCES `przedmioty` (`id`),
   ADD CONSTRAINT `plan_lekcji_ibfk_3` FOREIGN KEY (`sala_id`) REFERENCES `sale` (`id`);
+
+--
+-- Constraints for table `uczniowie`
+--
+ALTER TABLE `uczniowie`
+  ADD CONSTRAINT `uczniowie_ibfk_1` FOREIGN KEY (`id_klasy`) REFERENCES `klasy` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

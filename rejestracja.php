@@ -1,5 +1,10 @@
 <?php
-$komunikat = "";
+$komunikat = '';
+if (isset($_GET['sukces']) && $_GET['sukces'] == 1) {
+    $login = htmlspecialchars($_GET['login'] ?? '');
+    $haslo = htmlspecialchars($_GET['haslo'] ?? '');
+    $komunikat = "Dziękujemy! Twoje konto ucznia zostało utworzone. <br> Login: $login <br> Hasło: $haslo";
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $imie = trim($_POST['imie'] ?? '');
@@ -7,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $telefon = trim($_POST['telefon'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $stanowisko = $_POST['stanowisko'] ?? '';
+    $klasa_nazwa = trim($_POST['klasa'] ?? '');
 
     if (!preg_match("/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u", $imie)) {
         $komunikat = "Imię może zawierać tylko litery.";
@@ -18,23 +24,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $komunikat = "Nieprawidłowy adres e-mail.";
     } elseif ($stanowisko !== "uczen" && $stanowisko !== "nauczyciel") {
         $komunikat = "Wybierz stanowisko.";
-    } else {
-        $conn = new mysqli("localhost", "root", "", "dziennik");
-        if ($conn->connect_error) {
-            die("Błąd połączenia: " . $conn->connect_error);
-        }
-
-        $stmt = $conn->prepare("INSERT INTO nowe_konta (imie, nazwisko, numer_telefonu, mail, stanowisko) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $imie, $nazwisko, $telefon, $email, $stanowisko);
-
-        if ($stmt->execute()) {
-            $komunikat = "Dziękujemy! Skontaktujemy się z Tobą wkrótce.";
+    } elseif ($stanowisko === "uczen") {
+        if (empty($klasa_nazwa)) {
+            $komunikat = "Proszę podać klasę.";
         } else {
-            $komunikat = "Wystąpił błąd przy dodawaniu danych.";
+            $conn = new mysqli("localhost", "root", "", "szkola");
+            if ($conn->connect_error) {
+                die("Błąd połączenia: " . $conn->connect_error);
+            }
+            $stmt = $conn->prepare("SELECT id FROM klasy WHERE nazwa = ?");
+            $stmt->bind_param("s", $klasa_nazwa);
+            $stmt->execute();
+            $stmt->bind_result($id_klasy);
+            if ($stmt->fetch()) {
+                $stmt->close();
+                // Generuj login i hasło
+                $login = strtolower($imie . "_" . $nazwisko . rand(100,999));
+                $haslo = strtolower($imie . $nazwisko . rand(100,999));
+                // Dodaj ucznia
+                $stmt2 = $conn->prepare("INSERT INTO uczniowie (imie, nazwisko, id_klasy, login, haslo) VALUES (?, ?, ?, ?, ?)");
+                $stmt2->bind_param("ssiss", $imie, $nazwisko, $id_klasy, $login, $haslo);
+                if ($stmt2->execute()) {
+                    $stmt2->close();
+                    $conn->close();
+                    header("Location: rejestracja.php?sukces=1&login=$login&haslo=$haslo");
+                    exit();
+                } else {
+                    $komunikat = "Błąd przy dodawaniu ucznia.";
+                }
+                $stmt2->close();
+            } else {
+                $komunikat = "Nie znaleziono takiej klasy!";
+                $stmt->close();
+            }
+            $conn->close();
         }
-
-        $stmt->close();
-        $conn->close();
     }
 }
 ?>
@@ -201,22 +225,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <label for="imie"><i class="fas fa-user"></i> Imię:</label>
                     <input type="text" name="imie" id="imie" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="nazwisko"><i class="fas fa-user-tag"></i> Nazwisko:</label>
                     <input type="text" name="nazwisko" id="nazwisko" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="telefon"><i class="fas fa-phone"></i> Numer telefonu:</label>
                     <input type="text" name="telefon" id="telefon" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="email"><i class="fas fa-envelope"></i> Email:</label>
                     <input type="email" name="email" id="email" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="position"><i class="fas fa-briefcase"></i> Stanowisko:</label>
                     <select name="stanowisko" id="position" required>
@@ -225,9 +245,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <option value="nauczyciel">Nauczyciel</option>
                     </select>
                 </div>
-                
+                <div class="form-group" id="klasa-group" style="display:none;">
+                    <label for="klasa"><i class="fas fa-school"></i> Klasa (np. 1A):</label>
+                    <input type="text" name="klasa" id="klasa">
+                </div>
                 <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Zarejestruj się</button>
-                
                 <div class="form-footer">
                     <a href="dziennik.php"><i class="fas fa-sign-in-alt"></i> Masz już konto? Zaloguj się</a>
                 </div>
@@ -262,10 +284,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <p><i class="fas fa-envelope"></i> kontakt@akademiawiedzy.edu.pl</p>
             </div>
         </div>
-        
         <div class="footer-bottom">
             <p>&copy; 2025 Akademia Wiedzy. Wszelkie prawa zastrzeżone.</p>
         </div>
     </footer>
 </body>
+<script>
+        document.getElementById('position').addEventListener('change', function() {
+            var klasaGroup = document.getElementById('klasa-group');
+            if (this.value === 'uczen') {
+                klasaGroup.style.display = 'block';
+                document.getElementById('klasa').required = true;
+            } else {
+                klasaGroup.style.display = 'none';
+                document.getElementById('klasa').required = false;
+            }
+        });
+</script>
 </html>
