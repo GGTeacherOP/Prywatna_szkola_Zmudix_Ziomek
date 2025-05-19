@@ -337,7 +337,6 @@ $wszyscy_uczniowie = $result->fetch_all(MYSQLI_ASSOC);
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">

@@ -1,3 +1,39 @@
+<?php
+// Połączenie z bazą danych
+$conn = new mysqli('localhost', 'root', '', 'szkola');
+
+// Sprawdzenie połączenia
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Pobranie zdjęć z bazy danych, pomijając ID = 3 (logo)
+$sql = "SELECT * FROM zdjecia WHERE ID != 3";
+
+$result = $conn->query($sql);
+
+$images = array();
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $images[] = $row;
+    }
+}
+
+
+
+$__xq = $conn->query("SELECT dane_zdjecia, typ_mime FROM zdjecia WHERE ID = 3");
+
+$__imgTag = '';
+if ($__xq && $__row = $__xq->fetch_assoc()) {
+    $__imgData = base64_encode($__row['dane_zdjecia']);
+    $__mime = htmlspecialchars($__row['typ_mime']);
+    $__imgTag = '<img src="data:' . $__mime . ';base64,' . $__imgData . '" alt="Logo Akademii Wiedzy">';
+}
+
+$conn->close(); 
+?>
+
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -137,7 +173,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="szkola.html"><i class="fas fa-home"></i> Strona główna</a></li>
+                <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
                 <li><a href="plan.html"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
                 <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
@@ -145,31 +181,20 @@
         </nav>
     </header>
     <div class="school-logo">
-        <img src="zdjecia/logo-removebg-preview.png" alt="Logo Akademii Wiedzy">
+    <?php echo $__imgTag; ?>
     </div>
+
+
+
     <section class="image-gallery">
         <div class="gallery-container">
             <div class="gallery-slider">
-                <div class="gallery-slide active">
-                    <img src="zdjecia/szkola.jpg" alt="Budynek szkoły">
-                    <div class="slide-caption">Główny budynek Akademii Wiedzy</div>
+                <?php foreach ($images as $index => $image): ?>
+                <div class="gallery-slide <?php echo $index === 0 ? 'active' : ''; ?>">
+                    <img src="data:<?php echo $image['typ_mime']; ?>;base64,<?php echo base64_encode($image['dane_zdjecia']); ?>" alt="<?php echo htmlspecialchars($image['opis']); ?>">
+                    <div class="slide-caption"><?php echo htmlspecialchars($image['opis']); ?></div>
                 </div>
-                <div class="gallery-slide">
-                    <img src="zdjecia/sala.png" alt="Sala lekcyjna">
-                    <div class="slide-caption">Nowoczesna sala lekcyjna</div>
-                </div>
-                <div class="gallery-slide">
-                    <img src="zdjecia/ludzie.png" alt="Biblioteka">
-                    <div class="slide-caption">Nasi Uczniowie</div>
-                </div>
-                <div class="gallery-slide">
-                    <img src="zdjecia/boisko.jpg" alt="Sala lekcyjna">
-                    <div class="slide-caption">Nasze Boisko</div>
-                </div>
-                <div class="gallery-slide">
-                    <img src="zdjecia/hala_sportowa.jpg" alt="Sala lekcyjna">
-                    <div class="slide-caption">Nasza Hala Sportowa</div>
-                </div>
+                <?php endforeach; ?>
                 
                 <div class="gallery-nav">
                     <button onclick="prevSlide()">❮</button>
@@ -178,11 +203,9 @@
             </div>
             
             <div class="gallery-dots">
-                <span class="dot active" onclick="goToSlide(0)"></span>
-                <span class="dot" onclick="goToSlide(1)"></span>
-                <span class="dot" onclick="goToSlide(2)"></span>
-                <span class="dot" onclick="goToSlide(3)"></span>
-                <span class="dot" onclick="goToSlide(4)"></span>
+                <?php foreach ($images as $index => $image): ?>
+                <span class="dot <?php echo $index === 0 ? 'active' : ''; ?>" onclick="goToSlide(<?php echo $index; ?>)"></span>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
