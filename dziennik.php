@@ -1,6 +1,15 @@
 <?php
 session_start();
+if (isset($_SESSION['uczen_id'])) {
+    header("Location: panel_ucznia.php");
+    exit();
+} 
+elseif (isset($_SESSION['nauczyciel_id'])) {
+    header("Location: panel_nauczyciela.php");
+    exit();
+}
 
+$query = "SELECT * FROM uczniowie WHERE id = ?";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $host = "localhost";
     $user = "root";
@@ -37,29 +46,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $result = $stmt->get_result();
 
         if ($result->num_rows === 1) {
-            $_SESSION['proby'] = 0;
-            $user = $result->fetch_assoc(); // pobiera dane użytkownika
-            if ($rola === 'uczen') {
-                $_SESSION['uczen_id'] = $user['id'];
-                $_SESSION['id_klasy'] = $user['id_klasy']; // jeśli używasz gdzieś klasy ucznia
-            } else {
-                $_SESSION['nauczyciel_id'] = $user['id'];
-            }
-        
-            $_SESSION['login'] = $login;
-            $_SESSION['rola'] = $rola;
-
-            header("Location: " . ($rola === 'uczen' ? "panel_ucznia.php" : "panel_nauczyciela.php"));
-            exit;
-        } else {
-            $_SESSION['proby']++;
-            $_SESSION['ostatnia_proba'] = time();
-            $komunikat = "ZŁY LOGIN lub ZŁE HASŁO. Spróbuj ponownie.";
-        }
+    $_SESSION['proby'] = 0;
+    $user = $result->fetch_assoc(); // pobiera dane użytkownika
+    
+    if ($rola === 'uczen') {
+        $_SESSION['uczen_id'] = $user['id'];
+        $_SESSION['id_klasy'] = $user['id_klasy'];
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['login'] = $login;
+        $_SESSION['rola'] = $rola;
+        header("Location: panel_ucznia.php");
+        exit();
+    } else {
+        $_SESSION['nauczyciel_id'] = $user['id'];
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['login'] = $login;
+        $_SESSION['rola'] = $rola;
+        header("Location: panel_nauczyciela.php");
+        exit();
+    }
+    } else {
+    $_SESSION['proby']++;
+    $_SESSION['ostatnia_proba'] = time();
+    $komunikat = "ZŁY LOGIN lub ZŁE HASŁO. Spróbuj ponownie.";
+}
     } else {
         $komunikat = "Wszystkie pola są wymagane.";
     }
-
     $conn->close();
 }
 ?>
