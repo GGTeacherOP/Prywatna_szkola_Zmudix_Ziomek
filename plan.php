@@ -1,3 +1,27 @@
+<?php
+// Połączenie z bazą danych
+$conn = new mysqli('localhost', 'root', '', 'szkola');
+
+// Sprawdzenie połączenia
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+
+
+
+$__xq = $conn->query("SELECT dane_zdjecia, typ_mime FROM zdjecia WHERE ID = 3");
+
+$__imgTag = '';
+if ($__xq && $__row = $__xq->fetch_assoc()) {
+    $__imgData = base64_encode($__row['dane_zdjecia']);
+    $__mime = htmlspecialchars($__row['typ_mime']);
+    $__imgTag = '<img src="data:' . $__mime . ';base64,' . $__imgData . '" alt="Logo Akademii Wiedzy">';
+}
+
+$conn->close(); 
+?>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -288,7 +312,7 @@
 </head>
 <body>
     <div class="school-logo">
-        <img src="zdjecia/logo-removebg-preview.png" alt="Logo Akademii Wiedzy">
+        <?php echo $__imgTag; ?>
     </div>
     <header>
         <div class="header-container">
@@ -303,8 +327,8 @@
         </div>
         <nav>
             <ul>
-                <li><a href="szkola.html"><i class="fas fa-home"></i> Strona główna</a></li>
-                <li><a href="plan.html" class="active-nav"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
+                <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
+                <li><a href="plan.php" class="active-nav"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
                 <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
             </ul>

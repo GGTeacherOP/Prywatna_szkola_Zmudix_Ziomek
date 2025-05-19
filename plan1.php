@@ -168,7 +168,7 @@ $result = $conn->query($sql);
     
 
     <div class="actions">
-        <a href="plan.html">Wróć do listy klas</a>
+        <a href="plan.php">Wróć do listy klas</a>
         <a href="#" onclick="window.print(); return false;">Drukuj plan</a>
     </div>
 

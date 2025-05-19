@@ -199,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
         <nav>
             <ul>
-                <li><a href="szkola.html"><i class="fas fa-home"></i> Strona główna</a></li>
+                <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
                 <li><a href="plan.html"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
                 <li><a href="#zapisz" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>

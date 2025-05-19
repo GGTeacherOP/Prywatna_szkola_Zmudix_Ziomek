@@ -337,7 +337,6 @@ $wszyscy_uczniowie = $result->fetch_all(MYSQLI_ASSOC);
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -349,10 +348,10 @@ $wszyscy_uczniowie = $result->fetch_all(MYSQLI_ASSOC);
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="szkola.html"><i class="fas fa-home"></i> Strona główna</a>
+                        <a class="nav-link" href="szkola.php"><i class="fas fa-home"></i> Strona główna</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="plan.html"><i class="fas fa-calendar-alt"></i> Plan lekcji</a>
+                        <a class="nav-link" href="plan.php"><i class="fas fa-calendar-alt"></i> Plan lekcji</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a>

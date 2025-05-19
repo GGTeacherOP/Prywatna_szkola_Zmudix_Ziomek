@@ -515,8 +515,8 @@ $conn->close();
         </div>
         <nav>
             <ul>
-                <li><a href="szkola.html"><i class="fas fa-home"></i> Strona główna</a></li>
-                <li><a href="plan1.php"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
+                <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
+                <li><a href="plan.php"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php" class="active-nav"><i class="fas fa-book"></i> Dziennik</a></li>
             </ul>
         </nav>

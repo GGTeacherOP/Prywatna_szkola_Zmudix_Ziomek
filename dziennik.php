@@ -8,6 +8,10 @@ elseif (isset($_SESSION['nauczyciel_id'])) {
     header("Location: panel_nauczyciela.php");
     exit();
 }
+elseif (isset($_SESSION['admin_id'])) {
+    header("Location: paneladministratora.php");
+    exit();
+}
 
 $query = "SELECT * FROM uczniowie WHERE id = ?";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -38,7 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $rola = $_POST['rola'] ?? '';
 
     if ($login && $haslo && $rola) {
-        $tabela = $rola === 'uczen' ? 'uczniowie' : 'nauczyciele';
+        if ($rola === 'administrator') {
+            $tabela = 'administratorzy';
+        } else {
+            $tabela = $rola === 'uczen' ? 'uczniowie' : 'nauczyciele';
+        }
+        
         $sql = "SELECT * FROM $tabela WHERE login = ? AND haslo = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ss", $login, $haslo);
@@ -46,30 +55,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $result = $stmt->get_result();
 
         if ($result->num_rows === 1) {
-    $_SESSION['proby'] = 0;
-    $user = $result->fetch_assoc(); // pobiera dane użytkownika
-    
-    if ($rola === 'uczen') {
-        $_SESSION['uczen_id'] = $user['id'];
-        $_SESSION['id_klasy'] = $user['id_klasy'];
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['login'] = $login;
-        $_SESSION['rola'] = $rola;
-        header("Location: panel_ucznia.php");
-        exit();
-    } else {
-        $_SESSION['nauczyciel_id'] = $user['id'];
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['login'] = $login;
-        $_SESSION['rola'] = $rola;
-        header("Location: panel_nauczyciela.php");
-        exit();
-    }
-    } else {
-    $_SESSION['proby']++;
-    $_SESSION['ostatnia_proba'] = time();
-    $komunikat = "ZŁY LOGIN lub ZŁE HASŁO. Spróbuj ponownie.";
-}
+            $_SESSION['proby'] = 0;
+            $user = $result->fetch_assoc();
+            
+            if ($rola === 'uczen') {
+                $_SESSION['uczen_id'] = $user['id'];
+                $_SESSION['id_klasy'] = $user['id_klasy'];
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['login'] = $login;
+                $_SESSION['rola'] = $rola;
+                header("Location: panel_ucznia.php");
+                exit();
+            } elseif ($rola === 'nauczyciel') {
+                $_SESSION['nauczyciel_id'] = $user['id'];
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['login'] = $login;
+                $_SESSION['rola'] = $rola;
+                header("Location: panel_nauczyciela.php");
+                exit();
+            } elseif ($rola === 'administrator') {
+                $_SESSION['admin_id'] = $user['ID'];
+                $_SESSION['user_id'] = $user['ID'];
+                $_SESSION['login'] = $login;
+                $_SESSION['rola'] = $rola;
+                header("Location: paneladministratora.php");
+                exit();
+            }
+        } else {
+            $_SESSION['proby']++;
+            $_SESSION['ostatnia_proba'] = time();
+            $komunikat = "ZŁY LOGIN lub ZŁE HASŁO. Spróbuj ponownie.";
+        }
     } else {
         $komunikat = "Wszystkie pola są wymagane.";
     }
@@ -88,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Dodatkowe style specyficzne dla dziennik.php */
         .login-container {
             max-width: 500px;
             margin: 3rem auto;
@@ -215,8 +230,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
         <nav>
             <ul>
-                <li><a href="szkola.html"><i class="fas fa-home"></i> Strona główna</a></li>
-                <li><a href="plan.html"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
+                <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
+                <li><a href="plan.php"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php" class="active-nav"><i class="fas fa-book"></i> Dziennik</a></li>
                 <li><a href="#zapisz" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
             </ul>
@@ -247,6 +262,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <input type="password" name="haslo" id="haslo" required>
                 </div>
                 
+                
                 <div class="radio-group">
                     <label>Kim jesteś?</label><br>
                     <label>
@@ -255,12 +271,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <label>
                         <input type="radio" name="rola" value="nauczyciel"> <i class="fas fa-chalkboard-teacher"></i> Nauczyciel
                     </label>
+                    <label>
+                        <input type="radio" name="rola" value="administrator"> <i class="fas fa-user-shield"></i> Administrator
+                    </label>
                 </div>
                 
                 <button type="submit" id="zaloguj"><i class="fas fa-sign-in-alt"></i> Zaloguj się</button>
                 
                 <div class="form-footer">
-                    <a href="#"><i class="fas fa-question-circle"></i> Zapomniałeś hasła?</a> | 
                     <a href="rejestracja.php"><i class="fas fa-user-plus"></i> Zarejestruj się</a>
                 </div>
             </form>
