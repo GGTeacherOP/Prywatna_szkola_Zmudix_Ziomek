@@ -6,7 +6,13 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: dziennik.php");
     exit();
 }
+
 $conn = new mysqli('localhost', 'root','', 'szkola');
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Pobranie danych nauczyciela
 $nauczyciel_id = $_SESSION['user_id'];
 $query = "SELECT * FROM nauczyciele WHERE id = ?";
@@ -43,26 +49,50 @@ $przedmioty = $result->fetch_all(MYSQLI_ASSOC);
 
 // Obsługa dodawania ocen
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['dodaj_ocene'])) {
-    $uczen_id = $_POST['uczen_id'];
-    $przedmiot_id = $_POST['przedmiot_id'];
-    $ocena = $_POST['ocena'];
-    $opis = $_POST['opis'];
-    $data_dodania = date('Y-m-d H:i:s'); // aktualna data i godzina
-    
-    $query = "INSERT INTO oceny (id_ucznia, id_przedmiotu, id_nauczyciela, ocena, opis, data_dodania) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($query);
-    
-    if (!$stmt) {
-        die("Błąd przygotowania zapytania: " . $conn->error);
-    }
-    
-    $stmt->bind_param("iiisss", $uczen_id, $przedmiot_id, $nauczyciel_id, $ocena, $opis, $data_dodania);
-    
-    if ($stmt->execute()) {
-        $success_msg = "Ocena została dodana pomyślnie!";
+    // Walidacja tokena CSRF
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $error_msg = "Nieprawidłowy token zabezpieczający";
     } else {
-        $error_msg = "Wystąpił błąd podczas dodawania oceny: " . $stmt->error;
+        $uczen_id = (int)$_POST['uczen_id'];
+        $przedmiot_id = (int)$_POST['przedmiot_id'];
+        $ocena = (int)$_POST['ocena'];
+        $opis = $conn->real_escape_string($_POST['opis']);
+        $data_dodania = date('Y-m-d H:i:s');
+        $nauczyciel_id = (int)$_SESSION['user_id'];
+        
+        // Sprawdź czy ocena już istnieje (zabezpieczenie przed duplikatami)
+        $check_query = "SELECT id FROM oceny WHERE id_ucznia = ? AND id_przedmiotu = ? AND id_nauczyciela = ? AND ocena = ? AND opis = ? LIMIT 1";
+        $stmt = $conn->prepare($check_query);
+        $stmt->bind_param("iiiis", $uczen_id, $przedmiot_id, $nauczyciel_id, $ocena, $opis);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $error_msg = "Ta ocena już istnieje w systemie";
+        } else {
+            // Dodanie nowej oceny
+            $query = "INSERT INTO oceny (id_ucznia, id_przedmiotu, id_nauczyciela, ocena, opis, data_dodania) VALUES (?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($query);
+            
+            if ($stmt) {
+                $stmt->bind_param("iiiiss", $uczen_id, $przedmiot_id, $nauczyciel_id, $ocena, $opis, $data_dodania);
+                
+                if ($stmt->execute()) {
+                    $_SESSION['success_msg'] = "Ocena została dodana pomyślnie!";
+                    header("Location: ".$_SERVER['PHP_SELF']);
+                    exit();
+                } else {
+                    $error_msg = "Błąd bazy danych: " . $stmt->error;
+                }
+            } else {
+                $error_msg = "Błąd przygotowania zapytania: " . $conn->error;
+            }
+        }
     }
+}
+if (isset($_SESSION['success_msg'])) {
+    $success_msg = $_SESSION['success_msg'];
+    unset($_SESSION['success_msg']);
 }
 
 // Pobranie uczniów z klasy wychowawcy (jeśli jest wychowawcą)
@@ -427,6 +457,7 @@ $wszyscy_uczniowie = $result->fetch_all(MYSQLI_ASSOC);
                         
                         <form method="POST">
                             <div class="row">
+                            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                 <div class="col-md-6 mb-3">
                                     <label for="uczen_id" class="form-label">Uczeń:</label>
                                     <select class="form-select" id="uczen_id" name="uczen_id" required>
