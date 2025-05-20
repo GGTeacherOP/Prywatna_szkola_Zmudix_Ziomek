@@ -8,7 +8,7 @@ if ($conn->connect_error) {
 }
 
 // Pobranie zdjęć z bazy danych, pomijając ID = 3 (logo)
-$sql = "SELECT * FROM zdjecia WHERE ID != 3";
+$sql = "SELECT * FROM zdjecia WHERE ID != 3 and ID !=7";
 
 $result = $conn->query($sql);
 
@@ -174,11 +174,7 @@ $conn->close();
         <nav>
             <ul>
                 <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
-<<<<<<< HEAD
                 <li><a href="plan.php"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
-=======
-                <li><a href="plan.html"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
->>>>>>> 2f61e3d4a5a92dcc76d07ce1159b948dd02a66d1
                 <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
                 <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
             </ul>
@@ -841,12 +837,12 @@ $conn->close();
                 <h4>Szybkie linki</h4>
                 <div class="left-section">
                     <ul>
-                        <li onclick="showSection(1)"><a href="#aktualnosci"><i class="fas fa-newspaper"></i> Aktualności</a></li>
-                        <li onclick="showSection(2)"><a href="#liceum"><i class="fas fa-graduation-cap"></i> Liceum</a></li>
-                        <li onclick="showSection(3)"><a href="#technikum"><i class="fas fa-laptop-code"></i> Technikum</a></li>
-                        <li onclick="showSection(4)"><a href="#szkola-podstawowa"><i class="fas fa-book-open"></i> Szkoła Podstawowa</a></li>
-                        <li onclick="showSection(5)"><a href="#przedszkole"><i class="fas fa-child"></i> Przedszkole</a></li>
-                        <li onclick="showSection(6)"><a href="#Kontakt"><i class="fas fa-envelope"></i> Kontakt</a></li>
+                    <li onclick="showSection(1)" class="active-nav"><a href="#aktualnosci"><i class="fas fa-newspaper"></i> Aktualności</a></li>
+                    <li onclick="showSection(2)"><a href="#liceum"><i class="fas fa-graduation-cap"></i> Liceum</a></li>
+                    <li onclick="showSection(3)"><a href="#technikum"><i class="fas fa-laptop-code"></i> Technikum</a></li>
+                    <li onclick="showSection(4)"><a href="#szkola-podstawowa"><i class="fas fa-book-open"></i> Szkoła Podstawowa</a></li>
+                    <li onclick="showSection(5)"><a href="#przedszkole"><i class="fas fa-child"></i> Przedszkole</a></li>
+                    <li onclick="showSection(6)"><a href="#Kontakt"><i class="fas fa-envelope"></i> Kontakt</a></li>
                     </ul>
                 </div>
             </div>
