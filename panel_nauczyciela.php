@@ -1,4 +1,8 @@
 <?php
+// Set session timeout to 30 minutes (1800 seconds)
+ini_set('session.gc_maxlifetime', 1800);
+ini_set('session.cookie_lifetime', 1800);
+
 session_start();
 
 // Sprawdzenie czy użytkownik jest zalogowany jako nauczyciel
@@ -90,6 +94,64 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['dodaj_ocene'])) {
         }
     }
 }
+
+// Obsługa edycji oceny
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edytuj_ocene'])) {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $error_msg = "Nieprawidłowy token zabezpieczający";
+    } else {
+        $ocena_id = (int)$_POST['ocena_id'];
+        $ocena = (int)$_POST['ocena'];
+        $opis = $conn->real_escape_string($_POST['opis']);
+        
+        $query = "UPDATE oceny SET ocena = ?, opis = ? WHERE id = ? AND id_nauczyciela = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("isii", $ocena, $opis, $ocena_id, $nauczyciel_id);
+        
+        if ($stmt->execute()) {
+            $_SESSION['success_msg'] = "Ocena została zaktualizowana pomyślnie!";
+            header("Location: ".$_SERVER['PHP_SELF']);
+            exit();
+        } else {
+            $error_msg = "Błąd podczas aktualizacji oceny: " . $stmt->error;
+        }
+    }
+}
+
+// Obsługa usuwania oceny
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['usun_ocene'])) {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $error_msg = "Nieprawidłowy token zabezpieczający";
+    } else {
+        $ocena_id = (int)$_POST['ocena_id'];
+        
+        $query = "DELETE FROM oceny WHERE id = ? AND id_nauczyciela = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ii", $ocena_id, $nauczyciel_id);
+        
+        if ($stmt->execute()) {
+            $_SESSION['success_msg'] = "Ocena została usunięta pomyślnie!";
+            header("Location: ".$_SERVER['PHP_SELF']);
+            exit();
+        } else {
+            $error_msg = "Błąd podczas usuwania oceny: " . $stmt->error;
+        }
+    }
+}
+
+// Pobranie wszystkich ocen wystawionych przez nauczyciela
+$query = "SELECT o.*, u.imie, u.nazwisko, p.nazwa as przedmiot_nazwa 
+          FROM oceny o 
+          JOIN uczniowie u ON o.id_ucznia = u.id 
+          JOIN przedmioty p ON o.id_przedmiotu = p.id 
+          WHERE o.id_nauczyciela = ? 
+          ORDER BY o.data_dodania DESC";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $nauczyciel_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$oceny = $result->fetch_all(MYSQLI_ASSOC);
+
 if (isset($_SESSION['success_msg'])) {
     $success_msg = $_SESSION['success_msg'];
     unset($_SESSION['success_msg']);
@@ -334,6 +396,115 @@ $wszyscy_uczniowie = $result->fetch_all(MYSQLI_ASSOC);
         .right{
             text-align: right;
         }
+
+        /* Style dla modali */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            min-width: 300px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            margin: 0;
+            font-size: 1.2em;
+            color: var(--dark-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -440,6 +611,11 @@ $wszyscy_uczniowie = $result->fetch_all(MYSQLI_ASSOC);
                     </button>
                 </li>
             <?php endif; ?>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="zarzadzaj-tab" data-bs-toggle="tab" data-bs-target="#zarzadzaj-ocenami" type="button" role="tab">
+                    <i class="fas fa-edit me-2"></i>Zarządzaj ocenami
+                </button>
+            </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
@@ -589,22 +765,165 @@ $wszyscy_uczniowie = $result->fetch_all(MYSQLI_ASSOC);
                     </div>
                 </div>
             <?php endif; ?>
+
+            <!-- Sekcja zarządzania ocenami -->
+            <div class="tab-pane fade" id="zarzadzaj-ocenami" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="fas fa-edit me-2"></i>Zarządzanie ocenami</h4>
+                    </div>
+                    <div class="card-body">
+                        <?php if (isset($success_msg)): ?>
+                            <div class="alert alert-success"><?php echo $success_msg; ?></div>
+                        <?php endif; ?>
+                        <?php if (isset($error_msg)): ?>
+                            <div class="alert alert-danger"><?php echo $error_msg; ?></div>
+                        <?php endif; ?>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Uczeń</th>
+                                        <th>Przedmiot</th>
+                                        <th>Ocena</th>
+                                        <th>Opis</th>
+                                        <th>Data</th>
+                                        <th>Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($oceny as $ocena): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($ocena['imie'] . ' ' . $ocena['nazwisko']); ?></td>
+                                            <td><?php echo htmlspecialchars($ocena['przedmiot_nazwa']); ?></td>
+                                            <td><?php echo $ocena['ocena']; ?></td>
+                                            <td><?php echo htmlspecialchars($ocena['opis']); ?></td>
+                                            <td><?php echo date('d.m.Y H:i', strtotime($ocena['data_dodania'])); ?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-primary" onclick="openEditModal(<?php echo $ocena['id']; ?>)">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger" onclick="openDeleteModal(<?php echo $ocena['id']; ?>)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal edycji -->
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="modal-header">
+                <h5 class="modal-title">Edytuj ocenę</h5>
+                <button type="button" class="modal-close" onclick="closeModal('editModal')">&times;</button>
+            </div>
+            <form method="POST" id="editForm">
+                <div class="modal-body">
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                    <input type="hidden" name="ocena_id" id="editOcenaId">
+                    
+                    <div class="form-group">
+                        <label class="form-label">Uczeń:</label>
+                        <input type="text" class="form-control" id="editUczen" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Przedmiot:</label>
+                        <input type="text" class="form-control" id="editPrzedmiot" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Ocena:</label>
+                        <select class="form-select" name="ocena" required>
+                            <?php for($i = 1; $i <= 6; $i++): ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Opis:</label>
+                        <input type="text" class="form-control" name="opis" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Anuluj</button>
+                    <button type="submit" name="edytuj_ocene" class="btn btn-primary">Zapisz zmiany</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal usuwania -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="modal-header">
+                <h5 class="modal-title">Potwierdź usunięcie</h5>
+                <button type="button" class="modal-close" onclick="closeModal('deleteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteConfirmText"></p>
+            </div>
+            <div class="modal-footer">
+                <form method="POST" id="deleteForm">
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                    <input type="hidden" name="ocena_id" id="deleteOcenaId">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('deleteModal')">Anuluj</button>
+                    <button type="submit" name="usun_ocene" class="btn btn-danger">Usuń</button>
+                </form>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Inicjalizacja zakładek
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabElms = document.querySelectorAll('button[data-bs-toggle="tab"]');
-            tabElms.forEach(tabEl => {
-                tabEl.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const tab = new bootstrap.Tab(this);
-                    tab.show();
-                });
-            });
-        });
+        // Dane ocen
+        const oceny = <?php echo json_encode($oceny); ?>;
+
+        // Funkcje do obsługi modali
+        function openEditModal(ocenaId) {
+            const ocena = oceny.find(o => o.id == ocenaId);
+            if (!ocena) return;
+
+            document.getElementById('editOcenaId').value = ocena.id;
+            document.getElementById('editUczen').value = ocena.imie + ' ' + ocena.nazwisko;
+            document.getElementById('editPrzedmiot').value = ocena.przedmiot_nazwa;
+            document.querySelector('#editForm select[name="ocena"]').value = ocena.ocena;
+            document.querySelector('#editForm input[name="opis"]').value = ocena.opis;
+
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function openDeleteModal(ocenaId) {
+            const ocena = oceny.find(o => o.id == ocenaId);
+            if (!ocena) return;
+
+            document.getElementById('deleteOcenaId').value = ocena.id;
+            document.getElementById('deleteConfirmText').textContent = 
+                `Czy na pewno chcesz usunąć ocenę ${ocena.ocena} z przedmiotu ${ocena.przedmiot_nazwa} dla ucznia ${ocena.imie} ${ocena.nazwisko}?`;
+
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Zamykanie modalu po kliknięciu poza nim
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>

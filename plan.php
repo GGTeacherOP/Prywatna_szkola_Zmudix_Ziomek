@@ -303,6 +303,7 @@ $conn->close();
                 margin-bottom: 0.7rem;
             }
         }
+        
         @media (max-width: 900px) {
             .events-highlight {
                 grid-template-columns: repeat(2, 1fr);
@@ -649,16 +650,14 @@ $conn->close();
             
             <div class="footer-column">
                 <h4>Szybkie linki</h4>
-                <div class="left-section">
-                    <ul>
-                        <li onclick="showSection(1)"><a href="#aktualnosci"><i class="fas fa-newspaper"></i> Aktualności</a></li>
-                        <li onclick="showSection(2)"><a href="#liceum"><i class="fas fa-graduation-cap"></i> Liceum</a></li>
-                        <li onclick="showSection(3)"><a href="#technikum"><i class="fas fa-laptop-code"></i> Technikum</a></li>
-                        <li onclick="showSection(4)"><a href="#szkola-podstawowa"><i class="fas fa-book-open"></i> Szkoła Podstawowa</a></li>
-                        <li onclick="showSection(5)"><a href="#przedszkole"><i class="fas fa-child"></i> Przedszkole</a></li>
-                        <li onclick="showSection(6)"><a href="#Kontakt"><i class="fas fa-envelope"></i> Kontakt</a></li>
-                    </ul>
-                </div>
+                <ul class="footer-links">
+                    <li><a href="szkola.php#aktualnosci"><i class="fas fa-newspaper"></i> Aktualności</a></li>
+                    <li><a href="szkola.php#liceum"><i class="fas fa-graduation-cap"></i> Liceum</a></li>
+                    <li><a href="szkola.php#technikum"><i class="fas fa-laptop-code"></i> Technikum</a></li>
+                    <li><a href="szkola.php#szkola-podstawowa"><i class="fas fa-book-open"></i> Szkoła Podstawowa</a></li>
+                    <li><a href="szkola.php#przedszkole"><i class="fas fa-child"></i> Przedszkole</a></li>
+                    <li><a href="szkola.php#Kontakt"><i class="fas fa-envelope"></i> Kontakt</a></li>
+                </ul>
             </div>
             <div class="footer-column">
                 <h4>Dokumenty</h4>

@@ -151,7 +151,44 @@ $conn->close();
             font-size: 0.9rem;
             width: 100%;
         }
-        
+        .calculator-form input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .calculator-form .form-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-links i {
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
+        }
         @media (max-width: 400px) {
             .calculator-popup {
                 width: 280px;
@@ -796,30 +833,45 @@ $conn->close();
     
     <!-- Calculator Popup -->
     <div class="calculator-popup" id="calculatorPopup">
-        <button class="close-calculator" id="closeCalculator">&times;</button>
-        <h3>Kalkulator punktów</h3>
-        <form class="calculator-form" id="calculatorForm">
-            <div class="form-group">
-                <label for="math">Matematyka:</label>
-                <input type="number" id="math" min="0" max="100" placeholder="0-100" required>
-            </div>
-            <div class="form-group">
-                <label for="polish">Język polski:</label>
-                <input type="number" id="polish" min="0" max="100" placeholder="0-100" required>
-            </div>
-            <div class="form-group">
-                <label for="english">Język angielski:</label>
-                <input type="number" id="english" min="0" max="100" placeholder="0-100" required>
-            </div>
-            <button type="submit" class="btn">Oblicz</button>
-        </form>
-        
-        <div class="calculator-result" id="calculatorResult">
-            <h4>Wynik:</h4>
-            <p>Punkty: <span id="totalPoints">0</span></p>
-            <p>Szansa na dostanie: <span id="admissionChance">-</span></p>
+    <button class="close-calculator" id="closeCalculator">&times;</button>
+    <h3>Kalkulator punktów</h3>
+    <form class="calculator-form" id="calculatorForm">
+        <div class="form-group">
+            <label for="math">Matematyka:</label>
+            <input type="number" id="math" min="0" max="100" placeholder="0-100" required>
         </div>
+        <div class="form-group">
+            <label for="polish">Język polski:</label>
+            <input type="number" id="polish" min="0" max="100" placeholder="0-100" required>
+        </div>
+        <div class="form-group">
+            <label for="english">Język angielski:</label>
+            <input type="number" id="english" min="0" max="100" placeholder="0-100" required>
+        </div>
+        
+        <div class="form-group" style="margin-top: 1rem;">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="checkbox" id="volunteer" style="margin-right: 0.5rem;">
+                Uczestnictwo w wolontariacie
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="checkbox" id="contest" style="margin-right: 0.5rem;">
+                Laureat konkursu
+            </label>
+        </div>
+        
+        <button type="submit" class="btn">Oblicz</button>
+    </form>
+    
+    <div class="calculator-result" id="calculatorResult">
+        <h4>Wynik:</h4>
+        <p>Punkty: <span id="totalPoints">0</span></p>
+        <p>Szansa na dostanie: <span id="admissionChance">-</span></p>
     </div>
+</div>
     <footer>
         <div class="footer-content">
             <div class="footer-column">
@@ -835,16 +887,14 @@ $conn->close();
             
             <div class="footer-column">
                 <h4>Szybkie linki</h4>
-                <div class="left-section">
-                    <ul>
-                    <li onclick="showSection(1)" class="active-nav"><a href="#aktualnosci"><i class="fas fa-newspaper"></i> Aktualności</a></li>
-                    <li onclick="showSection(2)"><a href="#liceum"><i class="fas fa-graduation-cap"></i> Liceum</a></li>
-                    <li onclick="showSection(3)"><a href="#technikum"><i class="fas fa-laptop-code"></i> Technikum</a></li>
-                    <li onclick="showSection(4)"><a href="#szkola-podstawowa"><i class="fas fa-book-open"></i> Szkoła Podstawowa</a></li>
-                    <li onclick="showSection(5)"><a href="#przedszkole"><i class="fas fa-child"></i> Przedszkole</a></li>
-                    <li onclick="showSection(6)"><a href="#Kontakt"><i class="fas fa-envelope"></i> Kontakt</a></li>
-                    </ul>
-                </div>
+                <ul class="footer-links">
+                    <li><a href="#aktualnosci" onclick="showSection(1)"><i class="fas fa-newspaper"></i> Aktualności</a></li>
+                    <li><a href="#liceum" onclick="showSection(2)"><i class="fas fa-graduation-cap"></i> Liceum</a></li>
+                    <li><a href="#technikum" onclick="showSection(3)"><i class="fas fa-laptop-code"></i> Technikum</a></li>
+                    <li><a href="#szkola-podstawowa" onclick="showSection(4)"><i class="fas fa-book-open"></i> Szkoła Podstawowa</a></li>
+                    <li><a href="#przedszkole" onclick="showSection(5)"><i class="fas fa-child"></i> Przedszkole</a></li>
+                    <li><a href="#Kontakt" onclick="showSection(6)"><i class="fas fa-envelope"></i> Kontakt</a></li>
+                </ul>
             </div>
             <div class="footer-column">
                 <h4>Dokumenty</h4>

@@ -1,5 +1,10 @@
 <?php
+// Set session timeout to 30 minutes (1800 seconds)
+ini_set('session.gc_maxlifetime', 1800);
+ini_set('session.cookie_lifetime', 1800);
+
 session_start();
+
 if (!isset($_SESSION['uczen_id'])) {
     header("Location: dziennik.php");
     exit;
@@ -517,7 +522,6 @@ $conn->close();
             <ul>
                 <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
                 <li><a href="plan.php"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
-                <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
                 <li><a href="plan.php"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
 
                 <li><a href="dziennik.php" class="active-nav"><i class="fas fa-book"></i> Dziennik</a></li>
