@@ -1,16 +1,31 @@
 function showSection(sectionNumber) {
-    var sections = document.querySelectorAll('.section');
-  sections.forEach(function(section) {
-      section.classList.remove('active');
-  });
-  var activeSection = document.querySelectorAll('.section')[sectionNumber - 1];
-  if (activeSection) {
-      activeSection.classList.add('active');
-      window.scrollTo({
-          top: activeSection.offsetTop - 100,
-          behavior: 'smooth'
-      });
-  }
+    // Ukryj wszystkie sekcje
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Pokaż wybraną sekcję
+    const selectedSection = document.querySelector(`.section:nth-child(${sectionNumber})`);
+    if (selectedSection) {
+        selectedSection.classList.add('active');
+    }
+
+    // Zaktualizuj aktywną nawigację
+    const navItems = document.querySelectorAll('.left-section li');
+    navItems.forEach((item, index) => {
+        if (index + 1 === sectionNumber) {
+            item.classList.add('active-nav');
+        } else {
+            item.classList.remove('active-nav');
+        }
+    });
+
+    // Przewiń do góry sekcji
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -50,62 +65,67 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   showSection(1);
 });
-        // dzialanie kalkulatora
-        const calculatorBtn = document.getElementById('calculatorBtn');
-        const calculatorPopup = document.getElementById('calculatorPopup');
-        const closeCalculator = document.getElementById('closeCalculator');
-        const calculatorForm = document.getElementById('calculatorForm');
-        const calculatorResult = document.getElementById('calculatorResult');
-        
-        // Toggle popup visibility
-        calculatorBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            calculatorPopup.classList.toggle('active');
-            calculatorForm.reset();
-            calculatorResult.style.display = 'none';
-        });
-        
-        // Close popup
-        closeCalculator.addEventListener('click', () => {
+        // Calculator functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const calculatorBtn = document.getElementById('calculatorBtn');
+    const calculatorPopup = document.getElementById('calculatorPopup');
+    const closeCalculator = document.getElementById('closeCalculator');
+    const calculatorForm = document.getElementById('calculatorForm');
+
+    // Show calculator popup
+    calculatorBtn.addEventListener('click', function() {
+        calculatorPopup.classList.toggle('active');
+        calculatorForm.reset();
+        document.getElementById('calculatorResult').style.display = 'none';
+    });
+
+    // Close calculator popup
+    closeCalculator.addEventListener('click', function() {
+        calculatorPopup.classList.remove('active');
+    });
+
+    // Close popup when clicking outside
+    document.addEventListener('click', function(e) {
+        if (e.target === calculatorPopup) {
             calculatorPopup.classList.remove('active');
-        });
+        }
+    });
+
+    // Handle form submission
+    calculatorForm.addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        // Close when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!calculatorPopup.contains(e.target)) {
-                calculatorPopup.classList.remove('active');
-            }
-        });
+        // Get subject scores
+        const math = parseInt(document.getElementById('math').value) || 0;
+        const polish = parseInt(document.getElementById('polish').value) || 0;
+        const english = parseInt(document.getElementById('english').value) || 0;
+        
+        // Get checkbox values
+        const volunteer = document.getElementById('volunteer').checked;
+        const contest = document.getElementById('contest').checked;
         
         // Calculate points
-        calculatorForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const math = parseInt(document.getElementById('math').value) || 0;
-            const polish = parseInt(document.getElementById('polish').value) || 0;
-            const english = parseInt(document.getElementById('english').value) || 0;
-            
-            const totalPoints = Math.round(
-                (math * 0.35) + (polish * 0.35) + (english * 0.3)
-            );
-            
-            document.getElementById('totalPoints').textContent = totalPoints;
-            
-            // Determine admission chance
-            let chance;
-            if (totalPoints >= 90) {
-                chance = "Bardzo wysoka";
-            } else if (totalPoints >= 70) {
-                chance = "Wysoka";
-            } else if (totalPoints >= 50) {
-                chance = "Średnia";
-            } else {
-                chance = "Niska";
-            }
-            
-            document.getElementById('admissionChance').textContent = chance;
-            calculatorResult.style.display = 'block';
-        });
+        let totalPoints = math * 0.35 + polish * 0.35 + english * 0.3;
+        
+        // Add points for additional achievements
+        if (volunteer) totalPoints += 5;
+        if (contest) totalPoints += 10;
+        
+        // Display result
+        document.getElementById('totalPoints').textContent = totalPoints.toFixed(1);
+        
+        // Determine admission chance
+        let chance = 'Niska';
+        if (totalPoints >= 95) chance = 'Bardzo wysoka';
+        else if (totalPoints >= 80) chance = 'Wysoka';
+        else if (totalPoints >= 65) chance = 'Średnia';
+        else if (totalPoints >= 40) chance = 'Niska';
+        
+        document.getElementById('admissionChance').textContent = chance;
+        document.getElementById('calculatorResult').style.display = 'block';
+    });
+});
+
 
         // zmiana zdjec na stornie glownej
         let currentSlide = 0;
