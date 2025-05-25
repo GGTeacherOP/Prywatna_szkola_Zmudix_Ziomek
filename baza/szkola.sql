@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 19, 2025 at 09:42 PM
+-- Generation Time: Maj 26, 2025 at 12:52 AM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -1120,6 +1120,32 @@ INSERT INTO `przedmioty` (`id`, `nazwa`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `rejestracja_zatwierdzenie`
+--
+
+CREATE TABLE `rejestracja_zatwierdzenie` (
+  `id` int(11) NOT NULL,
+  `imie` varchar(50) NOT NULL,
+  `nazwisko` varchar(50) NOT NULL,
+  `numer_telefonu` varchar(15) DEFAULT NULL,
+  `stanowisko` enum('Uczeń','Nauczyciel') NOT NULL,
+  `data_rejestracji` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status` enum('Oczekuje','Zatwierdzone','Odrzucone') DEFAULT 'Oczekuje',
+  `uwagi` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rejestracja_zatwierdzenie`
+--
+
+INSERT INTO `rejestracja_zatwierdzenie` (`id`, `imie`, `nazwisko`, `numer_telefonu`, `stanowisko`, `data_rejestracji`, `status`, `uwagi`) VALUES
+(1, 'Mikołaj', 'Ziomek', '780038866', 'Uczeń', '2025-05-25 22:07:24', 'Oczekuje', 'Email: m.ziomek@interia.eu, Klasa: 1a'),
+(2, 'Mikołaj', 'Ziomek', '123123123', 'Nauczyciel', '2025-05-25 22:08:10', 'Oczekuje', 'Email: m.ziomek@interia.eu'),
+(3, 'Mikołaj', 'Ziomek', '123123123', 'Nauczyciel', '2025-05-25 22:26:42', 'Oczekuje', 'Email: m.ziomek@interia.eu');
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `sale`
 --
 
@@ -1489,6 +1515,21 @@ INSERT INTO `uczniowie` (`id`, `imie`, `nazwisko`, `id_klasy`, `login`, `haslo`)
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `wiadomosci`
+--
+
+CREATE TABLE `wiadomosci` (
+  `id` int(11) NOT NULL,
+  `imie_i_nazwisko` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `temat` varchar(200) NOT NULL,
+  `wiadomosc` text NOT NULL,
+  `data_dodania` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `zdjecia`
 --
 
@@ -1570,6 +1611,12 @@ ALTER TABLE `przedmioty`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeksy dla tabeli `rejestracja_zatwierdzenie`
+--
+ALTER TABLE `rejestracja_zatwierdzenie`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeksy dla tabeli `sale`
 --
 ALTER TABLE `sale`
@@ -1588,6 +1635,12 @@ ALTER TABLE `uczniowie`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `login` (`login`),
   ADD KEY `id_klasy` (`id_klasy`);
+
+--
+-- Indeksy dla tabeli `wiadomosci`
+--
+ALTER TABLE `wiadomosci`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeksy dla tabeli `zdjecia`
@@ -1636,6 +1689,12 @@ ALTER TABLE `przedmioty`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
+-- AUTO_INCREMENT for table `rejestracja_zatwierdzenie`
+--
+ALTER TABLE `rejestracja_zatwierdzenie`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `sale`
 --
 ALTER TABLE `sale`
@@ -1652,6 +1711,12 @@ ALTER TABLE `typy_szkol`
 --
 ALTER TABLE `uczniowie`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
+
+--
+-- AUTO_INCREMENT for table `wiadomosci`
+--
+ALTER TABLE `wiadomosci`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `zdjecia`
