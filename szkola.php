@@ -801,24 +801,65 @@ $conn->close();
                         <p>Pon-Pt: 8:00-18:00<br>Sb: 9:00-14:00</p>
                     </div>
                     
-                    <div class="contact-form">
-                        <h3>Formularz kontaktowy</h3>
-                        <form>
-                            <div class="form-group">
-                                <input type="text" placeholder="Imię i nazwisko" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" placeholder="E-mail" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" placeholder="Temat">
-                            </div>
-                            <div class="form-group">
-                                <textarea placeholder="Wiadomość" rows="5" required></textarea>
-                            </div>
-                            <button type="submit" class="btn">Wyślij wiadomość</button>
-                        </form>
-                    </div>
+                    <?php
+                        $host = 'localhost';
+                        $user = 'root';
+                        $password = '';
+                        $database = 'szkola';
+                        $table = 'wiadomosci';
+
+                        $conn = new mysqli($host, $user, $password, $database);
+
+
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
+                        }
+
+
+                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+                            $imie_i_nazwisko = $_POST['imie_i_nazwisko'];
+                            $email = $_POST['email'];
+                            $temat = $_POST['temat'];
+                            $wiadomosc = $_POST['wiadomosc'];
+
+
+                            $imie_i_nazwisko = mysqli_real_escape_string($conn, $imie_i_nazwisko);
+                            $email = mysqli_real_escape_string($conn, $email);
+                            $temat = mysqli_real_escape_string($conn, $temat);
+                            $wiadomosc = mysqli_real_escape_string($conn, $wiadomosc);
+
+                            $sql = "INSERT INTO $table (imie_i_nazwisko, email, temat, wiadomosc) 
+                                    VALUES ('$imie_i_nazwisko', '$email', '$temat', '$wiadomosc')";
+
+                            if ($conn->query($sql) === TRUE) {
+                                echo "<p class='success'>Wiadomość została wysłana pomyślnie! Do 7 dni roboczych odpiszemy ci! Sprawdź swojego e-maila!</p>";
+                            } else {
+                                echo "<p class='error'>Błąd: " . $sql . "<br>" . $conn->error . "</p>";
+                            }
+
+                            $conn->close();
+                        }
+                    ?>
+
+                        <div class="contact-form">
+                            <h3>Formularz kontaktowy</h3>
+                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                <div class="form-group">
+                                    <input type="text" name="imie_i_nazwisko" placeholder="Imię i nazwisko" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" name="email" placeholder="E-mail" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="temat" placeholder="Temat">
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="wiadomosc" placeholder="Wiadomość" rows="5" required></textarea>
+                                </div>
+                                <button type="submit" class="btn">Wyślij wiadomość</button>
+                            </form>
+                        </div>
                 </div>
                 
                 <div class="map-container">

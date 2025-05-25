@@ -20,14 +20,7 @@ if ($conn->connect_error) {
     die("Błąd połączenia: " . $conn->connect_error);
 }
 
-
-$sql_admin = "SELECT Imie, Nazwisko FROM administratorzy WHERE ID = ?";
-$stmt = $conn->prepare($sql_admin);
-$stmt->bind_param("i", $_SESSION['admin_id']);
-$stmt->execute();
-$wynik_admin = $stmt->get_result();
-$admin = $wynik_admin->fetch_assoc();
-
+// Sprawdzamy czy mamy akcję do wykonania na wiadomościach
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
@@ -96,9 +89,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmt->bind_param("i", $id_klasy);
                 $stmt->execute();
                 break;
+                
+            case 'delete_message':
+                $id = $_POST['id'];
+                $stmt = $conn->prepare("DELETE FROM wiadomosci WHERE id = ?");
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                break;
         }
     }
 }
+
+// Pobranie danych administratora
+$sql_admin = "SELECT Imie, Nazwisko FROM administratorzy WHERE ID = ?";
+$stmt = $conn->prepare($sql_admin);
+$stmt->bind_param("i", $_SESSION['admin_id']);
+$stmt->execute();
+$wynik_admin = $stmt->get_result();
+$admin = $wynik_admin->fetch_assoc();
 
 // Pobranie list nauczycieli, uczniów i sal
 $nauczyciele = $conn->query("SELECT * FROM nauczyciele")->fetch_all(MYSQLI_ASSOC);
@@ -106,8 +114,12 @@ $uczniowie = $conn->query("SELECT * FROM uczniowie")->fetch_all(MYSQLI_ASSOC);
 $sale = $conn->query("SELECT * FROM sale")->fetch_all(MYSQLI_ASSOC);
 $klasy = $conn->query("SELECT * FROM klasy")->fetch_all(MYSQLI_ASSOC);
 $przedmioty = $conn->query("SELECT * FROM przedmioty")->fetch_all(MYSQLI_ASSOC);
+$wiadomosci = $conn->query("SELECT * FROM wiadomosci ORDER BY data_dodania DESC")->fetch_all(MYSQLI_ASSOC);
 
 $conn->close();
+
+// Sprawdzamy czy mamy parametr show_messages
+$show_messages = isset($_GET['show']) && $_GET['show'] == 'messages';
 ?>
 
 <!DOCTYPE html>
@@ -430,6 +442,7 @@ $conn->close();
         td {
             padding: 1rem;
             border-bottom: 1px solid #eee;
+            vertical-align: top;
         }
 
         tr:last-child td {
@@ -450,6 +463,11 @@ $conn->close();
             padding: 2rem;
             color: var(--text-light);
             font-style: italic;
+        }
+
+        .message-content {
+            max-width: 400px;
+            word-wrap: break-word;
         }
 
         footer {
@@ -527,6 +545,10 @@ $conn->close();
                 text-align: center;
                 padding: 0.8rem;
             }
+            
+            .message-content {
+                max-width: 200px;
+            }
         }
     </style>
 </head>
@@ -562,249 +584,294 @@ $conn->close();
                 </div>
                 
                 <ul class="admin-menu">
-                    <li><a href="#" class="active"><i class="fas fa-users-cog"></i> Zarządzanie</a></li>
+                    <li><a href="?show=management" class="<?php echo !$show_messages ? 'active' : ''; ?>"><i class="fas fa-users-cog"></i> Zarządzanie</a></li>
+                    <li><a href="?show=messages" class="<?php echo $show_messages ? 'active' : ''; ?>"><i class="fas fa-envelope"></i> Wiadomości</a></li>
                     <li><a href="logout.php" class="text-danger"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a></li>
                 </ul>
             </div>
             
             <!-- Główna zawartość -->
             <div class="admin-content">
-                <div class="welcome-header">
-                    <h2><i class="fas fa-user-shield"></i> Panel Administratora</h2>
-                    <p>Zarządzaj uczniami, nauczycielami i zasobami szkoły</p>
-                </div>
-                
-                <!-- Zarządzanie nauczycielami -->
-                <div class="admin-section">
-                    <h3><i class="fas fa-chalkboard-teacher"></i> Zarządzanie nauczycielami</h3>
+                <?php if (!$show_messages): ?>
+                    <div class="welcome-header">
+                        <h2><i class="fas fa-user-shield"></i> Panel Administratora</h2>
+                        <p>Zarządzaj uczniami, nauczycielami i zasobami szkoły</p>
+                    </div>
                     
-                    <form method="post" class="form-row">
-                        <input type="hidden" name="action" value="add_teacher">
-                        <div class="form-group">
-                            <label>Imię</label>
-                            <input type="text" name="imie" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Nazwisko</label>
-                            <input type="text" name="nazwisko" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Login</label>
-                            <input type="text" name="login" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Hasło</label>
-                            <input type="password" name="haslo" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Przedmiot</label>
-                            <select name="id_przedmiotu" required>
-                                <?php foreach ($przedmioty as $p): ?>
-                                    <option value="<?php echo $p['id']; ?>"><?php echo htmlspecialchars($p['nazwa']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Klasa (wychowawca)</label>
-                            <select name="id_klasy">
-                                <option value="">- Brak -</option>
-                                <?php foreach ($klasy as $k): ?>
-                                    <option value="<?php echo $k['id']; ?>"><?php echo htmlspecialchars($k['nazwa']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn">Dodaj nauczyciela</button>
-                    </form>
-                    
-                    <h4>Lista nauczycieli</h4>
-                    <?php if (!empty($nauczyciele)): ?>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Imię i nazwisko</th>
-                                    <th>Login</th>
-                                    <th>Przedmiot</th>
-                                    <th>Wychowawca</th>
-                                    <th>Akcje</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($nauczyciele as $n): ?>
+                    <!-- Zarządzanie nauczycielami -->
+                    <div class="admin-section">
+                        <h3><i class="fas fa-chalkboard-teacher"></i> Zarządzanie nauczycielami</h3>
+                        
+                        <form method="post" class="form-row">
+                            <input type="hidden" name="action" value="add_teacher">
+                            <div class="form-group">
+                                <label>Imię</label>
+                                <input type="text" name="imie" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nazwisko</label>
+                                <input type="text" name="nazwisko" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Login</label>
+                                <input type="text" name="login" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Hasło</label>
+                                <input type="password" name="haslo" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Przedmiot</label>
+                                <select name="id_przedmiotu" required>
+                                    <?php foreach ($przedmioty as $p): ?>
+                                        <option value="<?php echo $p['id']; ?>"><?php echo htmlspecialchars($p['nazwa']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Klasa (wychowawca)</label>
+                                <select name="id_klasy">
+                                    <option value="">- Brak -</option>
+                                    <?php foreach ($klasy as $k): ?>
+                                        <option value="<?php echo $k['id']; ?>"><?php echo htmlspecialchars($k['nazwa']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn">Dodaj nauczyciela</button>
+                        </form>
+                        
+                        <h4>Lista nauczycieli</h4>
+                        <?php if (!empty($nauczyciele)): ?>
+                            <table>
+                                <thead>
                                     <tr>
-                                        <td><?php echo $n['id']; ?></td>
-                                        <td><?php echo htmlspecialchars($n['imie'] . ' ' . $n['nazwisko']); ?></td>
-                                        <td><?php echo htmlspecialchars($n['login']); ?></td>
-                                        <td>
-                                            <?php 
-                                            $nazwa_przedmiotu = '';
-                                            foreach ($przedmioty as $p) {
-                                                if ($p['id'] == $n['id_przedmiotu']) {
-                                                    $nazwa_przedmiotu = $p['nazwa'];
-                                                    break;
-                                                }
-                                            }
-                                            echo htmlspecialchars($nazwa_przedmiotu);
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <?php 
-                                            if (isset($n['id_klasy']) && $n['id_klasy'] != '') {
-                                                // Znajdź nazwę klasy na podstawie id_klasy
-                                                $nazwa_klasy = '';
-                                                foreach ($klasy as $k) {
-                                                    if ($k['id'] == $n['id_klasy']) {
-                                                        $nazwa_klasy = $k['nazwa'];
+                                        <th>ID</th>
+                                        <th>Imię i nazwisko</th>
+                                        <th>Login</th>
+                                        <th>Przedmiot</th>
+                                        <th>Wychowawca</th>
+                                        <th>Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($nauczyciele as $n): ?>
+                                        <tr>
+                                            <td><?php echo $n['id']; ?></td>
+                                            <td><?php echo htmlspecialchars($n['imie'] . ' ' . $n['nazwisko']); ?></td>
+                                            <td><?php echo htmlspecialchars($n['login']); ?></td>
+                                            <td>
+                                                <?php 
+                                                $nazwa_przedmiotu = '';
+                                                foreach ($przedmioty as $p) {
+                                                    if ($p['id'] == $n['id_przedmiotu']) {
+                                                        $nazwa_przedmiotu = $p['nazwa'];
                                                         break;
                                                     }
                                                 }
-                                                echo htmlspecialchars($nazwa_klasy);
-                                            } else {
-                                                echo '-';
-                                            }
-                                            ?>
-                                        </td>
-                                        <td class="action-buttons">
-                                            <form method="post" style="display: inline;">
-                                                <input type="hidden" name="action" value="delete_teacher">
-                                                <input type="hidden" name="id" value="<?php echo $n['id']; ?>">
-                                                <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    <?php else: ?>
-                        <div class="no-data">Brak nauczycieli w systemie</div>
-                    <?php endif; ?>
-                </div>
-                
-                <!-- Zarządzanie uczniami -->
-                <div class="admin-section">
-                    <h3><i class="fas fa-user-graduate"></i> Zarządzanie uczniami</h3>
+                                                echo htmlspecialchars($nazwa_przedmiotu);
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php 
+                                                if (isset($n['id_klasy']) && $n['id_klasy'] != '') {
+                                                    $nazwa_klasy = '';
+                                                    foreach ($klasy as $k) {
+                                                        if ($k['id'] == $n['id_klasy']) {
+                                                            $nazwa_klasy = $k['nazwa'];
+                                                            break;
+                                                        }
+                                                    }
+                                                    echo htmlspecialchars($nazwa_klasy);
+                                                } else {
+                                                    echo '-';
+                                                }
+                                                ?>
+                                            </td>
+                                            <td class="action-buttons">
+                                                <form method="post" style="display: inline;">
+                                                    <input type="hidden" name="action" value="delete_teacher">
+                                                    <input type="hidden" name="id" value="<?php echo $n['id']; ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="no-data">Brak nauczycieli w systemie</div>
+                        <?php endif; ?>
+                    </div>
                     
-                    <form method="post" class="form-row">
-                        <input type="hidden" name="action" value="add_student">
-                        <div class="form-group">
-                            <label>Imię</label>
-                            <input type="text" name="imie" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Nazwisko</label>
-                            <input type="text" name="nazwisko" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Klasa</label>
-                            <select name="id_klasy" required>
-                                <?php foreach ($klasy as $k): ?>
-                                    <option value="<?php echo $k['id']; ?>"><?php echo htmlspecialchars($k['nazwa']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Login</label>
-                            <input type="text" name="login" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Hasło</label>
-                            <input type="password" name="haslo" required>
-                        </div>
-                        <button type="submit" class="btn">Dodaj ucznia</button>
-                    </form>
-                    
-                    <h4>Lista uczniów</h4>
-                    <?php if (!empty($uczniowie)): ?>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Imię i nazwisko</th>
-                                    <th>Klasa</th>
-                                    <th>Login</th>
-                                    <th>Akcje</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($uczniowie as $u): ?>
+                    <!-- Zarządzanie uczniami -->
+                    <div class="admin-section">
+                        <h3><i class="fas fa-user-graduate"></i> Zarządzanie uczniami</h3>
+                        
+                        <form method="post" class="form-row">
+                            <input type="hidden" name="action" value="add_student">
+                            <div class="form-group">
+                                <label>Imię</label>
+                                <input type="text" name="imie" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nazwisko</label>
+                                <input type="text" name="nazwisko" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Klasa</label>
+                                <select name="id_klasy" required>
+                                    <?php foreach ($klasy as $k): ?>
+                                        <option value="<?php echo $k['id']; ?>"><?php echo htmlspecialchars($k['nazwa']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Login</label>
+                                <input type="text" name="login" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Hasło</label>
+                                <input type="password" name="haslo" required>
+                            </div>
+                            <button type="submit" class="btn">Dodaj ucznia</button>
+                        </form>
+                        
+                        <h4>Lista uczniów</h4>
+                        <?php if (!empty($uczniowie)): ?>
+                            <table>
+                                <thead>
                                     <tr>
-                                        <td><?php echo $u['id']; ?></td>
-                                        <td><?php echo htmlspecialchars($u['imie'] . ' ' . $u['nazwisko']); ?></td>
-                                        <td><?php echo $u['id_klasy']; ?></td>
-                                        <td><?php echo htmlspecialchars($u['login']); ?></td>
-                                        <td class="action-buttons">
-                                            <form method="post" style="display: inline;">
-                                                <input type="hidden" name="action" value="delete_student">
-                                                <input type="hidden" name="id" value="<?php echo $u['id']; ?>">
-                                                <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
-                                            </form>
-                                        </td>
+                                        <th>ID</th>
+                                        <th>Imię i nazwisko</th>
+                                        <th>Klasa</th>
+                                        <th>Login</th>
+                                        <th>Akcje</th>
                                     </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    <?php else: ?>
-                        <div class="no-data">Brak uczniów w systemie</div>
-                    <?php endif; ?>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($uczniowie as $u): ?>
+                                        <tr>
+                                            <td><?php echo $u['id']; ?></td>
+                                            <td><?php echo htmlspecialchars($u['imie'] . ' ' . $u['nazwisko']); ?></td>
+                                            <td><?php echo $u['id_klasy']; ?></td>
+                                            <td><?php echo htmlspecialchars($u['login']); ?></td>
+                                            <td class="action-buttons">
+                                                <form method="post" style="display: inline;">
+                                                    <input type="hidden" name="action" value="delete_student">
+                                                    <input type="hidden" name="id" value="<?php echo $u['id']; ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="no-data">Brak uczniów w systemie</div>
+                        <?php endif; ?>
+                        
+                        <h4>Usuwanie całej klasy</h4>
+                        <form method="post" class="form-row">
+                            <input type="hidden" name="action" value="delete_class">
+                            <div class="form-group">
+                                <label>Wybierz klasę do usunięcia</label>
+                                <select name="id_klasy" required>
+                                    <?php foreach ($klasy as $k): ?>
+                                        <option value="<?php echo $k['id']; ?>"><?php echo htmlspecialchars($k['nazwa']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Usuń klasę i wszystkich uczniów</button>
+                        </form>
+                    </div>
                     
-                    <h4>Usuwanie całej klasy</h4>
-                    <form method="post" class="form-row">
-                        <input type="hidden" name="action" value="delete_class">
-                        <div class="form-group">
-                            <label>Wybierz klasę do usunięcia</label>
-                            <select name="id_klasy" required>
-                                <?php foreach ($klasy as $k): ?>
-                                    <option value="<?php echo $k['id']; ?>"><?php echo htmlspecialchars($k['nazwa']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-danger">Usuń klasę i wszystkich uczniów</button>
-                    </form>
-                </div>
-                
-                <!-- Zarządzanie salami -->
-                <div class="admin-section">
-                    <h3><i class="fas fa-door-open"></i> Zarządzanie salami</h3>
-                    
-                    <form method="post" class="form-row">
-                        <input type="hidden" name="action" value="add_classroom">
-                        <div class="form-group">
-                            <label>Numer sali</label>
-                            <input type="text" name="numer" required>
-                        </div>
-                        <button type="submit" class="btn">Dodaj salę</button>
-                    </form>
-                    
-                    <h4>Lista sal</h4>
-                    <?php if (!empty($sale)): ?>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Numer sali</th>
-                                    <th>Akcje</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($sale as $s): ?>
+                    <!-- Zarządzanie salami -->
+                    <div class="admin-section">
+                        <h3><i class="fas fa-door-open"></i> Zarządzanie salami</h3>
+                        
+                        <form method="post" class="form-row">
+                            <input type="hidden" name="action" value="add_classroom">
+                            <div class="form-group">
+                                <label>Numer sali</label>
+                                <input type="text" name="numer" required>
+                            </div>
+                            <button type="submit" class="btn">Dodaj salę</button>
+                        </form>
+                        
+                        <h4>Lista sal</h4>
+                        <?php if (!empty($sale)): ?>
+                            <table>
+                                <thead>
                                     <tr>
-                                        <td><?php echo $s['id']; ?></td>
-                                        <td><?php echo htmlspecialchars($s['numer']); ?></td>
-                                        <td class="action-buttons">
-                                            <form method="post" style="display: inline;">
-                                                <input type="hidden" name="action" value="delete_classroom">
-                                                <input type="hidden" name="id" value="<?php echo $s['id']; ?>">
-                                                <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
-                                            </form>
-                                        </td>
+                                        <th>ID</th>
+                                        <th>Numer sali</th>
+                                        <th>Akcje</th>
                                     </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    <?php else: ?>
-                        <div class="no-data">Brak sal w systemie</div>
-                    <?php endif; ?>
-                </div>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($sale as $s): ?>
+                                        <tr>
+                                            <td><?php echo $s['id']; ?></td>
+                                            <td><?php echo htmlspecialchars($s['numer']); ?></td>
+                                            <td class="action-buttons">
+                                                <form method="post" style="display: inline;">
+                                                    <input type="hidden" name="action" value="delete_classroom">
+                                                    <input type="hidden" name="id" value="<?php echo $s['id']; ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="no-data">Brak sal w systemie</div>
+                        <?php endif; ?>
+                    </div>
+                <?php else: ?>
+                    <!-- Sekcja wiadomości -->
+                    <div class="welcome-header">
+                        <h2><i class="fas fa-envelope"></i> Wiadomości od użytkowników</h2>
+                        <p>Przeglądaj i zarządzaj wiadomościami wysłanymi przez użytkowników</p>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <?php if (!empty($wiadomosci)): ?>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Imię i nazwisko</th>
+                                        <th>Email</th>
+                                        <th>Temat</th>
+                                        <th>Wiadomość</th>
+                                        <th>Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($wiadomosci as $w): ?>
+                                        <tr>
+                                            <td><?php echo date('Y-m-d H:i', strtotime($w['data_dodania'])); ?></td>
+                                            <td><?php echo htmlspecialchars($w['imie_i_nazwisko']); ?></td>
+                                            <td><?php echo htmlspecialchars($w['email']); ?></td>
+                                            <td><?php echo htmlspecialchars($w['temat']); ?></td>
+                                            <td class="message-content"><?php echo nl2br(htmlspecialchars($w['wiadomosc'])); ?></td>
+                                            <td class="action-buttons">
+                                                <form method="post" style="display: inline;">
+                                                    <input type="hidden" name="action" value="delete_message">
+                                                    <input type="hidden" name="id" value="<?php echo $w['id']; ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="no-data">Brak wiadomości</div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
                 
                 <div style="text-align: center; margin-top: 2rem;">
                     <a href="logout.php" class="btn btn-danger">

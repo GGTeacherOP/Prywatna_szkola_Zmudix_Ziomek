@@ -1,11 +1,5 @@
 <?php
 $komunikat = '';
-if (isset($_GET['sukces']) && $_GET['sukces'] == 1) {
-    $login = htmlspecialchars($_GET['login'] ?? '');
-    $haslo = htmlspecialchars($_GET['haslo'] ?? '');
-    $komunikat = "Dziękujemy! Twoje konto ucznia zostało utworzone. <br> Login: $login <br> Hasło: $haslo";
-}
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $imie = trim($_POST['imie'] ?? '');
     $nazwisko = trim($_POST['nazwisko'] ?? '');
@@ -14,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stanowisko = $_POST['stanowisko'] ?? '';
     $klasa_nazwa = trim($_POST['klasa'] ?? '');
 
+    // Walidacja danych
     if (!preg_match("/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u", $imie)) {
         $komunikat = "Imię może zawierać tylko litery.";
     } elseif (!preg_match("/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u", $nazwisko)) {
@@ -24,41 +19,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $komunikat = "Nieprawidłowy adres e-mail.";
     } elseif ($stanowisko !== "uczen" && $stanowisko !== "nauczyciel") {
         $komunikat = "Wybierz stanowisko.";
-    } elseif ($stanowisko === "uczen") {
-        if (empty($klasa_nazwa)) {
-            $komunikat = "Proszę podać klasę.";
-        } else {
-            $conn = new mysqli("localhost", "root", "", "szkola");
-            if ($conn->connect_error) {
-                die("Błąd połączenia: " . $conn->connect_error);
-            }
-            $stmt = $conn->prepare("SELECT id FROM klasy WHERE nazwa = ?");
-            $stmt->bind_param("s", $klasa_nazwa);
-            $stmt->execute();
-            $stmt->bind_result($id_klasy);
-            if ($stmt->fetch()) {
-                $stmt->close();
-                // Generuj login i hasło
-                $login = strtolower($imie . "_" . $nazwisko . rand(100,999));
-                $haslo = strtolower($imie . $nazwisko . rand(100,999));
-                // Dodaj ucznia
-                $stmt2 = $conn->prepare("INSERT INTO uczniowie (imie, nazwisko, id_klasy, login, haslo) VALUES (?, ?, ?, ?, ?)");
-                $stmt2->bind_param("ssiss", $imie, $nazwisko, $id_klasy, $login, $haslo);
-                if ($stmt2->execute()) {
-                    $stmt2->close();
-                    $conn->close();
-                    header("Location: rejestracja.php?sukces=1&login=$login&haslo=$haslo");
-                    exit();
-                } else {
-                    $komunikat = "Błąd przy dodawaniu ucznia.";
-                }
-                $stmt2->close();
-            } else {
-                $komunikat = "Nie znaleziono takiej klasy!";
-                $stmt->close();
-            }
-            $conn->close();
+    } else {
+        $conn = new mysqli("localhost", "root", "", "szkola");
+        if ($conn->connect_error) {
+            die("Błąd połączenia: " . $conn->connect_error);
         }
+
+        // Przygotowanie stanowiska do zapisu
+        $stanowisko_db = $stanowisko === "uczen" ? "Uczeń" : "Nauczyciel";
+        
+        // Dodanie do tabeli rejestracja_zatwierdzenie (tylko istniejące kolumny)
+        $stmt = $conn->prepare("INSERT INTO rejestracja_zatwierdzenie (imie, nazwisko, numer_telefonu, stanowisko, uwagi) VALUES (?, ?, ?, ?, ?)");
+        
+        // Przygotowanie uwag (możemy tam zapisać email i klasę)
+        $uwagi = "Email: $email";
+        if (!empty($klasa_nazwa)) {
+            $uwagi .= ", Klasa: $klasa_nazwa";
+        }
+        
+        $stmt->bind_param("sssss", $imie, $nazwisko, $telefon, $stanowisko_db, $uwagi);
+        
+        if ($stmt->execute()) {
+            $komunikat = "Dziękujemy! Twoja rejestracja została wysłana do zatwierdzenia. Możemy kontaktować się po więcej informacji na Twojego maila, lub po zatwierdzeniu rejstracji!";
+        } else {
+            $komunikat = "Błąd podczas rejestracji: " . $conn->error;
+        }
+        
+        $stmt->close();
+        $conn->close();
     }
 }
 ?>
@@ -290,15 +278,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </footer>
 </body>
 <script>
-        document.getElementById('position').addEventListener('change', function() {
-            var klasaGroup = document.getElementById('klasa-group');
-            if (this.value === 'uczen') {
-                klasaGroup.style.display = 'block';
-                document.getElementById('klasa').required = true;
-            } else {
-                klasaGroup.style.display = 'none';
-                document.getElementById('klasa').required = false;
-            }
-        });
+    document.getElementById('position').addEventListener('change', function() {
+        var klasaGroup = document.getElementById('klasa-group');
+        if (this.value === 'uczen') {
+            klasaGroup.style.display = 'block';
+            document.getElementById('klasa').required = true;
+        } else {
+            klasaGroup.style.display = 'none';
+            document.getElementById('klasa').required = false;
+        }
+    });
 </script>
 </html>
