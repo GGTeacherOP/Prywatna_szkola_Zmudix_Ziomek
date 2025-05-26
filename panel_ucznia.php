@@ -541,9 +541,6 @@ $conn->close();
                 
                 <ul class="student-menu">
                     <li><a href="#" class="active"><i class="fas fa-award"></i> Oceny</a></li>
-                    <li><a href="#"><i class="fas fa-tasks"></i> Zadania</a></li>
-                    <li><a href="#"><i class="fas fa-chart-line"></i> Frekwencja</a></li>
-                    <li><a href="#"><i class="fas fa-envelope"></i> Wiadomości</a></li>
                     <li><a href="logout.php" class="text-danger"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a></li>
                 </ul>
             </div>
@@ -552,7 +549,7 @@ $conn->close();
             <div class="student-content">
                 <div class="welcome-header">
                     <h2><i class="fas fa-user-graduate"></i> Witaj w swoim panelu ucznia</h2>
-                    <p>Masz dostęp do swoich ocen, planu lekcji i innych informacji</p>
+                    <p>Masz dostęp do swoich ocen</p>
                 </div>
                 
                 <div class="class-teacher">
@@ -572,17 +569,6 @@ $conn->close();
                         <p>Oceny z przedmiotów</p>
                     </div>
                     
-                    <div class="stat-card">
-                        <i class="fas fa-check-circle"></i>
-                        <h3>95%</h3>
-                        <p>Frekwencja</p>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <i class="fas fa-bell"></i>
-                        <h3>2</h3>
-                        <p>Nowe wiadomości</p>
-                    </div>
                 </div>
                 
                 <h3><i class="fas fa-award"></i> Twoje oceny</h3>
