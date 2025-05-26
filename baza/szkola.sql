@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 26 Maj 2025, 14:58
--- Wersja serwera: 10.4.22-MariaDB
--- Wersja PHP: 7.4.26
+-- Generation Time: Maj 26, 2025 at 09:20 PM
+-- Wersja serwera: 10.4.32-MariaDB
+-- Wersja PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Baza danych: `szkola`
+-- Database: `szkola`
 --
 
 -- --------------------------------------------------------
@@ -33,15 +33,40 @@ CREATE TABLE `administratorzy` (
   `Nazwisko` varchar(100) NOT NULL,
   `Login` varchar(100) NOT NULL,
   `Haslo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `administratorzy`
+-- Dumping data for table `administratorzy`
 --
 
 INSERT INTO `administratorzy` (`ID`, `Imie`, `Nazwisko`, `Login`, `Haslo`) VALUES
 (1, 'Mikołaj', 'Ziomek', 'mikolaj_ziomek', 'mikolajziomek123'),
 (2, 'Szymon', 'Żmuda', 'szymon_zmuda', 'szymonzmuda123');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `aktualnosci`
+--
+
+CREATE TABLE `aktualnosci` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `data` date NOT NULL DEFAULT curdate(),
+  `tytul` varchar(255) NOT NULL,
+  `opis` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `aktualnosci`
+--
+
+INSERT INTO `aktualnosci` (`id`, `data`, `tytul`, `opis`) VALUES
+(1, '2025-05-10', '„Mistrz Matematyki” – Wyniki konkursu', 'Michał Kowalski z klasy 3B zdobył I miejsce w szkolnym konkursie matematycznym (98% punktów). II miejsce - Anna Nowak (2A, 94%), III - Jan Wiśniewski (3C, 91%). \r\nLaureaci otrzymali nagrody książkowe. Gratulacje dla nauczycieli przygotowujących!<span class=\"hidden-text\"> Michał zakwalifikował się do etapu ogólnopolskiego w Warszawie. Szkoła zapewnia mu dodatkowe konsultacje.</span>'),
+(2, '2025-05-05', 'Konkurs Plastyczny „Zielona Planeta”', 'Julia Nowak z 5B wygrała ogólnopolski konkurs ekologiczny Ministerstwa Środowiska. Jeja praca \"Ocalmy nasz świat\" zachwyciła jury. \r\nNagroda: tablet graficzny i warsztaty artystyczne.<span class=\"hidden-text\"> Wyróżnienia dla Michała Zawadzkiego (4A) i Oliwiery Piotrowskiej (6C). Ich prace w szkolnej galerii.</span>'),
+(3, '2025-04-30', 'Zbiórka charytatywna', 'Dziękujemy za udział w akcji charytatywnej - zebraliśmy ponad 200 paczek dla dzieci z domów dziecka...'),
+(4, '2025-04-25', 'Zwycięstwo w zawodach matematycznych', 'Nasza drużyna licealna zdobyła I miejsce w międzyszkolnym konkursie matematycznym...'),
+(5, '2025-04-20', 'Sukces w konkursie recytatorskim', 'Julia Tomaszewska z przedszkola dotarła do finału ogólnopolskiego konkursu \"Mali Artyści\"...'),
+(6, '2025-04-15', 'Festyn Rodzinny', 'Relacja z udanego festynu rodzinnego, który zgromadził ponad 300 uczestników...');
 
 -- --------------------------------------------------------
 
@@ -54,10 +79,10 @@ CREATE TABLE `klasy` (
   `nazwa` varchar(10) NOT NULL,
   `rocznik` int(11) NOT NULL,
   `typ_szkoly_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `klasy`
+-- Dumping data for table `klasy`
 --
 
 INSERT INTO `klasy` (`id`, `nazwa`, `rocznik`, `typ_szkoly_id`) VALUES
@@ -94,14 +119,14 @@ CREATE TABLE `nauczyciele` (
   `id_klasy_wychowawca` int(11) DEFAULT NULL,
   `login` varchar(50) NOT NULL,
   `haslo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `nauczyciele`
+-- Dumping data for table `nauczyciele`
 --
 
 INSERT INTO `nauczyciele` (`id`, `imie`, `nazwisko`, `id_przedmiotu`, `id_klasy_wychowawca`, `login`, `haslo`) VALUES
-(1, 'Paweł', 'Woźniak', 1, 1, 'paweł_woźsdfssdsddniak', 'pawełwoźniak123'),
+(1, 'Paweł', 'Woźniakk', 1, 1, 'paweł_woźsdfssdsddniak', 'pawełwoźniak123'),
 (2, 'Anna', 'Mazur', 1, 15, 'anna_mazufdsfr', 'annamazur123'),
 (3, 'Marek', 'Dąbrowski', 1, 2, 'marek_dąbrowsfffki', 'marekdąbrowski123'),
 (4, 'Joanna', 'Jankowski', 2, 14, 'joanna_janfffkowski', 'joannajankowski123'),
@@ -161,10 +186,10 @@ CREATE TABLE `oceny` (
   `ocena` varchar(5) NOT NULL,
   `opis` varchar(255) DEFAULT NULL,
   `data_dodania` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `oceny`
+-- Dumping data for table `oceny`
 --
 
 INSERT INTO `oceny` (`id`, `id_ucznia`, `id_przedmiotu`, `id_nauczyciela`, `ocena`, `opis`, `data_dodania`) VALUES
@@ -417,7 +442,8 @@ INSERT INTO `oceny` (`id`, `id_ucznia`, `id_przedmiotu`, `id_nauczyciela`, `ocen
 (248, 247, 1, 2, '3', 'Kartkówka', '2025-05-19 13:36:37'),
 (249, 247, 1, 2, '3', 'Kartkówka', '2025-05-19 13:41:21'),
 (250, 247, 1, 2, '3', 'Kartkówka', '2025-05-19 13:52:06'),
-(251, 18, 1, 2, '5', 'Sprawdzian z wiadomości', '2025-05-19 14:20:56');
+(251, 18, 1, 2, '5', 'Sprawdzian z wiadomości', '2025-05-19 14:20:56'),
+(252, 19, 1, 1, '3', 'Sprawdzian', '2025-05-26 21:15:34');
 
 -- --------------------------------------------------------
 
@@ -433,10 +459,10 @@ CREATE TABLE `plan_lekcji` (
   `dzien_tygodnia` varchar(20) NOT NULL,
   `godzina_start` time NOT NULL,
   `godzina_koniec` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `plan_lekcji`
+-- Dumping data for table `plan_lekcji`
 --
 
 INSERT INTO `plan_lekcji` (`id`, `klasa_id`, `przedmiot_id`, `sala_id`, `dzien_tygodnia`, `godzina_start`, `godzina_koniec`) VALUES
@@ -1080,10 +1106,10 @@ INSERT INTO `plan_lekcji` (`id`, `klasa_id`, `przedmiot_id`, `sala_id`, `dzien_t
 CREATE TABLE `przedmioty` (
   `id` int(11) NOT NULL,
   `nazwa` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `przedmioty`
+-- Dumping data for table `przedmioty`
 --
 
 INSERT INTO `przedmioty` (`id`, `nazwa`) VALUES
@@ -1120,6 +1146,37 @@ INSERT INTO `przedmioty` (`id`, `nazwa`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `przychody`
+--
+
+CREATE TABLE `przychody` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `kwota` decimal(10,2) NOT NULL,
+  `tytul` varchar(255) NOT NULL,
+  `opis` text DEFAULT NULL,
+  `data_dodania_wpisu` date DEFAULT curdate(),
+  `data_wydatku` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `przychody`
+--
+
+INSERT INTO `przychody` (`id`, `kwota`, `tytul`, `opis`, `data_dodania_wpisu`, `data_wydatku`) VALUES
+(1, 30000.00, 'Czesne – kwiecień', 'Wpływy z czesnego za kwiecień – szkoła podstawowa', '2025-05-26', '2025-04-05'),
+(2, 18000.00, 'Czesne – kwiecień', 'Wpływy z czesnego – przedszkole', '2025-05-26', '2025-04-06'),
+(3, 25000.00, 'Czesne – kwiecień', 'Wpływy z czesnego – liceum', '2025-05-26', '2025-04-07'),
+(4, 27000.00, 'Czesne – maj', 'Wpływy z czesnego – technikum', '2025-05-26', '2025-05-06'),
+(5, 19000.00, 'Czesne – maj', 'Wpływy z czesnego – przedszkole', '2025-05-26', '2025-05-07'),
+(6, 35000.00, 'Dotacja oświatowa', 'Dotacja z urzędu miasta na działalność placówki', '2025-05-26', '2025-04-01'),
+(7, 5000.00, 'Wpłaty za obiady', 'Rodzice – opłaty za żywienie dzieci w przedszkolu', '2025-05-26', '2025-04-15'),
+(8, 4800.00, 'Wpłaty za obiady', 'Rodzice – opłaty za żywienie w szkole podstawowej', '2025-05-26', '2025-05-10'),
+(9, 7200.00, 'Opłata za świetlicę', 'Świetlica popołudniowa – szkoła podstawowa', '2025-05-26', '2025-04-20'),
+(10, 8500.00, 'Zajęcia dodatkowe', 'Płatne warsztaty artystyczne i językowe – liceum', '2025-05-26', '2025-05-11');
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `rejestracja_zatwierdzenie`
 --
 
@@ -1132,7 +1189,7 @@ CREATE TABLE `rejestracja_zatwierdzenie` (
   `data_rejestracji` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` enum('Oczekuje','Zatwierdzone','Odrzucone') DEFAULT 'Oczekuje',
   `uwagi` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -1143,10 +1200,10 @@ CREATE TABLE `rejestracja_zatwierdzenie` (
 CREATE TABLE `sale` (
   `id` int(11) NOT NULL,
   `numer` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `sale`
+-- Dumping data for table `sale`
 --
 
 INSERT INTO `sale` (`id`, `numer`) VALUES
@@ -1204,7 +1261,7 @@ INSERT INTO `sale` (`id`, `numer`) VALUES
 (52, '2wf'),
 (53, '3wf'),
 (54, '4wf'),
-(55, '5wf');
+(57, '6wf');
 
 -- --------------------------------------------------------
 
@@ -1215,10 +1272,10 @@ INSERT INTO `sale` (`id`, `numer`) VALUES
 CREATE TABLE `typy_szkol` (
   `id` int(11) NOT NULL,
   `nazwa` enum('Liceum','Technikum','Szkola Podstawowa','Przedszkole') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `typy_szkol`
+-- Dumping data for table `typy_szkol`
 --
 
 INSERT INTO `typy_szkol` (`id`, `nazwa`) VALUES
@@ -1240,16 +1297,16 @@ CREATE TABLE `uczniowie` (
   `id_klasy` int(11) NOT NULL,
   `login` varchar(50) NOT NULL,
   `haslo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `uczniowie`
+-- Dumping data for table `uczniowie`
 --
 
 INSERT INTO `uczniowie` (`id`, `imie`, `nazwisko`, `id_klasy`, `login`, `haslo`) VALUES
 (1, 'Tomasz', 'Nowak', 1, 'tomasz_nosdfwak3123', 'tomasznowak123'),
 (2, 'Joanna', 'Kowalczyk', 1, 'joannasfd_kowalczyk1233', 'joannakowalczyk123'),
-(3, 'Zofia', 'Dąbrowski', 1, 'zofia_dąbrowski1323', 'zofiadąbrowski123'),
+(3, 'Zofiaa', 'Dąbrowski', 1, 'zofia_dąbrowski1323', 'zofiadąbrowski123'),
 (4, 'Jan', 'Dąbrowski', 1, 'jan_dąbrowski13231', 'jandąbrowski123'),
 (5, 'Jan', 'Mazur', 1, 'jan_mazufsdfsdr4433', 'jsdfanmazur123'),
 (6, 'Tomasz', 'Lewandowski', 1, 'tomassdfsz_lewandowski23', 'tomaszlewandowski123'),
@@ -1516,7 +1573,98 @@ CREATE TABLE `wiadomosci` (
   `temat` varchar(200) NOT NULL,
   `wiadomosc` text NOT NULL,
   `data_dodania` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `wlasciciel`
+--
+
+CREATE TABLE `wlasciciel` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `imie` varchar(100) NOT NULL,
+  `nazwisko` varchar(100) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `haslo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `wlasciciel`
+--
+
+INSERT INTO `wlasciciel` (`id`, `imie`, `nazwisko`, `login`, `haslo`) VALUES
+(1, 'Jan', 'Kowalski', 'jan_kowalski', 'jankowalski123');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `wydarzenia`
+--
+
+CREATE TABLE `wydarzenia` (
+  `id` int(11) NOT NULL,
+  `data` date NOT NULL,
+  `tytul` varchar(255) NOT NULL,
+  `opis` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `wydarzenia`
+--
+
+INSERT INTO `wydarzenia` (`id`, `data`, `tytul`, `opis`) VALUES
+(1, '2025-09-03', 'Rozpoczęcie roku szkolnego', 'Godzina 9:00, aula główna'),
+(2, '2025-10-14', 'Dzień Edukacji Narodowej', 'Uroczysta akademia'),
+(3, '2025-11-11', 'Dzień Niepodległości', 'Apel szkolny'),
+(4, '2025-12-22', 'Jasełka szkolne', 'Godzina 17:00, sala gimnastyczna'),
+(5, '2025-10-31', 'Bal Halloween', 'Dla klas 1–6, stroje obowiązkowe'),
+(6, '2025-11-29', 'Andrzejki', 'Zabawy i wróżby klasowe'),
+(7, '2025-12-06', 'Mikołajki', 'Wizyta Świętego Mikołaja i rozdanie prezentów'),
+(8, '2026-01-13', 'Zakończenie I semestru', 'Oceny muszą być wystawione do końca dnia'),
+(9, '2026-01-14', 'Rada pedagogiczna', 'Podsumowanie I semestru'),
+(10, '2026-01-20', 'Wywiadówki', 'Spotkania z rodzicami wszystkich klas'),
+(11, '2026-02-02', 'Początek ferii zimowych', 'Dwutygodniowa przerwa zimowa'),
+(12, '2026-03-21', 'Pierwszy dzień wiosny', 'Dzień bez mundurka, zajęcia integracyjne'),
+(13, '2026-04-01', 'Dzień Żartów', 'Zabawy i konkursy przygotowane przez samorząd'),
+(14, '2026-04-20', 'Egzamin ósmoklasisty – j. polski', 'Godzina 9:00, klasy 8'),
+(15, '2026-04-21', 'Egzamin ósmoklasisty – matematyka', 'Godzina 9:00, klasy 8'),
+(16, '2026-04-22', 'Egzamin ósmoklasisty – język obcy', 'Godzina 9:00, klasy 8'),
+(17, '2026-05-01', 'Święto Pracy – dzień wolny', 'Szkoła zamknięta'),
+(18, '2026-05-03', 'Święto Konstytucji 3 Maja', 'Uroczysty apel'),
+(19, '2026-06-01', 'Dzień Dziecka', 'Piknik szkolny i konkursy sportowe'),
+(20, '2026-06-19', 'Zakończenie roku szkolnego', 'Godzina 10:00, aula główna');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `wydatki`
+--
+
+CREATE TABLE `wydatki` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `kwota` decimal(10,2) NOT NULL,
+  `tytul` varchar(255) NOT NULL,
+  `opis` text DEFAULT NULL,
+  `data_dodania_wpisu` date DEFAULT curdate(),
+  `data_wydatku` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `wydatki`
+--
+
+INSERT INTO `wydatki` (`id`, `kwota`, `tytul`, `opis`, `data_dodania_wpisu`, `data_wydatku`) VALUES
+(1, 4500.00, 'Zakup zabawek edukacyjnych', 'Nowe zestawy edukacyjne dla przedszkola', '2025-05-26', '2025-04-05'),
+(2, 8200.00, 'Opłata za energię elektryczną', 'Faktura za kwiecień – wszystkie oddziały', '2025-05-26', '2025-04-28'),
+(3, 5600.00, 'Materiały biurowe', 'Artykuły papiernicze i tonery do drukarek', '2025-05-26', '2025-05-02'),
+(4, 13200.00, 'Remont sali informatycznej', 'Technikum – modernizacja sprzętu i malowanie', '2025-05-26', '2025-04-15'),
+(5, 2700.00, 'Szkolenie kadry nauczycielskiej', 'Szkoła podstawowa – szkolenie z metodyki Montessori', '2025-05-26', '2025-04-20'),
+(6, 9000.00, 'Zakup laptopów', 'Nowy sprzęt dla liceum – 6 sztuk', '2025-05-26', '2025-05-06'),
+(7, 3000.00, 'Sprzątanie po remoncie', 'Technikum – usługi sprzątające po modernizacji', '2025-05-26', '2025-04-17'),
+(8, 1400.00, 'Zakup środków czystości', 'Regularne zaopatrzenie wszystkich placówek', '2025-05-26', '2025-05-08'),
+(9, 3600.00, 'Naprawa ogrodzenia', 'Przedszkole – naprawa furtki i siatki', '2025-05-26', '2025-04-10'),
+(10, 2500.00, 'Zakup książek do biblioteki', 'Liceum i technikum – literatura do użytku uczniów', '2025-05-26', '2025-05-12');
 
 -- --------------------------------------------------------
 
@@ -1531,10 +1679,10 @@ CREATE TABLE `zdjecia` (
   `typ_mime` varchar(50) NOT NULL,
   `opis` text DEFAULT NULL,
   `data_dodania` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Zrzut danych tabeli `zdjecia`
+-- Dumping data for table `zdjecia`
 --
 
 INSERT INTO `zdjecia` (`id`, `nazwa_pliku`, `dane_zdjecia`, `typ_mime`, `opis`, `data_dodania`) VALUES
@@ -1560,6 +1708,12 @@ INSERT INTO `zdjecia` (`id`, `nazwa_pliku`, `dane_zdjecia`, `typ_mime`, `opis`, 
 ALTER TABLE `administratorzy`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `Login` (`Login`);
+
+--
+-- Indeksy dla tabeli `aktualnosci`
+--
+ALTER TABLE `aktualnosci`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeksy dla tabeli `klasy`
@@ -1602,6 +1756,12 @@ ALTER TABLE `przedmioty`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeksy dla tabeli `przychody`
+--
+ALTER TABLE `przychody`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeksy dla tabeli `rejestracja_zatwierdzenie`
 --
 ALTER TABLE `rejestracja_zatwierdzenie`
@@ -1634,106 +1794,155 @@ ALTER TABLE `wiadomosci`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeksy dla tabeli `wlasciciel`
+--
+ALTER TABLE `wlasciciel`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`);
+
+--
+-- Indeksy dla tabeli `wydarzenia`
+--
+ALTER TABLE `wydarzenia`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `wydatki`
+--
+ALTER TABLE `wydatki`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeksy dla tabeli `zdjecia`
 --
 ALTER TABLE `zdjecia`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT dla zrzuconych tabel
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT dla tabeli `administratorzy`
+-- AUTO_INCREMENT for table `administratorzy`
 --
 ALTER TABLE `administratorzy`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT dla tabeli `klasy`
+-- AUTO_INCREMENT for table `aktualnosci`
+--
+ALTER TABLE `aktualnosci`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `klasy`
 --
 ALTER TABLE `klasy`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT dla tabeli `nauczyciele`
+-- AUTO_INCREMENT for table `nauczyciele`
 --
 ALTER TABLE `nauczyciele`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
--- AUTO_INCREMENT dla tabeli `oceny`
+-- AUTO_INCREMENT for table `oceny`
 --
 ALTER TABLE `oceny`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=253;
 
 --
--- AUTO_INCREMENT dla tabeli `plan_lekcji`
+-- AUTO_INCREMENT for table `plan_lekcji`
 --
 ALTER TABLE `plan_lekcji`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=645;
 
 --
--- AUTO_INCREMENT dla tabeli `przedmioty`
+-- AUTO_INCREMENT for table `przedmioty`
 --
 ALTER TABLE `przedmioty`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT dla tabeli `rejestracja_zatwierdzenie`
+-- AUTO_INCREMENT for table `przychody`
+--
+ALTER TABLE `przychody`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `rejestracja_zatwierdzenie`
 --
 ALTER TABLE `rejestracja_zatwierdzenie`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT dla tabeli `sale`
+-- AUTO_INCREMENT for table `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
--- AUTO_INCREMENT dla tabeli `typy_szkol`
+-- AUTO_INCREMENT for table `typy_szkol`
 --
 ALTER TABLE `typy_szkol`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT dla tabeli `uczniowie`
+-- AUTO_INCREMENT for table `uczniowie`
 --
 ALTER TABLE `uczniowie`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259;
 
 --
--- AUTO_INCREMENT dla tabeli `wiadomosci`
+-- AUTO_INCREMENT for table `wiadomosci`
 --
 ALTER TABLE `wiadomosci`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT dla tabeli `zdjecia`
+-- AUTO_INCREMENT for table `wlasciciel`
+--
+ALTER TABLE `wlasciciel`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `wydarzenia`
+--
+ALTER TABLE `wydarzenia`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `wydatki`
+--
+ALTER TABLE `wydatki`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `zdjecia`
 --
 ALTER TABLE `zdjecia`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Ograniczenia dla zrzutów tabel
+-- Constraints for dumped tables
 --
 
 --
--- Ograniczenia dla tabeli `klasy`
+-- Constraints for table `klasy`
 --
 ALTER TABLE `klasy`
   ADD CONSTRAINT `klasy_ibfk_1` FOREIGN KEY (`typ_szkoly_id`) REFERENCES `typy_szkol` (`id`);
 
 --
--- Ograniczenia dla tabeli `nauczyciele`
+-- Constraints for table `nauczyciele`
 --
 ALTER TABLE `nauczyciele`
   ADD CONSTRAINT `nauczyciele_ibfk_1` FOREIGN KEY (`id_przedmiotu`) REFERENCES `przedmioty` (`id`),
   ADD CONSTRAINT `nauczyciele_ibfk_2` FOREIGN KEY (`id_klasy_wychowawca`) REFERENCES `klasy` (`id`);
 
 --
--- Ograniczenia dla tabeli `oceny`
+-- Constraints for table `oceny`
 --
 ALTER TABLE `oceny`
   ADD CONSTRAINT `oceny_ibfk_1` FOREIGN KEY (`id_ucznia`) REFERENCES `uczniowie` (`id`),
@@ -1741,7 +1950,7 @@ ALTER TABLE `oceny`
   ADD CONSTRAINT `oceny_ibfk_3` FOREIGN KEY (`id_nauczyciela`) REFERENCES `nauczyciele` (`id`);
 
 --
--- Ograniczenia dla tabeli `plan_lekcji`
+-- Constraints for table `plan_lekcji`
 --
 ALTER TABLE `plan_lekcji`
   ADD CONSTRAINT `plan_lekcji_ibfk_1` FOREIGN KEY (`klasa_id`) REFERENCES `klasy` (`id`),
@@ -1749,7 +1958,7 @@ ALTER TABLE `plan_lekcji`
   ADD CONSTRAINT `plan_lekcji_ibfk_3` FOREIGN KEY (`sala_id`) REFERENCES `sale` (`id`);
 
 --
--- Ograniczenia dla tabeli `uczniowie`
+-- Constraints for table `uczniowie`
 --
 ALTER TABLE `uczniowie`
   ADD CONSTRAINT `uczniowie_ibfk_1` FOREIGN KEY (`id_klasy`) REFERENCES `klasy` (`id`);

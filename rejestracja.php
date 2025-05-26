@@ -190,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
                 <li><a href="plan.html"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
-                <li><a href="rejstracja.php" class="cta-button"><i class="fas fa-user-plus"></i>Stwórz swój dziennik!</a></li>
+                <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i>Stwórz swój dziennik!</a></li>
             </ul>
         </nav>
     </header>
@@ -261,7 +261,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <ul>
                     <li><a href="dziennik.php">Logowanie</a></li>
                     <li><a href="rejestracja.php">Rejestracja</a></li>
-                    <li><a href="#">Pomoc</a></li>
                 </ul>
             </div>
             

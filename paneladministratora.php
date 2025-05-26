@@ -20,10 +20,36 @@ if ($conn->connect_error) {
     die("Błąd połączenia: " . $conn->connect_error);
 }
 
-// Sprawdzamy czy mamy akcję do wykonania na wiadomościach
+// Sprawdzamy czy mamy akcję do wykonania
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
+            case 'add_post':
+                $tytul = $_POST['tytul'];
+                $opis = $_POST['opis'];
+                
+                $stmt = $conn->prepare("INSERT INTO aktualnosci (data, tytul, opis) VALUES (NOW(), ?, ?)");
+                $stmt->bind_param("ss", $tytul, $opis);
+                $stmt->execute();
+                break;
+                
+            case 'edit_post':
+                $id = $_POST['id'];
+                $tytul = $_POST['tytul'];
+                $opis = $_POST['opis'];
+                
+                $stmt = $conn->prepare("UPDATE aktualnosci SET tytul = ?, opis = ? WHERE id = ?");
+                $stmt->bind_param("ssi", $tytul, $opis, $id);
+                $stmt->execute();
+                break;
+                
+            case 'delete_post':
+                $id = $_POST['id'];
+                $stmt = $conn->prepare("DELETE FROM aktualnosci WHERE id = ?");
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                break;
+                
             case 'add_teacher':
                 $imie = $_POST['imie'];
                 $nazwisko = $_POST['nazwisko'];
@@ -37,74 +63,157 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmt->execute();
                 break;
                 
-            case 'delete_teacher':
-                $id = $_POST['id'];
-                $stmt = $conn->prepare("DELETE FROM nauczyciele WHERE id = ?");
-                $stmt->bind_param("i", $id);
-                $stmt->execute();
-                break;
-                
-            case 'add_student':
-                $imie = $_POST['imie'];
-                $nazwisko = $_POST['nazwisko'];
-                $id_klasy = $_POST['id_klasy'];
-                $login = $_POST['login'];
-                $haslo = password_hash($_POST['haslo'], PASSWORD_DEFAULT);
-                
-                $stmt = $conn->prepare("INSERT INTO uczniowie (imie, nazwisko, id_klasy, login, haslo) VALUES (?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssiss", $imie, $nazwisko, $id_klasy, $login, $haslo);
-                $stmt->execute();
-                break;
-                
-            case 'delete_student':
-                $id = $_POST['id'];
-                $stmt = $conn->prepare("DELETE FROM uczniowie WHERE id = ?");
-                $stmt->bind_param("i", $id);
-                $stmt->execute();
-                break;
-                
-            case 'add_classroom':
-                $numer = $_POST['numer'];
-                $stmt = $conn->prepare("INSERT INTO sale (numer) VALUES (?)");
-                $stmt->bind_param("s", $numer);
-                $stmt->execute();
-                break;
-                
-            case 'delete_classroom':
-                $id = $_POST['id'];
-                $stmt = $conn->prepare("DELETE FROM sale WHERE id = ?");
-                $stmt->bind_param("i", $id);
-                $stmt->execute();
-                break;
-                
-            case 'delete_class':
-                $id_klasy = $_POST['id_klasy'];
-                // Usuwanie uczniów z klasy
-                $stmt = $conn->prepare("DELETE FROM uczniowie WHERE id_klasy = ?");
-                $stmt->bind_param("i", $id_klasy);
-                $stmt->execute();
-                
-                // Resetowanie wychowawcy dla tej klasy
-                $id_klasy_wychowawca = $_POST['id_klasy_wychowawca'];
-                $stmt = $conn->prepare("UPDATE nauczyciele SET id_klasy_wychowawca = NULL WHERE id_klasy_wychowawca = ?");
-                $stmt->bind_param("i", $id_klasy_wychowawca);
-                $stmt->execute();
-                break;
-                
-            case 'delete_message':
-                $id = $_POST['id'];
-                $stmt = $conn->prepare("DELETE FROM wiadomosci WHERE id = ?");
-                $stmt->bind_param("i", $id);
-                $stmt->execute();
-                break;
-                
-            case 'delete_registration':
-                $id = $_POST['id'];
-                $stmt = $conn->prepare("DELETE FROM rejestracja_zatwierdzenie WHERE id = ?");
-                $stmt->bind_param("i", $id);
-                $stmt->execute();
-                break;
+                case 'edit_teacher':
+                    $id = $_POST['id'];
+                    $imie = $_POST['imie'];
+                    $nazwisko = $_POST['nazwisko'];
+                    $login = $_POST['login'];
+                    $haslo = !empty($_POST['haslo']) ? password_hash($_POST['haslo'], PASSWORD_DEFAULT) : null;
+                    $id_przedmiotu = $_POST['id_przedmiotu'];
+                    $id_klasy = $_POST['id_klasy_wychowawca'] ?: NULL;
+                    
+                    if ($haslo) {
+                        $stmt = $conn->prepare("UPDATE nauczyciele SET imie = ?, nazwisko = ?, login = ?, haslo = ?, id_przedmiotu = ?, id_klasy_wychowawca = ? WHERE id = ?");
+                        $stmt->bind_param("ssssiii", $imie, $nazwisko, $login, $haslo, $id_przedmiotu, $id_klasy, $id);
+                    } else {
+                        $stmt = $conn->prepare("UPDATE nauczyciele SET imie = ?, nazwisko = ?, login = ?, id_przedmiotu = ?, id_klasy_wychowawca = ? WHERE id = ?");
+                        $stmt->bind_param("sssiii", $imie, $nazwisko, $login, $id_przedmiotu, $id_klasy, $id);
+                    }
+                    $stmt->execute();
+                    break;
+                    
+                case 'delete_teacher':
+                    $id = $_POST['id'];
+                    $stmt = $conn->prepare("DELETE FROM nauczyciele WHERE id = ?");
+                    $stmt->bind_param("i", $id);
+                    $stmt->execute();
+                    break;
+                    
+                case 'add_student':
+                    $imie = $_POST['imie'];
+                    $nazwisko = $_POST['nazwisko'];
+                    $id_klasy = $_POST['id_klasy'];
+                    $login = $_POST['login'];
+                    $haslo = password_hash($_POST['haslo'], PASSWORD_DEFAULT);
+                    
+                    $stmt = $conn->prepare("INSERT INTO uczniowie (imie, nazwisko, id_klasy, login, haslo) VALUES (?, ?, ?, ?, ?)");
+                    $stmt->bind_param("ssiss", $imie, $nazwisko, $id_klasy, $login, $haslo);
+                    $stmt->execute();
+                    break;
+                    
+                case 'edit_student':
+                    $id = $_POST['id'];
+                    $imie = $_POST['imie'];
+                    $nazwisko = $_POST['nazwisko'];
+                    $id_klasy = $_POST['id_klasy'];
+                    $login = $_POST['login'];
+                    $haslo = !empty($_POST['haslo']) ? password_hash($_POST['haslo'], PASSWORD_DEFAULT) : null;
+                    
+                    if ($haslo) {
+                        $stmt = $conn->prepare("UPDATE uczniowie SET imie = ?, nazwisko = ?, id_klasy = ?, login = ?, haslo = ? WHERE id = ?");
+                        $stmt->bind_param("ssissi", $imie, $nazwisko, $id_klasy, $login, $haslo, $id);
+                    } else {
+                        $stmt = $conn->prepare("UPDATE uczniowie SET imie = ?, nazwisko = ?, id_klasy = ?, login = ? WHERE id = ?");
+                        $stmt->bind_param("ssisi", $imie, $nazwisko, $id_klasy, $login, $id);
+                    }
+                    $stmt->execute();
+                    break;
+                    
+                case 'delete_student':
+                    $id = $_POST['id'];
+                    $stmt = $conn->prepare("DELETE FROM uczniowie WHERE id = ?");
+                    $stmt->bind_param("i", $id);
+                    $stmt->execute();
+                    break;
+                    
+                case 'add_classroom':
+                    $numer = $_POST['numer'];
+                    $stmt = $conn->prepare("INSERT INTO sale (numer) VALUES (?)");
+                    $stmt->bind_param("s", $numer);
+                    $stmt->execute();
+                    break;
+                    
+                case 'edit_classroom':
+                    $id = $_POST['id'];
+                    $numer = $_POST['numer'];
+                    $stmt = $conn->prepare("UPDATE sale SET numer = ? WHERE id = ?");
+                    $stmt->bind_param("si", $numer, $id);
+                    $stmt->execute();
+                    break;
+                    
+                case 'delete_classroom':
+                    $id = $_POST['id'];
+                    $stmt = $conn->prepare("DELETE FROM sale WHERE id = ?");
+                    $stmt->bind_param("i", $id);
+                    $stmt->execute();
+                    break;
+                    
+                case 'delete_class':
+                    $id_klasy = $_POST['id_klasy'];
+                    // Usuwanie uczniów z klasy
+                    $stmt = $conn->prepare("DELETE FROM uczniowie WHERE id_klasy = ?");
+                    $stmt->bind_param("i", $id_klasy);
+                    $stmt->execute();
+                    
+                    // Resetowanie wychowawcy dla tej klasy
+                    $id_klasy_wychowawca = $_POST['id_klasy_wychowawca'];
+                    $stmt = $conn->prepare("UPDATE nauczyciele SET id_klasy_wychowawca = NULL WHERE id_klasy_wychowawca = ?");
+                    $stmt->bind_param("i", $id_klasy_wychowawca);
+                    $stmt->execute();
+                    break;
+                    
+                case 'delete_message':
+                    $id = $_POST['id'];
+                    $stmt = $conn->prepare("DELETE FROM wiadomosci WHERE id = ?");
+                    $stmt->bind_param("i", $id);
+                    $stmt->execute();
+                    break;
+                    
+                case 'delete_registration':
+                    $id = $_POST['id'];
+                    $stmt = $conn->prepare("DELETE FROM rejestracja_zatwierdzenie WHERE id = ?");
+                    $stmt->bind_param("i", $id);
+                    $stmt->execute();
+                    break;
+                    case 'add_income':
+                        $kwota = $_POST['kwota'];
+                        $tytul = $_POST['tytul'];
+                        $opis = $_POST['opis'];
+                        $data_wydatku = $_POST['data_wydatku'];
+                        
+                        $stmt = $conn->prepare("INSERT INTO przychody (kwota, tytul, opis, data_dodania_wpisu, data_wydatku) VALUES (?, ?, ?, NOW(), ?)");
+                        $stmt->bind_param("dsss", $kwota, $tytul, $opis, $data_wydatku);
+                        $stmt->execute();
+                        break;
+                        
+                    case 'add_expense':
+                        $kwota = $_POST['kwota'];
+                        $tytul = $_POST['tytul'];
+                        $opis = $_POST['opis'];
+                        $data_wydatku = $_POST['data_wydatku'];
+                        
+                        $stmt = $conn->prepare("INSERT INTO wydatki (kwota, tytul, opis, data_dodania_wpisu, data_wydatku) VALUES (?, ?, ?, NOW(), ?)");
+                        $stmt->bind_param("dsss", $kwota, $tytul, $opis, $data_wydatku);
+                        $stmt->execute();
+                        break;
+                        
+                    case 'delete_income':
+                        $id = $_POST['id'];
+                        $stmt = $conn->prepare("DELETE FROM przychody WHERE id = ?");
+                        $stmt->bind_param("i", $id);
+                        $stmt->execute();
+                        break;
+                        
+                    case 'delete_expense':
+                        $id = $_POST['id'];
+                        $stmt = $conn->prepare("DELETE FROM wydatki WHERE id = ?");
+                        $stmt->bind_param("i", $id);
+                        $stmt->execute();
+                        break;
         }
+        
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
     }
 }
 
@@ -116,20 +225,26 @@ $stmt->execute();
 $wynik_admin = $stmt->get_result();
 $admin = $wynik_admin->fetch_assoc();
 
-// Pobranie list nauczycieli, uczniów i sal
+// Pobranie danych z bazy
+$aktualnosci = $conn->query("SELECT * FROM aktualnosci ORDER BY data DESC")->fetch_all(MYSQLI_ASSOC);
 $nauczyciele = $conn->query("SELECT * FROM nauczyciele")->fetch_all(MYSQLI_ASSOC);
 $uczniowie = $conn->query("SELECT * FROM uczniowie")->fetch_all(MYSQLI_ASSOC);
 $sale = $conn->query("SELECT * FROM sale")->fetch_all(MYSQLI_ASSOC);
 $klasy = $conn->query("SELECT * FROM klasy")->fetch_all(MYSQLI_ASSOC);
 $przedmioty = $conn->query("SELECT * FROM przedmioty")->fetch_all(MYSQLI_ASSOC);
 $wiadomosci = $conn->query("SELECT * FROM wiadomosci ORDER BY data_dodania DESC")->fetch_all(MYSQLI_ASSOC);
-$rejestracje = $conn->query("SELECT * FROM rejestracja_zatwierdzenie ORDER BY data_rejestracji DESC;")->fetch_all(MYSQLI_ASSOC);
+$rejestracje = $conn->query("SELECT * FROM rejestracja_zatwierdzenie ORDER BY data_rejestracji DESC")->fetch_all(MYSQLI_ASSOC);
+$przychody = $conn->query("SELECT * FROM przychody ORDER BY data_wydatku DESC")->fetch_all(MYSQLI_ASSOC);
+$wydatki = $conn->query("SELECT * FROM wydatki ORDER BY data_wydatku DESC")->fetch_all(MYSQLI_ASSOC);
 
 $conn->close();
 
-// Sprawdzamy czy mamy parametr show_messages lub show_registrations
+// Sprawdzamy parametry GET
 $show_messages = isset($_GET['show']) && $_GET['show'] == 'messages';
 $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
+$show_posts = isset($_GET['show']) && $_GET['show'] == 'posts';
+$show_finances = isset($_GET['show']) && $_GET['show'] == 'finances';
+$show_management = !$show_messages && !$show_registrations && !$show_posts && !$show_finances;
 ?>
 
 <!DOCTYPE html>
@@ -141,7 +256,7 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
+       :root {
             --primary-color: #0056b3;
             --secondary-color: #17a2b8;
             --accent-color: #ff6b6b;
@@ -340,7 +455,7 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
             box-shadow: var(--shadow);
             padding: 2rem;
         }
-
+        
         .welcome-header {
             margin-bottom: 2rem;
             text-align: center;
@@ -422,6 +537,14 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
+        .btn-secondary {
+            background: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: #138496;
+        }
+
         .btn-danger {
             background: var(--accent-color);
         }
@@ -480,6 +603,71 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
             word-wrap: break-word;
         }
 
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 2rem;
+            border: 1px solid #888;
+            border-radius: var(--border-radius);
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--accent-color);
+        }
+
+        .modal-footer {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        textarea {
+            font-family: 'Open Sans', sans-serif;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.2);
+        }
         footer {
             background: var(--dark-color);
             color: white;
@@ -559,6 +747,11 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
             .message-content {
                 max-width: 200px;
             }
+            
+            .modal-content {
+                width: 95%;
+                margin: 20% auto;
+            }
         }
     </style>
 </head>
@@ -594,22 +787,25 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                 </div>
                 
                 <ul class="admin-menu">
-                    <li><a href="?show=management" class="<?php echo (!$show_messages && !$show_registrations) ? 'active' : ''; ?>"><i class="fas fa-users-cog"></i> Zarządzanie</a></li>
+                    <li><a href="?show=management" class="<?php echo $show_management ? 'active' : ''; ?>"><i class="fas fa-users-cog"></i> Zarządzanie</a></li>
                     <li><a href="?show=messages" class="<?php echo $show_messages ? 'active' : ''; ?>"><i class="fas fa-envelope"></i> Wiadomości</a></li>
                     <li><a href="?show=registrations" class="<?php echo $show_registrations ? 'active' : ''; ?>"><i class="fas fa-user-check"></i> Zatwierdzenie konta</a></li>
+                    <li><a href="?show=posts" class="<?php echo $show_posts ? 'active' : ''; ?>"><i class="fas fa-newspaper"></i> Wpisy</a></li>
+                    <li><a href="?show=finances" class="<?php echo $show_finances ? 'active' : ''; ?>"><i class="fas fa-money-bill-wave"></i> Finanse</a></li>
                     <li><a href="logout.php" class="text-danger"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a></li>
                 </ul>
             </div>
             
             <!-- Główna zawartość -->
             <div class="admin-content">
-                <?php if (!$show_messages && !$show_registrations): ?>
+                <?php if ($show_management): ?>
+                    <!-- Sekcja zarządzania -->
                     <div class="welcome-header">
                         <h2><i class="fas fa-user-shield"></i> Panel Administratora</h2>
                         <p>Zarządzaj uczniami, nauczycielami i zasobami szkoły</p>
                     </div>
                     
-                    <!-- Zarządzanie nauczycielami -->
+                    <!-- ... (sekcje zarządzania nauczycielami, uczniami, salami pozostają bez zmian) ... -->
                     <div class="admin-section">
                         <h3><i class="fas fa-chalkboard-teacher"></i> Zarządzanie nauczycielami</h3>
                         
@@ -641,7 +837,7 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                             </div>
                             <div class="form-group">
                                 <label>Klasa (wychowawca)</label>
-                                <select name="id_klasy">
+                                <select name="id_klasy_wychowawca">
                                     <option value="">- Brak -</option>
                                     <?php foreach ($klasy as $k): ?>
                                         <option value="<?php echo $k['id']; ?>"><?php echo htmlspecialchars($k['nazwa']); ?></option>
@@ -699,6 +895,7 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                                                 ?>
                                             </td>
                                             <td class="action-buttons">
+                                                <button onclick="openEditTeacherModal(<?php echo $n['id']; ?>, '<?php echo htmlspecialchars($n['imie'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($n['nazwisko'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($n['login'], ENT_QUOTES); ?>', <?php echo $n['id_przedmiotu']; ?>, <?php echo $n['id_klasy_wychowawca'] ?? 'null'; ?>)" class="btn btn-secondary btn-sm">Edytuj</button>
                                                 <form method="post" style="display: inline;">
                                                     <input type="hidden" name="action" value="delete_teacher">
                                                     <input type="hidden" name="id" value="<?php echo $n['id']; ?>">
@@ -713,8 +910,61 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                             <div class="no-data">Brak nauczycieli w systemie</div>
                         <?php endif; ?>
                     </div>
-                    
-                    <!-- Zarządzanie uczniami -->
+                    <div id="editTeacherModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Edytuj nauczyciela</h3>
+                                <span class="close" onclick="closeModal('editTeacherModal')">&times;</span>
+                            </div>
+                            <form method="post" id="editTeacherForm">
+                                <input type="hidden" name="action" value="edit_teacher">
+                                <input type="hidden" name="id" id="editTeacherId">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Imię</label>
+                                        <input type="text" name="imie" id="editTeacherImie" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nazwisko</label>
+                                        <input type="text" name="nazwisko" id="editTeacherNazwisko" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Login</label>
+                                        <input type="text" name="login" id="editTeacherLogin" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nowe hasło (opcjonalne)</label>
+                                        <input type="password" name="haslo" id="editTeacherHaslo">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Przedmiot</label>
+                                        <select name="id_przedmiotu" id="editTeacherPrzedmiot" required>
+                                            <?php foreach ($przedmioty as $p): ?>
+                                                <option value="<?php echo $p['id']; ?>"><?php echo htmlspecialchars($p['nazwa']); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Klasa (wychowawca)</label>
+                                        <select name="id_klasy_wychowawca" id="editTeacherKlasa">
+                                            <option value="">- Brak -</option>
+                                            <?php foreach ($klasy as $k): ?>
+                                                <option value="<?php echo $k['id']; ?>"><?php echo htmlspecialchars($k['nazwa']); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" onclick="closeModal('editTeacherModal')">Anuluj</button>
+                                    <button type="submit" class="btn">Zapisz zmiany</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <div class="admin-section">
                         <h3><i class="fas fa-user-graduate"></i> Zarządzanie uczniami</h3>
                         
@@ -760,13 +1010,22 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($uczniowie as $u): ?>
+                                    <?php foreach ($uczniowie as $u): 
+                                        $nazwa_klasy = '';
+                                        foreach ($klasy as $k) {
+                                            if ($k['id'] == $u['id_klasy']) {
+                                                $nazwa_klasy = $k['nazwa'];
+                                                break;
+                                            }
+                                        }
+                                    ?>
                                         <tr>
                                             <td><?php echo $u['id']; ?></td>
                                             <td><?php echo htmlspecialchars($u['imie'] . ' ' . $u['nazwisko']); ?></td>
-                                            <td><?php echo $u['id_klasy']; ?></td>
+                                            <td><?php echo htmlspecialchars($nazwa_klasy); ?></td>
                                             <td><?php echo htmlspecialchars($u['login']); ?></td>
                                             <td class="action-buttons">
+                                                <button onclick="openEditStudentModal(<?php echo $u['id']; ?>, '<?php echo htmlspecialchars($u['imie'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($u['nazwisko'], ENT_QUOTES); ?>', <?php echo $u['id_klasy']; ?>, '<?php echo htmlspecialchars($u['login'], ENT_QUOTES); ?>')" class="btn btn-secondary btn-sm">Edytuj</button>
                                                 <form method="post" style="display: inline;">
                                                     <input type="hidden" name="action" value="delete_student">
                                                     <input type="hidden" name="id" value="<?php echo $u['id']; ?>">
@@ -780,6 +1039,54 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                         <?php else: ?>
                             <div class="no-data">Brak uczniów w systemie</div>
                         <?php endif; ?>
+                        
+                        <!-- Modal edycji ucznia -->
+                        <div id="editStudentModal" class="modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3>Edytuj ucznia</h3>
+                                    <span class="close" onclick="closeModal('editStudentModal')">&times;</span>
+                                </div>
+                                <form method="post" id="editStudentForm">
+                                    <input type="hidden" name="action" value="edit_student">
+                                    <input type="hidden" name="id" id="editStudentId">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Imię</label>
+                                            <input type="text" name="imie" id="editStudentImie" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Nazwisko</label>
+                                            <input type="text" name="nazwisko" id="editStudentNazwisko" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Klasa</label>
+                                            <select name="id_klasy" id="editStudentKlasa" required>
+                                                <?php foreach ($klasy as $k): ?>
+                                                    <option value="<?php echo $k['id']; ?>"><?php echo htmlspecialchars($k['nazwa']); ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Login</label>
+                                            <input type="text" name="login" id="editStudentLogin" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Nowe hasło (opcjonalne)</label>
+                                            <input type="password" name="haslo" id="editStudentHaslo">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" onclick="closeModal('editStudentModal')">Anuluj</button>
+                                        <button type="submit" class="btn">Zapisz zmiany</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         
                         <h4>Usuwanie całej klasy</h4>
                         <form method="post" class="form-row">
@@ -795,8 +1102,6 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                             <button type="submit" class="btn btn-danger">Usuń klasę i wszystkich uczniów</button>
                         </form>
                     </div>
-                    
-                    <!-- Zarządzanie salami -->
                     <div class="admin-section">
                         <h3><i class="fas fa-door-open"></i> Zarządzanie salami</h3>
                         
@@ -825,6 +1130,7 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                                             <td><?php echo $s['id']; ?></td>
                                             <td><?php echo htmlspecialchars($s['numer']); ?></td>
                                             <td class="action-buttons">
+                                                <button onclick="openEditClassroomModal(<?php echo $s['id']; ?>, '<?php echo htmlspecialchars($s['numer'], ENT_QUOTES); ?>')" class="btn btn-secondary btn-sm">Edytuj</button>
                                                 <form method="post" style="display: inline;">
                                                     <input type="hidden" name="action" value="delete_classroom">
                                                     <input type="hidden" name="id" value="<?php echo $s['id']; ?>">
@@ -839,6 +1145,119 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                             <div class="no-data">Brak sal w systemie</div>
                         <?php endif; ?>
                     </div>
+                    <div id="editClassroomModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Edytuj salę</h3>
+                                <span class="close" onclick="closeModal('editClassroomModal')">&times;</span>
+                            </div>
+                            <form method="post" id="editClassroomForm">
+                                <input type="hidden" name="action" value="edit_classroom">
+                                <input type="hidden" name="id" id="editClassroomId">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Numer sali</label>
+                                        <input type="text" name="numer" id="editClassroomNumer" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" onclick="closeModal('editClassroomModal')">Anuluj</button>
+                                    <button type="submit" class="btn">Zapisz zmiany</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    
+                <?php elseif ($show_posts): ?>
+                    <!-- Sekcja wpisów -->
+                    <div class="welcome-header">
+                        <h2><i class="fas fa-newspaper"></i> Zarządzanie wpisami</h2>
+                        <p>Dodawaj i edytuj aktualności na stronie</p>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h3><i class="fas fa-plus-circle"></i> Dodaj nowy wpis</h3>
+                        
+                        <form method="post" class="form-row">
+                            <input type="hidden" name="action" value="add_post">
+                            <div class="form-group">
+                                <label>Tytuł</label>
+                                <input type="text" name="tytul" required>
+                            </div>
+                            <div class="form-group" style="flex: 1 0 100%;">
+                                <label>Opis</label>
+                                <textarea name="opis" rows="5" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: var(--border-radius);" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Dodaj wpis</button>
+                        </form>
+                        
+                        <h3><i class="fas fa-list"></i> Lista wpisów</h3>
+                        <?php if (!empty($aktualnosci)): ?>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Data</th>
+                                        <th>Tytuł</th>
+                                        <th>Opis</th>
+                                        <th>Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($aktualnosci as $a): ?>
+                                        <tr>
+                                            <td><?php echo $a['id']; ?></td>
+                                            <td><?php echo date('Y-m-d', strtotime($a['data'])); ?></td>
+                                            <td><?php echo htmlspecialchars($a['tytul']); ?></td>
+                                            <td class="message-content"><?php echo nl2br(htmlspecialchars(substr($a['opis'], 0, 100))) . (strlen($a['opis']) > 100 ? '...' : ''); ?></td>
+                                            <td class="action-buttons">
+                                                <button onclick="openEditPostModal(<?php echo $a['id']; ?>, '<?php echo htmlspecialchars($a['tytul'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($a['opis'], ENT_QUOTES); ?>')" class="btn btn-secondary btn-sm">Edytuj</button>
+                                                <form method="post" style="display: inline;">
+                                                    <input type="hidden" name="action" value="delete_post">
+                                                    <input type="hidden" name="id" value="<?php echo $a['id']; ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="no-data">Brak wpisów</div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <!-- Modal edycji wpisu -->
+                    <div id="editPostModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Edytuj wpis</h3>
+                                <span class="close" onclick="closeModal('editPostModal')">&times;</span>
+                            </div>
+                            <form method="post" id="editPostForm">
+                                <input type="hidden" name="action" value="edit_post">
+                                <input type="hidden" name="id" id="editPostId">
+                                <div class="form-row">
+                                    <div class="form-group" style="flex: 1 0 100%;">
+                                        <label>Tytuł</label>
+                                        <input type="text" name="tytul" id="editPostTytul" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group" style="flex: 1 0 100%;">
+                                        <label>Opis</label>
+                                        <textarea name="opis" id="editPostOpis" rows="5" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: var(--border-radius);" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" onclick="closeModal('editPostModal')">Anuluj</button>
+                                    <button type="submit" class="btn">Zapisz zmiany</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
                 <?php elseif ($show_messages): ?>
                     <!-- Sekcja wiadomości -->
                     <div class="welcome-header">
@@ -882,6 +1301,7 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                             <div class="no-data">Brak wiadomości</div>
                         <?php endif; ?>
                     </div>
+                    
                 <?php elseif ($show_registrations): ?>
                     <!-- Sekcja zatwierdzania kont -->
                     <div class="welcome-header">
@@ -934,7 +1354,8 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
                             <div class="no-data">Brak wniosków o rejestrację</div>
                         <?php endif; ?>
                     </div>
-                <?php endif; ?>
+                    
+                
                 
                 <div style="text-align: center; margin-top: 2rem;">
                     <a href="logout.php" class="btn btn-danger">
@@ -944,9 +1365,165 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
             </div>
         </div>
     </div>
+    <?php elseif ($show_finances): ?>
+    <!-- Sekcja finansów -->
+    <div class="welcome-header">
+        <h2><i class="fas fa-money-bill-wave"></i> Zarządzanie finansami</h2>
+        <p>Dodawaj i przeglądaj przychody oraz wydatki szkoły</p>
+    </div>
+    
+    <div class="admin-section">
+        <h3><i class="fas fa-plus-circle"></i> Dodaj nowy przychód</h3>
+        
+        <form method="post" class="form-row">
+            <input type="hidden" name="action" value="add_income">
+            <div class="form-group">
+                <label>Kwota</label>
+                <input type="number" step="0.01" name="kwota" required>
+            </div>
+            <div class="form-group">
+                <label>Tytuł</label>
+                <input type="text" name="tytul" required>
+            </div>
+            <div class="form-group">
+                <label>Data przychodu</label>
+                <input type="date" name="data_wydatku" required>
+            </div>
+            <div class="form-group" style="flex: 1 0 100%;">
+                <label>Opis</label>
+                <textarea name="opis" rows="3" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: var(--border-radius);" required></textarea>
+            </div>
+            <button type="submit" class="btn">Dodaj przychód</button>
+        </form>
+        
+        <h3><i class="fas fa-list"></i> Lista przychodów</h3>
+        <?php if (!empty($przychody)): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Kwota</th>
+                        <th>Tytuł</th>
+                        <th>Opis</th>
+                        <th>Data przychodu</th>
+                        <th>Data dodania</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($przychody as $p): ?>
+                        <tr>
+                            <td><?php echo $p['id']; ?></td>
+                            <td><?php echo number_format($p['kwota'], 2); ?> zł</td>
+                            <td><?php echo htmlspecialchars($p['tytul']); ?></td>
+                            <td class="message-content"><?php echo nl2br(htmlspecialchars($p['opis'])); ?></td>
+                            <td><?php echo date('Y-m-d', strtotime($p['data_wydatku'])); ?></td>
+                            <td><?php echo date('Y-m-d', strtotime($p['data_dodania_wpisu'])); ?></td>
+                            <td class="action-buttons">
+                                <form method="post" style="display: inline;">
+                                    <input type="hidden" name="action" value="delete_income">
+                                    <input type="hidden" name="id" value="<?php echo $p['id']; ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <div class="no-data">Brak przychodów</div>
+        <?php endif; ?>
+    </div>
+    
+    <div class="admin-section">
+        <h3><i class="fas fa-minus-circle"></i> Dodaj nowy wydatek</h3>
+        
+        <form method="post" class="form-row">
+            <input type="hidden" name="action" value="add_expense">
+            <div class="form-group">
+                <label>Kwota</label>
+                <input type="number" step="0.01" name="kwota" required>
+            </div>
+            <div class="form-group">
+                <label>Tytuł</label>
+                <input type="text" name="tytul" required>
+            </div>
+            <div class="form-group">
+                <label>Data wydatku</label>
+                <input type="date" name="data_wydatku" required>
+            </div>
+            <div class="form-group" style="flex: 1 0 100%;">
+                <label>Opis</label>
+                <textarea name="opis" rows="3" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: var(--border-radius);" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger">Dodaj wydatek</button>
+        </form>
+        
+        <h3><i class="fas fa-list"></i> Lista wydatków</h3>
+        <?php if (!empty($wydatki)): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Kwota</th>
+                        <th>Tytuł</th>
+                        <th>Opis</th>
+                        <th>Data wydatku</th>
+                        <th>Data dodania</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($wydatki as $w): ?>
+                        <tr>
+                            <td><?php echo $w['id']; ?></td>
+                            <td><?php echo number_format($w['kwota'], 2); ?> zł</td>
+                            <td><?php echo htmlspecialchars($w['tytul']); ?></td>
+                            <td class="message-content"><?php echo nl2br(htmlspecialchars($w['opis'])); ?></td>
+                            <td><?php echo date('Y-m-d', strtotime($w['data_wydatku'])); ?></td>
+                            <td><?php echo date('Y-m-d', strtotime($w['data_dodania_wpisu'])); ?></td>
+                            <td class="action-buttons">
+                                <form method="post" style="display: inline;">
+                                    <input type="hidden" name="action" value="delete_expense">
+                                    <input type="hidden" name="id" value="<?php echo $w['id']; ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <div class="no-data">Brak wydatków</div>
+        <?php endif; ?>
+    </div>
+    
+    <div class="admin-section">
+        <h3><i class="fas fa-calculator"></i> Podsumowanie finansowe</h3>
+        <?php
+        $suma_przychodow = array_sum(array_column($przychody, 'kwota'));
+        $suma_wydatkow = array_sum(array_column($wydatki, 'kwota'));
+        $bilans = $suma_przychodow - $suma_wydatkow;
+        ?>
+        <div style="display: flex; justify-content: space-around; text-align: center; margin: 2rem 0;">
+            <div style="background: #e8f5e9; padding: 1.5rem; border-radius: var(--border-radius); flex: 1; margin: 0 0.5rem;">
+                <h4>Suma przychodów</h4>
+                <p style="font-size: 1.5rem; font-weight: bold; color: #2e7d32;"><?php echo number_format($suma_przychodow, 2); ?> zł</p>
+            </div>
+            <div style="background: #ffebee; padding: 1.5rem; border-radius: var(--border-radius); flex: 1; margin: 0 0.5rem;">
+                <h4>Suma wydatków</h4>
+                <p style="font-size: 1.5rem; font-weight: bold; color: #c62828;"><?php echo number_format($suma_wydatkow, 2); ?> zł</p>
+            </div>
+            <div style="background: <?php echo $bilans >= 0 ? '#e8f5e9' : '#ffebee'; ?>; padding: 1.5rem; border-radius: var(--border-radius); flex: 1; margin: 0 0.5rem;">
+                <h4>Bilans</h4>
+                <p style="font-size: 1.5rem; font-weight: bold; color: <?php echo $bilans >= 0 ? '#2e7d32' : '#c62828'; ?>;"><?php echo number_format($bilans, 2); ?> zł</p>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 
     <footer>
-        <div class="footer-content">
+    <div class="footer-content">
             <div class="footer-column">
                 <h4>Akademia Wiedzy</h4>
                 <p>Kompleksowa edukacja od przedszkola po liceum</p>
@@ -977,5 +1554,51 @@ $show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
             <p>&copy; 2025 Akademia Wiedzy. Wszelkie prawa zastrzeżone.</p>
         </div>
     </footer>
+
+    <script>
+        // Funkcje do obsługi modalów
+        function openEditTeacherModal(id, imie, nazwisko, login, id_przedmiotu, id_klasy_wychowawca) {
+            document.getElementById('editTeacherId').value = id;
+            document.getElementById('editTeacherImie').value = imie;
+            document.getElementById('editTeacherNazwisko').value = nazwisko;
+            document.getElementById('editTeacherLogin').value = login;
+            document.getElementById('editTeacherPrzedmiot').value = id_przedmiotu;
+            document.getElementById('editTeacherKlasa').value = id_klasy_wychowawca || '';
+            document.getElementById('editTeacherModal').style.display = 'block';
+        }
+
+        function openEditStudentModal(id, imie, nazwisko, id_klasy, login) {
+            document.getElementById('editStudentId').value = id;
+            document.getElementById('editStudentImie').value = imie;
+            document.getElementById('editStudentNazwisko').value = nazwisko;
+            document.getElementById('editStudentKlasa').value = id_klasy;
+            document.getElementById('editStudentLogin').value = login;
+            document.getElementById('editStudentModal').style.display = 'block';
+        }
+
+        function openEditClassroomModal(id, numer) {
+            document.getElementById('editClassroomId').value = id;
+            document.getElementById('editClassroomNumer').value = numer;
+            document.getElementById('editClassroomModal').style.display = 'block';
+        }
+
+        function openEditPostModal(id, tytul, opis) {
+            document.getElementById('editPostId').value = id;
+            document.getElementById('editPostTytul').value = tytul;
+            document.getElementById('editPostOpis').value = opis;
+            document.getElementById('editPostModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Zamknij modal po kliknięciu poza nim
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>

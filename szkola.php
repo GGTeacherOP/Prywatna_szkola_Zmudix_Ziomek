@@ -268,116 +268,58 @@ $conn->close();
                     </div>
                 </div>
 
+                <?php
+                // Połączenie z bazą danych
+                $conn = new mysqli('localhost', 'root', '', 'szkola');
+                $conn->set_charset("utf8");
+
+                // Sprawdzenie połączenia
+                if ($conn->connect_error) {
+                    die("Błąd połączenia: " . $conn->connect_error);
+                }
+
+                // Zapytanie do bazy
+                $sql = "SELECT data, tytul, opis FROM aktualnosci ORDER BY data DESC";
+                $result = $conn->query($sql);
+                ?>
+
                 <div class="news-grid">
-                    <article class="news-card">
-                        <div class="news-date">
-                            <span class="day">10</span>
-                            <span class="month">Maj</span>
-                            <span class="year">2025</span>
-                        </div>
-                        <div class="news-content">
-                            <h4>„Mistrz Matematyki” – Wyniki konkursu</h4>
-                            <p>Michał Kowalski z klasy 3B zdobył I miejsce w szkolnym konkursie matematycznym (98% punktów). II miejsce - Anna Nowak (2A, 94%), III - Jan Wiśniewski (3C, 91%). 
-                                Laureaci otrzymali nagrody książkowe. Gratulacje dla nauczycieli przygotowujących!<span class="hidden-text"> 
-                                    Michał zakwalifikował się do etapu ogólnopolskiego w Warszawie. Szkoła zapewnia mu dodatkowe konsultacje.</span></p>
-                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </article>
+                    <?php while ($row = $result->fetch_assoc()): 
+                        // Parsujemy datę
+                        $date = new DateTime($row['data']);
+                        $day = $date->format('d');
+                        $monthNumber = $date->format('m');
+                        $year = $date->format('Y');
 
-                    <article class="news-card">
-                        <div class="news-date">
-                            <span class="day">05</span>
-                            <span class="month">Maj</span>
-                            <span class="year">2025</span>
-                        </div>
-                        <div class="news-content">
-                            <h4>Konkurs Plastyczny „Zielona Planeta”</h4>
-                            <p>Julia Nowak z 5B wygrała ogólnopolski konkurs ekologiczny Ministerstwa Środowiska. Jeja praca "Ocalmy nasz świat" zachwyciła jury. 
-                                Nagroda: tablet graficzny i warsztaty artystyczne.<span class="hidden-text"> 
-                                    Wyróżnienia dla Michała Zawadzkiego (4A) i Oliwiery Piotrowskiej (6C). Ich prace w szkolnej galerii.</span></p>
-                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </article>
+                        // Miesiące po polsku
+                        $months = [
+                            "01" => "Sty", "02" => "Lut", "03" => "Mar", "04" => "Kwi", "05" => "Maj", "06" => "Cze",
+                            "07" => "Lip", "08" => "Sie", "09" => "Wrz", "10" => "Paź", "11" => "Lis", "12" => "Gru"
+                        ];
+                        $month = $months[$monthNumber];
 
+                        // Skrócenie opisu, ukrycie <span class="hidden-text">...</span> jeśli istnieje
+                        $shortOpis = preg_replace('/<span class="hidden-text">.*?<\/span>/s', '', $row['opis']);
+                    ?>
                     <article class="news-card">
                         <div class="news-date">
-                            <span class="day">30</span>
-                            <span class="month">Kwi</span>
-                            <span class="year">2025</span>
+                            <span class="day"><?= $day ?></span>
+                            <span class="month"><?= $month ?></span>
+                            <span class="year"><?= $year ?></span>
                         </div>
                         <div class="news-content">
-                            <h4>Zbiórka charytatywna</h4>
-                            <p>Dziękujemy za udział w akcji charytatywnej - zebraliśmy ponad 200 paczek dla dzieci z domów dziecka...</p>
+                            <h4><?= htmlspecialchars($row['tytul']) ?></h4>
+                            <p><?= $shortOpis ?></p>
                             <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
-
-                    <article class="news-card">
-                        <div class="news-date">
-                            <span class="day">25</span>
-                            <span class="month">Kwi</span>
-                            <span class="year">2025</span>
-                        </div>
-                        <div class="news-content">
-                            <h4>Zwycięstwo w zawodach matematycznych</h4>
-                            <p>Nasza drużyna licealna zdobyła I miejsce w międzyszkolnym konkursie matematycznym...</p>
-                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </article>
-
-                    <article class="news-card">
-                        <div class="news-date">
-                            <span class="day">20</span>
-                            <span class="month">Kwi</span>
-                            <span class="year">2025</span>
-                        </div>
-                        <div class="news-content">
-                            <h4>Sukces w konkursie recytatorskim</h4>
-                            <p>Julia Tomaszewska z przedszkola dotarła do finału ogólnopolskiego konkursu "Mali Artyści"...</p>
-                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </article>
-
-                    <article class="news-card">
-                        <div class="news-date">
-                            <span class="day">15</span>
-                            <span class="month">Kwi</span>
-                            <span class="year">2025</span>
-                        </div>
-                        <div class="news-content">
-                            <h4>Festyn Rodzinny</h4>
-                            <p>Relacja z udanego festynu rodzinnego, który zgromadził ponad 300 uczestników...</p>
-                            <a href="#" class="read-more">Czytaj więcej <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </article>
+                    <?php endwhile; ?>
                 </div>
 
-                <div class="calendar-section">
-                    <h3><i class="far fa-calendar-alt"></i> Nadchodzące wydarzenia</h3>
-                    <div class="events-list">
-                        <div class="event-item">
-                            <div class="event-date">25 Maj</div>
-                            <div class="event-info">
-                                <h5>Dzień Sportu</h5>
-                                <p>Turnieje i zawody sportowe dla wszystkich uczniów</p>
-                            </div>
-                        </div>
-                        <div class="event-item">
-                            <div class="event-date">01 Cze</div>
-                            <div class="event-info">
-                                <h5>Dzień Dziecka</h5>
-                                <p>Specjalne atrakcje dla uczniów przedszkola i szkoły podstawowej</p>
-                            </div>
-                        </div>
-                        <div class="event-item">
-                            <div class="event-date">15 Cze</div>
-                            <div class="event-info">
-                                <h5>Zakończenie roku szkolnego</h5>
-                                <p>Uroczyste zakończenie roku szkolnego 2024/2025</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                $conn->close();
+                ?>
+
             </section>
 
             <section id="liceum" class="section">

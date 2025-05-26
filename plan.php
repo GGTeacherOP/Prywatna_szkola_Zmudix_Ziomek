@@ -339,48 +339,50 @@ $conn->close();
         <a href="#announcements" class="top-link nav-btn top"><i class="fas fa-newspaper"></i> Przejdź do wiadomości</a>
         <section class="events-section">
             <h2><i class="fas fa-calendar-alt"></i> Kalendarz wydarzeń</h2>
+                        <?php
+            // Połączenie z bazą danych
+            $conn = new mysqli('localhost', 'root', '', 'szkola');
+            $conn->set_charset("utf8");
+
+            // Sprawdzenie połączenia
+            if ($conn->connect_error) {
+                die("Błąd połączenia: " . $conn->connect_error);
+            }
+
+            // Pobranie wydarzeń z bazy, posortowanych rosnąco po dacie
+            $sql = "SELECT data, tytul, opis FROM wydarzenia ORDER BY data ASC";
+            $result = $conn->query($sql);
+
+            // Mapowanie numerów miesięcy na skróty PL
+            $months = [
+                "01" => "STY", "02" => "LUT", "03" => "MAR", "04" => "KWI", "05" => "MAJ", "06" => "CZE",
+                "07" => "LIP", "08" => "SIE", "09" => "WRZ", "10" => "PAŹ", "11" => "LIS", "12" => "GRU"
+            ];
+            ?>
+
             <div class="events-highlight">
+                <?php while ($row = $result->fetch_assoc()): 
+                    $date = new DateTime($row['data']);
+                    $day = $date->format('d');
+                    $month = $months[$date->format('m')];
+                ?>
                 <div class="event-card">
                     <div class="event-date">
-                        <span class="event-day">03</span>
-                        <span class="event-month">WRZ</span>
+                        <span class="event-day"><?= $day ?></span>
+                        <span class="event-month"><?= $month ?></span>
                     </div>
                     <div class="event-info">
-                        <h4>Rozpoczęcie roku szkolnego</h4>
-                        <p>Godzina 9:00, aula główna</p>
+                        <h4><?= htmlspecialchars($row['tytul']) ?></h4>
+                        <p><?= htmlspecialchars($row['opis']) ?></p>
                     </div>
                 </div>
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="event-day">14</span>
-                        <span class="event-month">PAŹ</span>
-                    </div>
-                    <div class="event-info">
-                        <h4>Dzień Edukacji Narodowej</h4>
-                        <p>Uroczysta akademia</p>
-                    </div>
-                </div>
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="event-day">11</span>
-                        <span class="event-month">LIS</span>
-                    </div>
-                    <div class="event-info">
-                        <h4>Dzień Niepodległości</h4>
-                        <p>Apel szkolny</p>
-                    </div>
-                </div>
-                <div class="event-card">
-                    <div class="event-date">
-                        <span class="event-day">22</span>
-                        <span class="event-month">GRU</span>
-                    </div>
-                    <div class="event-info">
-                        <h4>Jasełka szkolne</h4>
-                        <p>Godzina 17:00, sala gimnastyczna</p>
-                    </div>
-                </div>
+                <?php endwhile; ?>
             </div>
+
+            <?php
+            $conn->close();
+            ?>
+
             <button class="view-all-btn">Zobacz wszystkie wydarzenia</button>
         </section>
         <section class="plan-section" id="timetables">
