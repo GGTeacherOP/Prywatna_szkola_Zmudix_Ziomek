@@ -12,6 +12,10 @@ elseif (isset($_SESSION['admin_id'])) {
     header("Location: paneladministratora.php");
     exit();
 }
+elseif (isset($_SESSION['wlasciciel_id'])) {
+    header("Location: panel_wlasciciela.php");
+    exit();
+}
 
 $query = "SELECT * FROM uczniowie WHERE id = ?";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -44,6 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($login && $haslo && $rola) {
         if ($rola === 'administrator') {
             $tabela = 'administratorzy';
+        } elseif ($rola === 'wlasciciel') {
+            $tabela = 'wlasciciel';
         } else {
             $tabela = $rola === 'uczen' ? 'uczniowie' : 'nauczyciele';
         }
@@ -79,6 +85,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['login'] = $login;
                 $_SESSION['rola'] = $rola;
                 header("Location: paneladministratora.php");
+                exit();
+            } elseif ($rola === 'wlasciciel') {
+                $_SESSION['wlasciciel_id'] = $user['id'];
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['login'] = $login;
+                $_SESSION['rola'] = $rola;
+                header("Location: panel_wlasciciela.php");
                 exit();
             }
         } else {
@@ -262,7 +275,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <input type="password" name="haslo" id="haslo" required>
                 </div>
                 
-                
                 <div class="radio-group">
                     <label>Kim jesteś?</label><br>
                     <label>
@@ -273,6 +285,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </label>
                     <label>
                         <input type="radio" name="rola" value="administrator"> <i class="fas fa-user-shield"></i> Administrator
+                    </label>
+                    <label>
+                        <input type="radio" name="rola" value="wlasciciel"> <i class="fas fa-crown"></i> Właściciel
                     </label>
                 </div>
                 
