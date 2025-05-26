@@ -213,7 +213,7 @@ $conn->close();
                 <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
                 <li><a href="plan.php"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php"><i class="fas fa-book"></i> Dziennik</a></li>
-                <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
+                <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i>Stwórz swój dziennik!</a></li>
             </ul>
         </nav>
     </header>
@@ -264,7 +264,7 @@ $conn->close();
                     <div class="highlight-content">
                         <h3>Rekrutacja 2025/2026</h3>
                         <p>Trwa nabór do wszystkich placówek edukacyjnych Akademii Wiedzy. Zapisy prowadzimy do 30 czerwca 2025.</p>
-                        <a href="#zapisz" class="btn">Zapisz się online</a>
+                        <a href="rejstracja_podstawowa.php" class="btn">Zapisz się do szkoły podstawowej</a><p> </p><a href="rejstracja_przedszkole.php" class="btn">Zapisz się do przedszkola!</a>
                     </div>
                 </div>
 
@@ -486,7 +486,6 @@ $conn->close();
                     </div>
                 </div>
                 
-                <a href="#" class="btn">Zapisz się już dziś!</a>
             </section>
 
             <section id="technikum" class="section">
@@ -599,7 +598,6 @@ $conn->close();
                     </div>
                 </div>
                 
-                <a href="#" class="btn">Dowiedz się więcej</a>
             </section>
 
             <section id="szkola-podstawowa" class="section">
@@ -690,7 +688,7 @@ $conn->close();
                     </div>
                 </div>
                 
-                <a href="#" class="btn">Zapisz swoje dziecko</a>
+                <a href="rejstracja_podstawowa.php" class="btn">Zapisz swoje dziecko</a>
             </section>
 
             <section id="przedszkole" class="section">
@@ -781,7 +779,7 @@ $conn->close();
                     </div>
                 </div>
                 
-                <a href="#" class="btn">Zapisz swoje dziecko</a>
+                <a href="rejstracja_przedszkole.php" class="btn">Zapisz swoje dziecko</a>
             </section>
             
             <section id="Kontakt" class="section">

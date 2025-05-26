@@ -30,9 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $login = $_POST['login'];
                 $haslo = password_hash($_POST['haslo'], PASSWORD_DEFAULT);
                 $id_przedmiotu = $_POST['id_przedmiotu'];
-                $id_klasy = $_POST['id_klasy'] ?: NULL;
+                $id_klasy = $_POST['id_klasy_wychowawca'] ?: NULL;
                 
-                $stmt = $conn->prepare("INSERT INTO nauczyciele (imie, nazwisko, login, haslo, id_przedmiotu, id_klasy) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO nauczyciele (imie, nazwisko, login, haslo, id_przedmiotu, id_klasy_wychowawca) VALUES (?, ?, ?, ?, ?, ?)");
                 $stmt->bind_param("ssssii", $imie, $nazwisko, $login, $haslo, $id_przedmiotu, $id_klasy);
                 $stmt->execute();
                 break;
@@ -85,14 +85,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmt->execute();
                 
                 // Resetowanie wychowawcy dla tej klasy
-                $stmt = $conn->prepare("UPDATE nauczyciele SET id_klasy = NULL WHERE id_klasy = ?");
-                $stmt->bind_param("i", $id_klasy);
+                $id_klasy_wychowawca = $_POST['id_klasy_wychowawca'];
+                $stmt = $conn->prepare("UPDATE nauczyciele SET id_klasy_wychowawca = NULL WHERE id_klasy_wychowawca = ?");
+                $stmt->bind_param("i", $id_klasy_wychowawca);
                 $stmt->execute();
                 break;
                 
             case 'delete_message':
                 $id = $_POST['id'];
                 $stmt = $conn->prepare("DELETE FROM wiadomosci WHERE id = ?");
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                break;
+                
+            case 'delete_registration':
+                $id = $_POST['id'];
+                $stmt = $conn->prepare("DELETE FROM rejestracja_zatwierdzenie WHERE id = ?");
                 $stmt->bind_param("i", $id);
                 $stmt->execute();
                 break;
@@ -115,11 +123,13 @@ $sale = $conn->query("SELECT * FROM sale")->fetch_all(MYSQLI_ASSOC);
 $klasy = $conn->query("SELECT * FROM klasy")->fetch_all(MYSQLI_ASSOC);
 $przedmioty = $conn->query("SELECT * FROM przedmioty")->fetch_all(MYSQLI_ASSOC);
 $wiadomosci = $conn->query("SELECT * FROM wiadomosci ORDER BY data_dodania DESC")->fetch_all(MYSQLI_ASSOC);
+$rejestracje = $conn->query("SELECT * FROM rejestracja_zatwierdzenie ORDER BY data_rejestracji DESC;")->fetch_all(MYSQLI_ASSOC);
 
 $conn->close();
 
-// Sprawdzamy czy mamy parametr show_messages
+// Sprawdzamy czy mamy parametr show_messages lub show_registrations
 $show_messages = isset($_GET['show']) && $_GET['show'] == 'messages';
+$show_registrations = isset($_GET['show']) && $_GET['show'] == 'registrations';
 ?>
 
 <!DOCTYPE html>
@@ -584,15 +594,16 @@ $show_messages = isset($_GET['show']) && $_GET['show'] == 'messages';
                 </div>
                 
                 <ul class="admin-menu">
-                    <li><a href="?show=management" class="<?php echo !$show_messages ? 'active' : ''; ?>"><i class="fas fa-users-cog"></i> Zarządzanie</a></li>
+                    <li><a href="?show=management" class="<?php echo (!$show_messages && !$show_registrations) ? 'active' : ''; ?>"><i class="fas fa-users-cog"></i> Zarządzanie</a></li>
                     <li><a href="?show=messages" class="<?php echo $show_messages ? 'active' : ''; ?>"><i class="fas fa-envelope"></i> Wiadomości</a></li>
+                    <li><a href="?show=registrations" class="<?php echo $show_registrations ? 'active' : ''; ?>"><i class="fas fa-user-check"></i> Zatwierdzenie konta</a></li>
                     <li><a href="logout.php" class="text-danger"><i class="fas fa-sign-out-alt"></i> Wyloguj się</a></li>
                 </ul>
             </div>
             
             <!-- Główna zawartość -->
             <div class="admin-content">
-                <?php if (!$show_messages): ?>
+                <?php if (!$show_messages && !$show_registrations): ?>
                     <div class="welcome-header">
                         <h2><i class="fas fa-user-shield"></i> Panel Administratora</h2>
                         <p>Zarządzaj uczniami, nauczycielami i zasobami szkoły</p>
@@ -673,10 +684,10 @@ $show_messages = isset($_GET['show']) && $_GET['show'] == 'messages';
                                             </td>
                                             <td>
                                                 <?php 
-                                                if (isset($n['id_klasy']) && $n['id_klasy'] != '') {
+                                                if (isset($n['id_klasy_wychowawca']) && $n['id_klasy_wychowawca'] != '') {
                                                     $nazwa_klasy = '';
                                                     foreach ($klasy as $k) {
-                                                        if ($k['id'] == $n['id_klasy']) {
+                                                        if ($k['id'] == $n['id_klasy_wychowawca']) {
                                                             $nazwa_klasy = $k['nazwa'];
                                                             break;
                                                         }
@@ -828,7 +839,7 @@ $show_messages = isset($_GET['show']) && $_GET['show'] == 'messages';
                             <div class="no-data">Brak sal w systemie</div>
                         <?php endif; ?>
                     </div>
-                <?php else: ?>
+                <?php elseif ($show_messages): ?>
                     <!-- Sekcja wiadomości -->
                     <div class="welcome-header">
                         <h2><i class="fas fa-envelope"></i> Wiadomości od użytkowników</h2>
@@ -869,6 +880,58 @@ $show_messages = isset($_GET['show']) && $_GET['show'] == 'messages';
                             </table>
                         <?php else: ?>
                             <div class="no-data">Brak wiadomości</div>
+                        <?php endif; ?>
+                    </div>
+                <?php elseif ($show_registrations): ?>
+                    <!-- Sekcja zatwierdzania kont -->
+                    <div class="welcome-header">
+                        <h2><i class="fas fa-user-check"></i> Zatwierdzenie konta</h2>
+                        <p>Przeglądaj i zarządzaj wnioskami o rejestrację kont</p>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <?php if (!empty($rejestracje)): ?>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Imię</th>
+                                        <th>Nazwisko</th>
+                                        <th>Numer telefonu</th>
+                                        <th>Stanowisko</th>
+                                        <th>Data rejestracji</th>
+                                        <th>Uwagi (Email i klasa)</th>
+                                        <th>Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($rejestracje as $r): ?>
+                                        <tr>
+                                            <td><?php echo $r['id']; ?></td>
+                                            <td><?php echo htmlspecialchars($r['imie']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['nazwisko']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['numer_telefonu']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['stanowisko']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['data_rejestracji']); ?></td>
+                                            <td><?php echo nl2br(htmlspecialchars($r['uwagi'])); ?></td>
+                                            <td class="action-buttons">
+                                                <form method="post" style="display: inline;">
+                                                    <input type="hidden" name="action" value="delete_registration">
+                                                    <input type="hidden" name="id" value="<?php echo $r['id']; ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Zatwierdzony</button>
+                                                </form>
+                                                <form method="post" style="display: inline;">
+                                                    <input type="hidden" name="action" value="delete_registration">
+                                                    <input type="hidden" name="id" value="<?php echo $r['id']; ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Nie zatwierdzony</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="no-data">Brak wniosków o rejestrację</div>
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>

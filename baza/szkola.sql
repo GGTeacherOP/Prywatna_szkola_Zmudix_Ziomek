@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 26, 2025 at 12:52 AM
--- Wersja serwera: 10.4.32-MariaDB
--- Wersja PHP: 8.2.12
+-- Czas generowania: 26 Maj 2025, 14:58
+-- Wersja serwera: 10.4.22-MariaDB
+-- Wersja PHP: 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `szkola`
+-- Baza danych: `szkola`
 --
 
 -- --------------------------------------------------------
@@ -33,10 +33,10 @@ CREATE TABLE `administratorzy` (
   `Nazwisko` varchar(100) NOT NULL,
   `Login` varchar(100) NOT NULL,
   `Haslo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `administratorzy`
+-- Zrzut danych tabeli `administratorzy`
 --
 
 INSERT INTO `administratorzy` (`ID`, `Imie`, `Nazwisko`, `Login`, `Haslo`) VALUES
@@ -54,10 +54,10 @@ CREATE TABLE `klasy` (
   `nazwa` varchar(10) NOT NULL,
   `rocznik` int(11) NOT NULL,
   `typ_szkoly_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `klasy`
+-- Zrzut danych tabeli `klasy`
 --
 
 INSERT INTO `klasy` (`id`, `nazwa`, `rocznik`, `typ_szkoly_id`) VALUES
@@ -94,10 +94,10 @@ CREATE TABLE `nauczyciele` (
   `id_klasy_wychowawca` int(11) DEFAULT NULL,
   `login` varchar(50) NOT NULL,
   `haslo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `nauczyciele`
+-- Zrzut danych tabeli `nauczyciele`
 --
 
 INSERT INTO `nauczyciele` (`id`, `imie`, `nazwisko`, `id_przedmiotu`, `id_klasy_wychowawca`, `login`, `haslo`) VALUES
@@ -161,10 +161,10 @@ CREATE TABLE `oceny` (
   `ocena` varchar(5) NOT NULL,
   `opis` varchar(255) DEFAULT NULL,
   `data_dodania` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `oceny`
+-- Zrzut danych tabeli `oceny`
 --
 
 INSERT INTO `oceny` (`id`, `id_ucznia`, `id_przedmiotu`, `id_nauczyciela`, `ocena`, `opis`, `data_dodania`) VALUES
@@ -433,10 +433,10 @@ CREATE TABLE `plan_lekcji` (
   `dzien_tygodnia` varchar(20) NOT NULL,
   `godzina_start` time NOT NULL,
   `godzina_koniec` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `plan_lekcji`
+-- Zrzut danych tabeli `plan_lekcji`
 --
 
 INSERT INTO `plan_lekcji` (`id`, `klasa_id`, `przedmiot_id`, `sala_id`, `dzien_tygodnia`, `godzina_start`, `godzina_koniec`) VALUES
@@ -1080,10 +1080,10 @@ INSERT INTO `plan_lekcji` (`id`, `klasa_id`, `przedmiot_id`, `sala_id`, `dzien_t
 CREATE TABLE `przedmioty` (
   `id` int(11) NOT NULL,
   `nazwa` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `przedmioty`
+-- Zrzut danych tabeli `przedmioty`
 --
 
 INSERT INTO `przedmioty` (`id`, `nazwa`) VALUES
@@ -1132,16 +1132,7 @@ CREATE TABLE `rejestracja_zatwierdzenie` (
   `data_rejestracji` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` enum('Oczekuje','Zatwierdzone','Odrzucone') DEFAULT 'Oczekuje',
   `uwagi` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `rejestracja_zatwierdzenie`
---
-
-INSERT INTO `rejestracja_zatwierdzenie` (`id`, `imie`, `nazwisko`, `numer_telefonu`, `stanowisko`, `data_rejestracji`, `status`, `uwagi`) VALUES
-(1, 'Mikołaj', 'Ziomek', '780038866', 'Uczeń', '2025-05-25 22:07:24', 'Oczekuje', 'Email: m.ziomek@interia.eu, Klasa: 1a'),
-(2, 'Mikołaj', 'Ziomek', '123123123', 'Nauczyciel', '2025-05-25 22:08:10', 'Oczekuje', 'Email: m.ziomek@interia.eu'),
-(3, 'Mikołaj', 'Ziomek', '123123123', 'Nauczyciel', '2025-05-25 22:26:42', 'Oczekuje', 'Email: m.ziomek@interia.eu');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1152,10 +1143,10 @@ INSERT INTO `rejestracja_zatwierdzenie` (`id`, `imie`, `nazwisko`, `numer_telefo
 CREATE TABLE `sale` (
   `id` int(11) NOT NULL,
   `numer` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `sale`
+-- Zrzut danych tabeli `sale`
 --
 
 INSERT INTO `sale` (`id`, `numer`) VALUES
@@ -1224,10 +1215,10 @@ INSERT INTO `sale` (`id`, `numer`) VALUES
 CREATE TABLE `typy_szkol` (
   `id` int(11) NOT NULL,
   `nazwa` enum('Liceum','Technikum','Szkola Podstawowa','Przedszkole') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `typy_szkol`
+-- Zrzut danych tabeli `typy_szkol`
 --
 
 INSERT INTO `typy_szkol` (`id`, `nazwa`) VALUES
@@ -1249,10 +1240,10 @@ CREATE TABLE `uczniowie` (
   `id_klasy` int(11) NOT NULL,
   `login` varchar(50) NOT NULL,
   `haslo` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `uczniowie`
+-- Zrzut danych tabeli `uczniowie`
 --
 
 INSERT INTO `uczniowie` (`id`, `imie`, `nazwisko`, `id_klasy`, `login`, `haslo`) VALUES
@@ -1525,7 +1516,7 @@ CREATE TABLE `wiadomosci` (
   `temat` varchar(200) NOT NULL,
   `wiadomosc` text NOT NULL,
   `data_dodania` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1540,10 +1531,10 @@ CREATE TABLE `zdjecia` (
   `typ_mime` varchar(50) NOT NULL,
   `opis` text DEFAULT NULL,
   `data_dodania` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `zdjecia`
+-- Zrzut danych tabeli `zdjecia`
 --
 
 INSERT INTO `zdjecia` (`id`, `nazwa_pliku`, `dane_zdjecia`, `typ_mime`, `opis`, `data_dodania`) VALUES
@@ -1649,100 +1640,100 @@ ALTER TABLE `zdjecia`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT dla zrzuconych tabel
 --
 
 --
--- AUTO_INCREMENT for table `administratorzy`
+-- AUTO_INCREMENT dla tabeli `administratorzy`
 --
 ALTER TABLE `administratorzy`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `klasy`
+-- AUTO_INCREMENT dla tabeli `klasy`
 --
 ALTER TABLE `klasy`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `nauczyciele`
+-- AUTO_INCREMENT dla tabeli `nauczyciele`
 --
 ALTER TABLE `nauczyciele`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
--- AUTO_INCREMENT for table `oceny`
+-- AUTO_INCREMENT dla tabeli `oceny`
 --
 ALTER TABLE `oceny`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
 
 --
--- AUTO_INCREMENT for table `plan_lekcji`
+-- AUTO_INCREMENT dla tabeli `plan_lekcji`
 --
 ALTER TABLE `plan_lekcji`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=645;
 
 --
--- AUTO_INCREMENT for table `przedmioty`
+-- AUTO_INCREMENT dla tabeli `przedmioty`
 --
 ALTER TABLE `przedmioty`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT for table `rejestracja_zatwierdzenie`
+-- AUTO_INCREMENT dla tabeli `rejestracja_zatwierdzenie`
 --
 ALTER TABLE `rejestracja_zatwierdzenie`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `sale`
+-- AUTO_INCREMENT dla tabeli `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
--- AUTO_INCREMENT for table `typy_szkol`
+-- AUTO_INCREMENT dla tabeli `typy_szkol`
 --
 ALTER TABLE `typy_szkol`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `uczniowie`
+-- AUTO_INCREMENT dla tabeli `uczniowie`
 --
 ALTER TABLE `uczniowie`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259;
 
 --
--- AUTO_INCREMENT for table `wiadomosci`
+-- AUTO_INCREMENT dla tabeli `wiadomosci`
 --
 ALTER TABLE `wiadomosci`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `zdjecia`
+-- AUTO_INCREMENT dla tabeli `zdjecia`
 --
 ALTER TABLE `zdjecia`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Constraints for dumped tables
+-- Ograniczenia dla zrzutów tabel
 --
 
 --
--- Constraints for table `klasy`
+-- Ograniczenia dla tabeli `klasy`
 --
 ALTER TABLE `klasy`
   ADD CONSTRAINT `klasy_ibfk_1` FOREIGN KEY (`typ_szkoly_id`) REFERENCES `typy_szkol` (`id`);
 
 --
--- Constraints for table `nauczyciele`
+-- Ograniczenia dla tabeli `nauczyciele`
 --
 ALTER TABLE `nauczyciele`
   ADD CONSTRAINT `nauczyciele_ibfk_1` FOREIGN KEY (`id_przedmiotu`) REFERENCES `przedmioty` (`id`),
   ADD CONSTRAINT `nauczyciele_ibfk_2` FOREIGN KEY (`id_klasy_wychowawca`) REFERENCES `klasy` (`id`);
 
 --
--- Constraints for table `oceny`
+-- Ograniczenia dla tabeli `oceny`
 --
 ALTER TABLE `oceny`
   ADD CONSTRAINT `oceny_ibfk_1` FOREIGN KEY (`id_ucznia`) REFERENCES `uczniowie` (`id`),
@@ -1750,7 +1741,7 @@ ALTER TABLE `oceny`
   ADD CONSTRAINT `oceny_ibfk_3` FOREIGN KEY (`id_nauczyciela`) REFERENCES `nauczyciele` (`id`);
 
 --
--- Constraints for table `plan_lekcji`
+-- Ograniczenia dla tabeli `plan_lekcji`
 --
 ALTER TABLE `plan_lekcji`
   ADD CONSTRAINT `plan_lekcji_ibfk_1` FOREIGN KEY (`klasa_id`) REFERENCES `klasy` (`id`),
@@ -1758,7 +1749,7 @@ ALTER TABLE `plan_lekcji`
   ADD CONSTRAINT `plan_lekcji_ibfk_3` FOREIGN KEY (`sala_id`) REFERENCES `sale` (`id`);
 
 --
--- Constraints for table `uczniowie`
+-- Ograniczenia dla tabeli `uczniowie`
 --
 ALTER TABLE `uczniowie`
   ADD CONSTRAINT `uczniowie_ibfk_1` FOREIGN KEY (`id_klasy`) REFERENCES `klasy` (`id`);

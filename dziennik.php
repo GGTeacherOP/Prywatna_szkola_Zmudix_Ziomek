@@ -233,7 +233,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <li><a href="szkola.php"><i class="fas fa-home"></i> Strona główna</a></li>
                 <li><a href="plan.php"><i class="fas fa-calendar-alt"></i> Plan lekcji</a></li>
                 <li><a href="dziennik.php" class="active-nav"><i class="fas fa-book"></i> Dziennik</a></li>
-                <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i> Zapisz się!</a></li>
+                <li><a href="rejestracja.php" class="cta-button"><i class="fas fa-user-plus"></i>Stwórz swój dziennik!</a></li>
             </ul>
         </nav>
     </header>
