@@ -173,7 +173,8 @@ $query = "SELECT DISTINCT u.id, u.imie, u.nazwisko, k.nazwa as klasa
           FROM uczniowie u 
           JOIN klasy k ON u.id_klasy = k.id 
           JOIN plan_lekcji pl ON k.id = pl.klasa_id 
-          WHERE pl.przedmiot_id = ?";
+          WHERE pl.przedmiot_id = ? 
+          GROUP BY u.id, u.imie, u.nazwisko, k.nazwa";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $nauczyciel['id_przedmiotu']);
 $stmt->execute();
@@ -696,7 +697,7 @@ $wszyscy_uczniowie = $result->fetch_all(MYSQLI_ASSOC);
                                 <tbody>
                                     <?php 
                                         // Pobranie klas, w których nauczyciel prowadzi zajęcia
-                                        $query = "SELECT k.id, k.nazwa, COUNT(u.id) as liczba_uczniow 
+                                        $query = "SELECT k.id, k.nazwa, COUNT(DISTINCT u.id) as liczba_uczniow 
                                                   FROM klasy k 
                                                   JOIN plan_lekcji pl ON k.id = pl.klasa_id 
                                                   LEFT JOIN uczniowie u ON k.id = u.id_klasy 
